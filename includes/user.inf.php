@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+$_SESSION["gotInQueue"];
+
 $uId = $_SESSION["userid"];
 $uName = $_SESSION["username"];
 $uComp = $_SESSION["companyTag"];

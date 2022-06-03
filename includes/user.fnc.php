@@ -27,18 +27,21 @@ function queueUp($conn, $cName, $sName, $uId)
     //check if Service exists
     if (!alreadyExists($conn, $sName, "sName", $cDbName)) {
         echo "got into error service doesn't exists";
+        die();
         return;
     }
 
     //check if user exists
     if (!alreadyExistsInt($conn, $uId, "uId", "Users")) {
         echo "got into error user doesn't exists";
+        die();
         return;
     }
 
     //check if user is in queue
     if (checkQueue($conn, $uId)) {
         echo "got into error user already in queue";
+        die();
         return;
     }
 
@@ -123,11 +126,12 @@ function getQueue($conn, $qDbName)
 // check if the user is already in queue
 function checkQueue($conn, $uId)
 {
+    // fetch data from queues
     $sql = "SELECT * FROM Queues WHERE userId = $uId;";
     $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_array($result);
-    if (isset($row['userId'])) {
-
+    $rowFromQueues = mysqli_fetch_array($result);
+    session_start();
+    if (isset($rowFromQueues['userId']) ) {
         // fetch users queue
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($result);
@@ -137,18 +141,29 @@ function checkQueue($conn, $uId)
         // set users queue  
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_array($result);
-
-        session_start();
         $_SESSION["queue"] = $row['queue'];
 
+        if($rowFromQueues['inLine'] != 0){ // check if $rowFromQueues is 1
+            $_SESSION["inLine"] = $rowFromQueues['inLine'];
+        }
+
+        if ($_SESSION["gotInQueue"] == 0) {
+            $_SESSION["gotInQueue"] = 1;
+        }
+        
         return true;
-    } else {
+    }else{
         session_start();
         unset($_SESSION["queue"]);
+        unset($_SESSION["inLine"]);
         session_unset($_SESSION["queue"]);
+        session_unset($_SESSION["inLine"]);
         return false;
     }
+
+    
 }
+
 
 function getAvgTime($conn, $uId)
 {

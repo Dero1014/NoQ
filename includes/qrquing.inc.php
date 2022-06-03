@@ -5,14 +5,20 @@
 // IS NO ONE IN THE QUEUE                                          //
 
 include 'connect.inc.php';
-include 'common.fnc.php';
 include 'user.fnc.php';
 
-
+echo("Start \n\r");
+//_POST
 $cName = $_POST['companies'];
 $sName = $_POST['services'];
 $uId = (int)$_POST['uId'];
 
+$json = new stdClass();
+
+$json->companies = $cName;
+$json->services = $sName;
+$json->uid = $uId;
+echo json_encode($json);
 
 queueUp($conn, $cName, $sName, $uId);
 header("Location: ../sites/user.site.php?queueup=success");

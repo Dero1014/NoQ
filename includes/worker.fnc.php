@@ -93,6 +93,10 @@ function nextInQueue($conn, $sName, $wComp)
     $sql = "UPDATE $qDbName SET queue = queue - 1";
     $conn->query($sql);
 
+    // remove the user from the process
+    if(userInProcess($conn))
+        removeUserFromProcess($conn);
+    
     // check if there is a queue below 0
     if (removeFromQueue($conn, $qDbName)) {
         
@@ -104,10 +108,43 @@ function nextInQueue($conn, $sName, $wComp)
     }
 }
 
+// checks if there is a user assigned to worker 
+function userInProcess($conn)
+{
+    include '../includes/worker.inf.php';
+
+    $sql = "SELECT userId FROM Workers WHERE wId = $wId";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_array($result);
+    
+    return is_null($row['userId']) ? false : true;
+}
+
+function removeUserFromProcess($conn)
+{
+    include '../includes/worker.inf.php';
+
+    // get user id from worker
+    $sql = "SELECT userId FROM Workers WHERE wId = $wId";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_array($result);
+    $uId = $row['userId'];
+
+    // remove from User from Queues
+    $sql = "DELETE FROM Queues WHERE userId = $uId";
+    $conn->query($sql);
+
+    // remove User from Worker
+    $sql = "UPDATE Workers SET userId = NULL WHERE wId = $wId";
+    $conn->query($sql);
+}
+
 function removeFromQueue($conn, $qDbName)
 {
+    include '../includes/worker.inf.php';
+
     // get userId who has queue less then 0
-    $sql = "SELECT userId FROM $qDbName WHERE queue < 0";
+    $sql = "SELECT userId FROM $qDbName WHERE queue < 1";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
     if (isset($row['userId'])) {
@@ -115,15 +152,20 @@ function removeFromQueue($conn, $qDbName)
         $uId = $row['userId'];
 
         // remove from qs db
-        $sql = "DELETE FROM $qDbName WHERE queue < 0";
+        $sql = "DELETE FROM $qDbName WHERE queue < 1";
         $conn->query($sql);
 
         // remove from Queue db
-        $sql = "DELETE FROM Queues WHERE userId = $uId";
+        $sql = "UPDATE Queues SET inLine = 1 WHERE userId = $uId";
+        $conn->query($sql);
+
+        // Add user to the current worker
+        $sql = "UPDATE Workers SET userId = $uId WHERE wId = $wId";
         $conn->query($sql);
 
         return true;
     }
+
     //else
     return false;
 }

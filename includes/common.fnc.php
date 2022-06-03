@@ -31,9 +31,11 @@ function areEmpty($words)
 {
     for ($i = 0; $i < count($words); $i++) {
         if (empty($words[$i])) {
+            echo "Yes it is empty";
             return true;
         }
     }
+    echo "No it isn't empty";
 }
 
 // check if the input is invalid
@@ -58,8 +60,10 @@ function alreadyExists($conn, $string, $dbData, $db)
     $resultData = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_assoc($resultData);
     if ($row[$dbData] == $string) {
+        echo "It exists";
         return true;
     } else {
+        echo "It doesn't exist";
         return false;
     }
 
@@ -77,8 +81,10 @@ function alreadyExistsInt($conn, $int, $dbData, $db)
     $resultData = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_assoc($resultData);
     if ($row[$dbData] == $int) {
+        echo "It exists";
         return true;
     } else {
+        echo "It doesn't exist";
         return false;
     }
 

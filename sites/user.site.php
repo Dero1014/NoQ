@@ -24,7 +24,7 @@ checkQueue($conn, $uId);
 
 <!-- SERVICE SELECT FORM IF USER NOT IN A QUEUE -->
 <?php
-if (!isset($_SESSION["queue"])) {
+if (!isset($_SESSION["queue"]) && !isset($_SESSION["inLine"])) {
     include 'uservice.site.php';
 }
 ?>
@@ -46,18 +46,18 @@ if (!isset($_SESSION["queue"])) {
     var compValue;
     var uId;
     $(document).ready(function() {
-        $("#selCompanies").change(function() {
-            compValue = selComp.value;
-            $("#selServices").load("../includes/services.inc.php", {
-                compName: compValue
-            });
-        });
-
         setInterval(function() {
             uId = div.innerText;
             $("#queueInfo").load("../includes/userservice.inc.php", {
                 userId: uId
             });
         }, 100)
+
+        $("#selCompanies").change(function() {
+            compValue = selComp.value;
+            $("#selServices").load("../includes/services.inc.php", {
+                compName: compValue
+            });
+        });
     });
 </script>

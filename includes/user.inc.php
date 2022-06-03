@@ -14,6 +14,6 @@ if (!isset($_POST["queueUp"])) {
 }
 $cName = $_POST['companies'];
 $sName = $_POST['services'];
-
+echo("whoops");
 queueUp($conn, $cName, $sName, $uId);
 header("Location: ../sites/user.site.php?queueup=success");
