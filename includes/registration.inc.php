@@ -24,6 +24,7 @@ if ($uCompany === 1) {
     $cName = $_POST['regCompName'];
     $cDesc = $_POST['regCompDesc'];
     $words = array($uName, $uPass, $uEmail, $cName, $cDesc);
+    echo "he has a comsany\n";
 } else {
     $words = array($uName, $uPass, $uEmail);
 }
@@ -43,6 +44,7 @@ if (invalidInput($words)) {
 
 //check if the mail is valid
 if (!filter_var($uEmail, FILTER_VALIDATE_EMAIL)) {
+    echo "invalid email $uEmail\n";
     header("Location: ../sites/signup.site.php?signup=invalidemail");
     exit();
 }

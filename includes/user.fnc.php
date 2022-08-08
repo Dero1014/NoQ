@@ -178,6 +178,6 @@ function getAvgTime($conn, $uId)
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result);
 
-    return (int)$row['avgTime'];
+    return (int)$row['avgTime']/60;
    
 }

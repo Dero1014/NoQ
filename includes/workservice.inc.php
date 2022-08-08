@@ -22,17 +22,20 @@ $userInWorker = userInProcess($conn);
 
 // check if there is a line 
 if (!$conn->query($sql) && $userInWorker == false) {
-    $_SESSION["tStart"] = microtime(true);
+    $_SESSION["tStart"] = 0;
+    $_SESSION["tEnd"] = 0;
     echo "<p>There is nobody in the line</p>";
     exit();
 } 
 
 if ($userInWorker) { // if there is a user being served display it
     $mysql = "SELECT uName FROM Workers JOIN Users ON userId = Users.uId WHERE wId = $wId;";
+    $_SESSION["tEnd"] = time();
     $result = mysqli_query($conn, $mysql);
     $row = mysqli_fetch_assoc($result);
     $uName = $row['uName'];
     echo"<p>Currently serving $uName<p>";
+    echo $_SESSION["tEnd"];
 }else {
     echo"<p>Press Next to advance the line<p>";
 }
@@ -47,17 +50,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     if ($row['queue'] != 0)
         echo "<p>User: $uName</p>";
-    else {
-        $_SESSION["tEnd"] = microtime(true);
-        $_SESSION["time"] = (int)($_SESSION["tEnd"] - $_SESSION["tStart"]);
-        echo $_SESSION["time"];
-    }
 }
 
 // advance the queue
 if (isset($_POST['next'])) {
-    $_SESSION["tStart"] = microtime(true);
     nextInQueue($conn, $sName, $wComp);
+    $_SESSION["time"] = (int)($_SESSION["tEnd"] - $_SESSION["tStart"]);
+    echo $_SESSION["time"];
+    $_SESSION["tStart"] = time();
 
     // send time to COMPANY db
     setCurrentAvgTime($conn, $sName, $wComp, (int)$_SESSION["time"]);

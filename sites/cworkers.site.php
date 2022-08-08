@@ -14,7 +14,7 @@
         $hashedPwd = password_hash($rngPass, PASSWORD_DEFAULT);
         addWorker($conn, $hashedPwd, $wName, $cName);
         
-        echo "http://192.168.1.13/sites/worker.site.php?cn=$cName&p=$hashedPwd";
+        echo "https://noq.ddns.net/sites/worker.site.php?cn=$cName&p=$hashedPwd";
         echo "<br>";
         echo "Password is : $rngPass";
     }else

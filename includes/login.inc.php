@@ -11,7 +11,8 @@ include 'common.fnc.php';
 
 $uName =  $_POST['logUserName'];
 $uPass =  $_POST['logUserPass'];
-
+echo $uName."\n";
+echo $uPass."\n";
 //check if input is empty
 $words = array($uName, $uPass);
 if (areEmpty($words)) {

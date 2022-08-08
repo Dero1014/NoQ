@@ -57,6 +57,8 @@ function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     mysqli_stmt_bind_param($stmt, "sssi", $uName, $hasedPwd, $uEmail, $uCompany);
     mysqli_stmt_execute($stmt);
 
+    echo "registration success";
+
     //if company has been added
     if ($uCompany === 1) {
 
@@ -137,6 +139,7 @@ function loginUser($conn, $uName, $uPass)
                 } else {
                     header("Location: ../sites/user.site.php?signin=success");
                 }
+                echo "login success";
                 exit();
             } else {
                 echo "sesion didn't start";
