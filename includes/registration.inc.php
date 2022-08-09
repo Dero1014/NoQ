@@ -61,6 +61,5 @@ if (companyExists($conn, $cName)) {
 }
 
 // If no errors are found continue
-
 addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc);
 header("Location: ../sites/signup.site.php?signup=success");

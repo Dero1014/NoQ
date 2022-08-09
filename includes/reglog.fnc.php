@@ -1,4 +1,6 @@
 <?php
+include '../classes/sql.class.php';
+
 // MISC //
 function startPrepStmt($conn, $sql)
 {
@@ -50,12 +52,8 @@ function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
                 VALUES (?, ?, ?, ?);";
 
-    $stmt = startPrepStmt($conn, $sql);
-
-    $hasedPwd = password_hash($uPass, PASSWORD_DEFAULT);
-
-    mysqli_stmt_bind_param($stmt, "sssi", $uName, $hasedPwd, $uEmail, $uCompany);
-    mysqli_stmt_execute($stmt);
+    $conn -> prepare($sql);
+    $conn -> execute(array($uName, $uPass, $uEmail, $uCompany));
 
     echo "registration success";
 
