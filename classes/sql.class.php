@@ -11,7 +11,7 @@ class SqlCommands
     }
 
     // Methods
-    public function InsertValuesStmt(string $types, string $command, array $vars)
+    public function insertValuesStmt(string $types, string $command, array $vars)
     {
         $result = FALSE;
 

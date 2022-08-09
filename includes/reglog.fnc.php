@@ -53,7 +53,7 @@ function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
                 VALUES (?, ?, ?, ?);";
 
-    $result = $query->InsertValuesStmt("sssi", $sql, array($uName, $uPass, $uEmail, $uCompany));
+    $result = $query->insertValuesStmt("sssi", $sql, array($uName, $uPass, $uEmail, $uCompany));
 
     echo "registration success";
 
