@@ -49,11 +49,11 @@ function sessionSet($row, $conn)
 // register user
 function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
 {
+    $query = new SqlCommands($conn);
     $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
                 VALUES (?, ?, ?, ?);";
 
-    $conn -> prepare($sql);
-    $conn -> execute(array($uName, $uPass, $uEmail, $uCompany));
+    $result = $query->InsertValuesStmt("sssi", $sql, array($uName, $uPass, $uEmail, $uCompany));
 
     echo "registration success";
 
