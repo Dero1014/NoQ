@@ -11,7 +11,9 @@ class SqlCommands
     }
 
     // Methods
-    public function insertValuesStmt(string $types, string $command, array $vars)
+
+    // SET VALUES INTO A TABLE
+    public function setStmtValues(string $types, string $command, array $vars)
     {
         $result = FALSE;
 
@@ -27,7 +29,8 @@ class SqlCommands
         return $result;
     }
 
-    public function ViewValues(string $command)
+    // RETURNS THE FIRST ROW
+    public function getStmtRow(string $command)
     {
         $stmt = $this->PrepStmt($command);
         $result = $this->StmtErrorHandler(mysqli_stmt_execute($stmt), $stmt);
@@ -36,7 +39,28 @@ class SqlCommands
             return $result;
         }else {
             $resultData = mysqli_stmt_get_result($stmt);
-            $row = mysqli_fetch_assoc($resultData);
+            return mysqli_fetch_assoc($resultData);
+        }
+    }
+
+    public function setStmtCompanyTable(string $tableName)
+    {
+        $sql = "CREATE TABLE $tableName(
+            sId INT NOT NULL auto_increment,
+            sName VARCHAR(100) NOT NULL,
+            numberOfUsers INT DEFAULT 0,
+            avgTime INT DEFAULT 0,
+            timeSum INT DEFAULT 0,
+            PRIMARY KEY (sId)
+            );";
+
+        $stmt = $this->PrepStmt($sql);
+        $result = $this->StmtErrorHandler(mysqli_stmt_execute($stmt), $stmt);
+
+        if (!$result) {
+            return $result;
+        }else {
+            return $result;
         }
     }
 

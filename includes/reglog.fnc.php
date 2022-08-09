@@ -53,60 +53,41 @@ function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
                 VALUES (?, ?, ?, ?);";
 
-    $result = $query->insertValuesStmt("sssi", $sql, array($uName, $uPass, $uEmail, $uCompany));
+    $hasedPwd = password_hash($uPass, PASSWORD_DEFAULT);
+    $result = $query->setStmtValues("sssi", $sql, array($uName, $hasedPwd, $uEmail, $uCompany));
 
     echo "registration success";
 
-    //if company has been added
+    // If user has a company add it
     if ($uCompany === 1) {
 
-        //set no space name
+        // Set no space name
         $xcName = str_replace(' ', '', $cName);
         
-        //get user id
+        // Get user id
         $userId = 0;
 
-        $sql = "SELECT * FROM Users WHERE uName = ?;";
+        $sql = "SELECT * FROM Users WHERE uName = '$uName';";
 
-        $stmt = startPrepStmt($conn, $sql);
-
-        mysqli_stmt_bind_param($stmt, "s", $uName);
-        mysqli_stmt_execute($stmt);
-
-        $resultData = mysqli_stmt_get_result($stmt);
-        $row = mysqli_fetch_assoc($resultData);
+        $row = $query->getStmtRow($sql);
         $userId = $row['uId'];
 
-        mysqli_stmt_close($stmt);
-
-
-        // insert the company
+        // Insert company into table
         $sql = "INSERT INTO Companies (cName, xcName, cDecs, userId) 
             VALUES (?, ?, ?, ?);";
 
-        $stmt = startPrepStmt($conn, $sql);
+        $query->setStmtValues("sssi", $sql, array($cName, $xcName, $cDesc, $userId));
 
-        mysqli_stmt_bind_param($stmt, "sssi", $cName, $xcName, $cDesc, $userId);
-        mysqli_stmt_execute($stmt);
-
-        // set table for company
+        // Create company table
         $tableName = "COMPANY_" . $xcName;
         
-        $sql = "CREATE TABLE $tableName(
-                sId INT NOT NULL auto_increment,
-                sName VARCHAR(100) NOT NULL,
-                numberOfUsers INT DEFAULT 0,
-                avgTime INT DEFAULT 0,
-                timeSum INT DEFAULT 0,
-                PRIMARY KEY (sId)
-                );";
+        $result = $query->setStmtCompanyTable($tableName);
 
-        if ($conn->query($sql)) {
+        if ($result) {
             echo "Table has been created";
         } else {
-            die("error creating table: " . $conn->error);
+            die("error creating table");
         }
-
     }
 }
 
