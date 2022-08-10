@@ -55,6 +55,7 @@ if (alreadyExists($conn, $uName, "uName", "Users") || alreadyExists($conn, $uEma
     exit();
 }
 
+// Check if company exists
 if (companyExists($conn, $cName)) {
     header("Location: ../sites/signup.site.php?signup=companyexists");
     exit();
