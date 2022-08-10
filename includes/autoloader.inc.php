@@ -1,6 +1,5 @@
 <?php
 spl_autoload_register('loadClasses');
-spl_autoload_register('loadIncludes');
 
 function loadClasses($className)
 {
@@ -23,6 +22,7 @@ function loadClasses($className)
     include_once $fullPath;
 }
 
+/*
 function loadIncludes($includesName)
 {
     $url = $_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
@@ -42,3 +42,4 @@ function loadIncludes($includesName)
     $fullPath = $path . $includesName . $ext;
     include_once $fullPath;
 }
+*/
