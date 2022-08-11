@@ -29,6 +29,7 @@ if ($uCompany === 1) {
     $words = array($uName, $uPass, $uEmail);
 }
 
+
 // error handlers
 // check if anything is empty
 if (areEmpty($words)) {
@@ -44,7 +45,8 @@ if (invalidInput($words)) {
 
 //check if the mail is valid
 if (!filter_var($uEmail, FILTER_VALIDATE_EMAIL)) {
-    echo "invalid email $uEmail\n";
+    print "invalid email $uEmail" . PHP_EOL;
+    die();
     header("Location: ../sites/signup.site.php?signup=invalidemail");
     exit();
 }
@@ -60,7 +62,6 @@ if (companyExists($conn, $cName)) {
     header("Location: ../sites/signup.site.php?signup=companyexists");
     exit();
 }
-
 // If no errors are found continue
 addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc);
 header("Location: ../sites/signup.site.php?signup=success");

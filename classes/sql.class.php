@@ -1,46 +1,53 @@
 <?php
+include 'errorInfo.class.php';
 
-class SqlCommands
+class SQL
 {
-    //private $command = "";
-    private $query;
+    private mysqli $query;
+    private ErrorInfo $error;
 
-    public function __construct($conn)
+    public function __construct()
     {
-        $this->query = $conn;
+        $this->error = new ErrorInfo();
+        $this->query = $this->connect();
     }
 
     // Methods
+    // CONNECT TO DB
+    private function connect()
+    {
+        $servername = "localhost";
+        $username = "root";
+        $password = "Ujaxcm+4%psPjyBr";
+        $dbname = "noQdb";
+
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        return $conn;
+    }
 
     // SET VALUES INTO A TABLE
     public function setStmtValues(string $types, string $command, array $vars)
     {
-        $result = FALSE;
-
-        // TODO : Create a statement
         $stmt = $this->PrepStmt($command);
 
-        // TODO: RUN THE STATEMENT
         mysqli_stmt_bind_param($stmt, $types, ...$vars);
 
-        $result = $this->StmtErrorHandler(mysqli_stmt_execute($stmt), $stmt);
-        
-        // RETURN RESULT
-        return $result;
+        $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
     }
 
     // RETURNS THE FIRST ROW
     public function getStmtRow(string $command)
     {
         $stmt = $this->PrepStmt($command);
-        $result = $this->StmtErrorHandler(mysqli_stmt_execute($stmt), $stmt);
+        $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
 
-        if (!$result) {
-            return $result;
-        }else {
-            $resultData = mysqli_stmt_get_result($stmt);
-            return mysqli_fetch_assoc($resultData);
-        }
+        $resultData = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_assoc($resultData);
     }
 
     public function setStmtCompanyTable(string $tableName)
@@ -55,20 +62,14 @@ class SqlCommands
             );";
 
         $stmt = $this->PrepStmt($sql);
-        $result = $this->StmtErrorHandler(mysqli_stmt_execute($stmt), $stmt);
-
-        if (!$result) {
-            return $result;
-        }else {
-            return $result;
-        }
+        $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
     }
 
     private function PrepStmt(string $command)
     {
         // TODO: INITILIZE THE STATEMENT AND PREPARE IT
         $stmt = mysqli_stmt_init($this->query);
-    
+
         if (!mysqli_stmt_prepare($stmt, $command)) {
             die("Command failed : $command");
             header("Location: index.php?error=stmtfail");
@@ -83,8 +84,7 @@ class SqlCommands
         if (!$result) {
             echo mysqli_stmt_error($stmt);
             return FALSE;
-        }else
-        {
+        } else {
             return TRUE;
         }
     }
