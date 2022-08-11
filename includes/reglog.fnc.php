@@ -47,16 +47,16 @@ function sessionSet($row, $conn)
 // USER FUNCTIONS //
 
 // register user
-function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
+function addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
 {
     $query = new SQL();
     $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
                 VALUES (?, ?, ?, ?);";
+    $hashedPwd = password_hash($uPass, PASSWORD_DEFAULT);
+    var_dump(array($uName, $hashedPwd, $uEmail, $uCompany));
+    $result = $query->setStmtValues("sssi", $sql, array($uName, $hashedPwd, $uEmail, $uCompany));
 
-    $hasedPwd = password_hash($uPass, PASSWORD_DEFAULT);
-    $result = $query->setStmtValues("sssi", $sql, array($uName, $hasedPwd, $uEmail, $uCompany));
-
-    echo "registration success";
+    echo "registration success\n";
 
     // If user has a company add it
     if ($uCompany === 1) {
@@ -75,16 +75,23 @@ function addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
         // Insert company into table
         $sql = "INSERT INTO Companies (cName, xcName, cDecs, userId) 
             VALUES (?, ?, ?, ?);";
-
+        var_dump(array($cName, $xcName, $cDesc, $userId));
         $query->setStmtValues("sssi", $sql, array($cName, $xcName, $cDesc, $userId));
 
         // Create company table
         $tableName = "COMPANY_" . $xcName;
-        
-        $result = $query->setStmtCompanyTable($tableName);
+        $tableContents = "(
+            sId INT NOT NULL auto_increment,
+            sName VARCHAR(100) NOT NULL,
+            numberOfUsers INT DEFAULT 0,
+            avgTime INT DEFAULT 0,
+            timeSum INT DEFAULT 0,
+            PRIMARY KEY (sId)
+            );";
+        $result = $query->createTable($tableName, $tableContents);
 
         if ($result) {
-            echo "Table has been created";
+            echo "Table has been created ";
         } else {
             die("error creating table");
         }

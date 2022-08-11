@@ -1,10 +1,9 @@
 <?php
-include 'errorInfo.class.php';
 
 class SQL
 {
-    private mysqli $query;
-    private ErrorInfo $error;
+    protected mysqli $query;
+    protected $error;
 
     public function __construct()
     {
@@ -13,8 +12,12 @@ class SQL
     }
 
     // Methods
+
     // CONNECT TO DB
-    private function connect()
+    /**
+     * @brief Connects to database
+     */
+    protected function connect()
     {
         $servername = "localhost";
         $username = "root";
@@ -31,43 +34,80 @@ class SQL
     }
 
     // SET VALUES INTO A TABLE
+    /**
+     * @brief Takes a specific command to add values via statements and runs it
+     * @param string $types
+     * @param string $command
+     * @param array $vars
+     * @return bool true
+     */
     public function setStmtValues(string $types, string $command, array $vars)
     {
         $stmt = $this->PrepStmt($command);
 
         mysqli_stmt_bind_param($stmt, $types, ...$vars);
-
-        $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
+        $result = $this->error->tryStmtError($stmt->execute(), $stmt);
+        return $result;
     }
 
-    // RETURNS THE FIRST ROW
+    // GET VALUE FROM FIRST ROW
+    /**
+     * @brief Takes a specific command for select via statements, runs it
+     *         and returns the first row
+     * @param string $command
+     * @return bool true
+     */
     public function getStmtRow(string $command)
     {
         $stmt = $this->PrepStmt($command);
-        $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
-
+        $result = $stmt->execute();
+        $this->error->tryStmtError($result, $stmt);
         $resultData = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_assoc($resultData);
     }
 
-    public function setStmtCompanyTable(string $tableName)
+    // CREATE A TABLE
+    /**
+     * @brief Takes a table name and its contants and creates it 
+     * @param string $tableName
+     * @param string $tableContents
+     * @return bool true
+     */
+    public function createTable(string $tableName, string $tableContents)
     {
-        $sql = "CREATE TABLE $tableName(
-            sId INT NOT NULL auto_increment,
-            sName VARCHAR(100) NOT NULL,
-            numberOfUsers INT DEFAULT 0,
-            avgTime INT DEFAULT 0,
-            timeSum INT DEFAULT 0,
-            PRIMARY KEY (sId)
-            );";
+        $sql = "CREATE TABLE ". $tableName . $tableContents;
 
         $stmt = $this->PrepStmt($sql);
-        $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
+        return $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
     }
 
+    // DROP A TABLE
+    /**
+     * @brief Takes a table name and deletes it 
+     * @param string $tableName
+     * @return bool true
+     */
+    public function dropTable(string $tableName)
+    {
+        $sql = "DROP TABLE ". $tableName;
+
+        $stmt = $this->PrepStmt($sql);
+        return $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
+    }
+
+
+    public function updateTable()
+    {
+    }
+
+    // PREPARES A STATEMENT
+    /**
+     * @brief Takes a command and turns it into a statement
+     * @param string $command
+     * @return mysqli_stmt
+     */
     private function PrepStmt(string $command)
     {
-        // TODO: INITILIZE THE STATEMENT AND PREPARE IT
         $stmt = mysqli_stmt_init($this->query);
 
         if (!mysqli_stmt_prepare($stmt, $command)) {
@@ -75,17 +115,18 @@ class SQL
             header("Location: index.php?error=stmtfail");
             exit();
         }
-        echo "Statement prepared\n";
+        echo "Statement prepared for: $command\n";
         return $stmt;
     }
-
-    private function StmtErrorHandler($result, $stmt)
-    {
-        if (!$result) {
-            echo mysqli_stmt_error($stmt);
-            return FALSE;
-        } else {
-            return TRUE;
-        }
-    }
 }
+
+/*
+(
+            sId INT NOT NULL auto_increment,
+            sName VARCHAR(100) NOT NULL,
+            numberOfUsers INT DEFAULT 0,
+            avgTime INT DEFAULT 0,
+            timeSum INT DEFAULT 0,
+            PRIMARY KEY (sId)
+            );
+*/

@@ -19,6 +19,7 @@ function loadClasses($className)
     
     $ext = ".class.php";
     $fullPath = $path . $className . $ext;
+    print "<p>$fullPath</p>";
     include_once $fullPath;
 }
 
