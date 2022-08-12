@@ -1,4 +1,5 @@
 <?php
+header('Content-type: text/plain');
 
 //check if the user hit submit otherwise return them back
 if (!isset($_POST["submitReg"])) {
@@ -14,7 +15,6 @@ include_once '../classes/inspect.class.php';
 include_once '../classes/errorInfo.class.php';
 include_once '../classes/reglog.class.php';
 
-header('Content-type: text/plain');
 
 $inspector = new Inspector();
 $uName = $_POST['regUserName'];
