@@ -6,16 +6,21 @@ class User extends SQL
     private $uName;
     private $uEmail;
     private $uCompany;
-    private Company $company;
+    //private Company $company;
 
     public function __construct($uId, $uName, $uEmail, $uCompany)
     {
-        $this->uId = $uId;
-        $this->uName = $uName;
-        $this->uEmail = $uEmail;
-        if ($uCompany === 1) {
+        if ($uId != "template") {
+            parent::__construct();
+            $this->uId = $uId;
+            $this->uName = $uName;
+            $this->uEmail = $uEmail;
             $this->uCompany = $uCompany;
-            $this->fetchCompany($uId);
+            if ($uCompany === 1) {
+                $this->fetchCompany($uId);
+            } else {
+                $this->company = NULL;
+            }
         }
     }
 
@@ -27,6 +32,11 @@ class User extends SQL
         $this->company = new Company($row['cId'], $row['cName'], $row['xcName'], $row['cDesc']);
     }
 
+    public function getUsername()
+    {
+        return $this->uName;
+    }
+
     public function getCompany()
     {
         return $this->company;
@@ -36,6 +46,7 @@ class User extends SQL
     {
         return $this->uCompany;
     }
+
 }
 
 class Company
@@ -55,13 +66,18 @@ class Company
         $this->xcName = $xcName;
         $this->cTableName = 'COMPANY_' + $this->xcName;
 
-        $services = $this->getServices();
+        $services = $this->fetchServices();
     }
 
-    private function getServices()
+    private function fetchServices()
     {
-
     }
+
+    public function getCompanyName()
+    {
+        return $this->cName;
+    }
+
 }
 
 class Service

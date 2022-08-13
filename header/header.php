@@ -1,14 +1,11 @@
 <?php
-session_start();
 //check the location of the include to know how to include user.inf.php
 if (getcwd() === "/var/www/html") {
     include 'includes/user.inf.php';
     include 'includes/worker.inf.php';
-    include_once 'autoloader.php';
 } else {
     include '../includes/user.inf.php';
     include '../includes/worker.inf.php';
-    include_once 'autoloader.php';
 }
 
 ?>
@@ -42,10 +39,10 @@ if (getcwd() === "/var/www/html") {
             <a href="../index.php">Home</a>
             <?php
 
-            if (isset($_SESSION["username"])) {
+            if (isset($user)) {
                 echo "<a href='../includes/logout.inc.php'>LogOut</a>";
 
-                if ($uComp == 1) {
+                if ($user->getCompanyTag() == 1) {
                     echo "<a href='../sites/company.site.php?page=service'>Service Management</a>";
                     echo "<a href='../sites/company.site.php?page=worker'>Workers</a>";
                 } else {

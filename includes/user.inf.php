@@ -1,8 +1,16 @@
 <?php
-include 'autoloader.inc.php';
-$_SESSION["gotInQueue"];
-$user = $_SESSION["User"];
 
+// Everything commented is what we are trying to replace
+include 'autoloader.inc.php';
+
+if (!isset($_SESSION['User'])) {
+    $user = new User('template', 'template', 'template', 1);
+}
+session_start();
+
+$_SESSION["gotInQueue"];
+
+$user = $_SESSION["User"];
 $uId = $_SESSION["userid"];
 $uName = $_SESSION["username"];
 $uComp = $_SESSION["companyTag"];

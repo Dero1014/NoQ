@@ -2,6 +2,11 @@
 
 class Inspector extends SQL
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     // Check result for registering user
     public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {

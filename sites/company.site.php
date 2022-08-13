@@ -3,13 +3,13 @@
 <?php
 include '../header/header.php';
 // inaccessible if the user isn't from a company or loged in
-include '../includes/company.chk.php';
+include '../includes/user.inf.php';
+//include '../includes/company.chk.php';
 ?>
 
 <!-- COMPANY WELCOME TITLE -->
 <?php
-$info ="Info";
-echo "<h1>Welcome to your company $cName user $uName <h1>";
+echo "<h1>Welcome to your company ". $user->getCompany()->getCompanyName() . " user ". $user->getUsername() ."<h1>";
 
 // SELECT WHICH PAGE IS BEING USED
 if (isset($_GET['page'])) {

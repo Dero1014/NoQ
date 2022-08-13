@@ -13,6 +13,12 @@ class Register extends SQL
      * 
      * @return void
      */
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {
         $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 

@@ -18,9 +18,10 @@ function startPrepStmt($conn, $sql)
 function sessionSet($row)
 {
     $query = new SQL();
-
+    $user = new User($row['uId'], $row['uName'], $row['uEmail'], $row['uCompany']);
     if (session_start()) {
-        $_SESSION['User'] = new User($row['uId'], $row['uName'], $row['uEmail'], $row['uCompany']);
+        
+        $_SESSION['User'] = $user;
         $_SESSION["userid"] = $row['uId'];
         $_SESSION["username"] = $row['uName'];
         $_SESSION["companyTag"] = $row['uCompany'];

@@ -7,9 +7,9 @@ include '../includes/user.chk.php';
 
 <!-- WELCOME TITLE-->
 <?php
-if (isset($_SESSION["username"])) {
+if (isset($user)) {
     $name = $_SESSION["username"];
-    echo "<h1>Welcome user $name</h1>";
+    echo "<h1>Welcome user " . $user->getUsername() ."</h1>";
 } else {
     echo "<h1>No name exists</h1>";
 }

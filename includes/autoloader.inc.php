@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(function ($class)
 {
-    $class = lcfirst($class . '.class.php');
+    $class = strtolower($class . '.class.php');
     $url = $_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
     if (strpos($url, 'includes') || strpos($url, 'sites') || strpos($url, 'header')) {
         $path = "../classes/";
@@ -10,7 +10,7 @@ spl_autoload_register(function ($class)
     }
 
     $fullPath = $path.$class;
-    echo $fullPath . "\n";
+    //echo $fullPath . "\n";
     include_once $fullPath;
 });
 

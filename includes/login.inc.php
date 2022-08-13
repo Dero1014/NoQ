@@ -15,5 +15,8 @@ $uName =  $_POST['logUserName'];
 $uPass =  $_POST['logUserPass'];
 
 if ($inspector->loginUserReady($uName, $uPass)) {
-    loginUser($uName, $uPass);
+    $login = new Log();
+    $result = $login->loginUser($uName, $uPass);
+    header("Location: ../sites/$result");
+    //loginUser($uName, $uPass);
 }
