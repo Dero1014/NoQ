@@ -7,15 +7,9 @@ if (!isset($_POST["submitReg"])) {
     exit();
 }
 
-//include 'connect.inc.php';
 include_once 'reglog.fnc.php';
 include 'common.fnc.php';
-//include 'autoloader.inc.php';
-include_once '../classes/inspect.class.php';
-include_once '../classes/errorInfo.class.php';
-include_once '../classes/reglog.class.php';
-
-
+include 'autoloader.inc.php';
 $inspector = new Inspector();
 $uName = $_POST['regUserName'];
 $uPass = $_POST['regUserPass'];

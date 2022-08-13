@@ -1,7 +1,7 @@
 <?php
-session_start();
-
+include 'autoloader.inc.php';
 $_SESSION["gotInQueue"];
+$user = $_SESSION["User"];
 
 $uId = $_SESSION["userid"];
 $uName = $_SESSION["username"];

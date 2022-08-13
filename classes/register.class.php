@@ -2,6 +2,17 @@
 
 class Register extends SQL
 {
+    // Adds user to the Users table
+    /**
+     * @param $uName
+     * @param $uPass
+     * @param $uEmail
+     * @param $uCompany
+     * @param $cName
+     * @param $cDesc
+     * 
+     * @return void
+     */
     public function addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {
         $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
@@ -11,15 +22,23 @@ class Register extends SQL
 
         // Add user to table Users
         $this->setStmtValues("sssi", $sql, array($uName, $hashedPwd, $uEmail, $uCompany));
-       
+
         echo "Registration successfull \n";
 
         // If user has a company add it
         if ($uCompany === 1) {
-            $this->addCompany($uName, $cName, $cDesc);            
+            $this->addCompany($uName, $cName, $cDesc);
         }
     }
 
+    // Adds user company to Companies and creates a table
+    /**
+     * @param $uName
+     * @param $cName
+     * @param $cDesc
+     * 
+     * @return void
+     */
     private function addCompany($uName, $cName, $cDesc)
     {
         // Set no space name
@@ -56,9 +75,4 @@ class Register extends SQL
             die("error creating table");
         }
     }
-
-}
-
-class Login
-{
 }

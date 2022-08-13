@@ -60,10 +60,13 @@ class SQL
     public function getStmtRow(string $command)
     {
         $stmt = $this->PrepStmt($command);
-        $result = $stmt->execute();
-        $this->error->tryStmtError($result, $stmt);
+        $this->error->tryStmtError($stmt->execute(), $stmt);
         $resultData = mysqli_stmt_get_result($stmt);
-        return mysqli_fetch_assoc($resultData);
+        if ($resultData !== false) {
+            return mysqli_fetch_assoc($resultData);
+        }else {
+            return false;
+        }
     }
 
     // CREATE A TABLE

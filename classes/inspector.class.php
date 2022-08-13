@@ -1,4 +1,5 @@
 <?php
+
 class Inspector extends SQL
 {
     // Check result for registering user
@@ -21,6 +22,16 @@ class Inspector extends SQL
         $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists');
         if ($uCompany == 1) $result = $result = $this->error->onRegisterError($this->tableExists($cDbName), 'companyExists');
         
+        return $result;
+    }
+
+    public function loginUserReady($uName, $uPass)
+    {
+        $words = array($uName, $uPass);
+        $result =  $this->error->onLoginError($this->areEmpty($words), 'empty');
+        $result = $this->error->onLoginError($this->areInvalid($words), 'invalid');
+        $result = $this->error->onLoginError(!$this->alreadyExists($uName, 'uName', 'Users'), 'userNotExist');
+
         return $result;
     }
 

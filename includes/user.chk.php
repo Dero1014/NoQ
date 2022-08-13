@@ -9,7 +9,6 @@ if (!isset($_SESSION["username"])) {
     header("Location: ../index.php?error=youarenotlogedin");
     exit();
 }
-
 if ($_SESSION["companyTag"] == 1) {
     header("Location: ../index.php?error=notauser");
     exit();

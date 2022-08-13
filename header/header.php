@@ -1,13 +1,14 @@
 <?php
 session_start();
-
 //check the location of the include to know how to include user.inf.php
 if (getcwd() === "/var/www/html") {
     include 'includes/user.inf.php';
     include 'includes/worker.inf.php';
+    include_once 'autoloader.php';
 } else {
     include '../includes/user.inf.php';
     include '../includes/worker.inf.php';
+    include_once 'autoloader.php';
 }
 
 ?>

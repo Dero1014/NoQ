@@ -64,4 +64,18 @@ class ErrorInfo
             return TRUE;
         }
     }
+
+    public function onLoginError($result, $returnValue)
+    {
+        if($result == TRUE)
+        {
+            header("Location: ../sites/login.site.php?signin=$returnValue");
+            exit();
+        }
+        else
+        {
+            // ERROR HAS PASSED
+            return TRUE;
+        }
+    }
 }

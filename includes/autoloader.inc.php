@@ -1,27 +1,20 @@
 <?php
-spl_autoload_register('loadClasses');
-
-function loadClasses($className)
+spl_autoload_register(function ($class)
 {
+    $class = lcfirst($class . '.class.php');
     $url = $_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
-
-    if (strpos($url, 'includes')) {
+    if (strpos($url, 'includes') || strpos($url, 'sites') || strpos($url, 'header')) {
         $path = "../classes/";
     }else {
         $path = "classes/";
     }
 
-    if (strpos($url, 'sites')) {
-        $path = "../classes/";
-    }else {
-        $path = "classes/";
-    }
-    
-    $ext = ".class.php";
-    $fullPath = $path . $className . $ext;
-    print "<p>$fullPath</p>";
+    $fullPath = $path.$class;
+    echo $fullPath . "\n";
     include_once $fullPath;
-}
+});
+
+
 
 /*
 function loadIncludes($includesName)

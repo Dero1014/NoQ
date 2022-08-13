@@ -5,7 +5,7 @@ include '../classes/sql.class.php';
 function startPrepStmt($conn, $sql)
 {
     $stmt = mysqli_stmt_init($conn);
-    
+
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         die("$sql");
         header("Location: index.php?error=stmtfail");
@@ -15,25 +15,21 @@ function startPrepStmt($conn, $sql)
     return $stmt;
 }
 
-function sessionSet($row, $conn)
+function sessionSet($row)
 {
+    $query = new SQL();
+
     if (session_start()) {
+        $_SESSION['User'] = new User($row['uId'], $row['uName'], $row['uEmail'], $row['uCompany']);
         $_SESSION["userid"] = $row['uId'];
         $_SESSION["username"] = $row['uName'];
         $_SESSION["companyTag"] = $row['uCompany'];
 
         if ($row['uCompany'] == 1) {
-            //get company name
-            $sql = "SELECT * FROM Companies WHERE userId = ?;";
+            // Get company name and set it in session
+            $sql = "SELECT * FROM Companies WHERE userId = " . $row['uId'] . ";";
 
-            //this part can be functionised
-            $stmt = startPrepStmt($conn, $sql);
-
-            mysqli_stmt_bind_param($stmt, "i", $_SESSION["userid"]);
-            mysqli_stmt_execute($stmt);
-
-            $resultData = mysqli_stmt_get_result($stmt);
-            $row = mysqli_fetch_assoc($resultData);
+            $row = $query->getStmtRow($sql);
 
             $_SESSION["companyname"] = $row['cName'];
             $_SESSION["companynamewithoutspaces"] = $row['xcName'];
@@ -46,80 +42,23 @@ function sessionSet($row, $conn)
 
 // USER FUNCTIONS //
 
-// register user
-function addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
+// login user
+function loginUser($uName, $uPass)
 {
     $query = new SQL();
-    $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 
-                VALUES (?, ?, ?, ?);";
-    $hashedPwd = password_hash($uPass, PASSWORD_DEFAULT);
-    var_dump(array($uName, $hashedPwd, $uEmail, $uCompany));
-    $result = $query->setStmtValues("sssi", $sql, array($uName, $hashedPwd, $uEmail, $uCompany));
+    $sql = "SELECT * FROM Users WHERE uName = '$uName';";
 
-    echo "registration success\n";
+    $row = $query->getStmtRow($sql);
 
-    // If user has a company add it
-    if ($uCompany === 1) {
-
-        // Set no space name
-        $xcName = str_replace(' ', '', $cName);
-        
-        // Get user id
-        $userId = 0;
-
-        $sql = "SELECT * FROM Users WHERE uName = '$uName';";
-
-        $row = $query->getStmtRow($sql);
-        $userId = $row['uId'];
-
-        // Insert company into table
-        $sql = "INSERT INTO Companies (cName, xcName, cDecs, userId) 
-            VALUES (?, ?, ?, ?);";
-        var_dump(array($cName, $xcName, $cDesc, $userId));
-        $query->setStmtValues("sssi", $sql, array($cName, $xcName, $cDesc, $userId));
-
-        // Create company table
-        $tableName = "COMPANY_" . $xcName;
-        $tableContents = "(
-            sId INT NOT NULL auto_increment,
-            sName VARCHAR(100) NOT NULL,
-            numberOfUsers INT DEFAULT 0,
-            avgTime INT DEFAULT 0,
-            timeSum INT DEFAULT 0,
-            PRIMARY KEY (sId)
-            );";
-        $result = $query->createTable($tableName, $tableContents);
-
-        if ($result) {
-            echo "Table has been created ";
-        } else {
-            die("error creating table");
-        }
-    }
-}
-
-// login user
-function loginUser($conn, $uName, $uPass)
-{
-    
-    $sql = "SELECT * FROM Users WHERE uName = ?;";
-
-    $stmt = startPrepStmt($conn, $sql);
-
-    mysqli_stmt_bind_param($stmt, "s", $uName);
-    mysqli_stmt_execute($stmt);
-
-    $resultData = mysqli_stmt_get_result($stmt);
-
-    if ($resultData !== false) {
-        $row = mysqli_fetch_assoc($resultData);
+    if ($row !== false) {
         $uName = $row['uName'];
 
+        // Varify password
         $pwdHashed = $row['uPassword'];
         $checkPwd = password_verify($uPass, $pwdHashed);
 
         if ($checkPwd === true) {
-            if (sessionSet($row, $conn)) {
+            if (sessionSet($row)) {
                 if ($_SESSION["companyTag"] == 1) {
                     header("Location: ../sites/company.site.php?signin=success&page=service");
                 } else {
