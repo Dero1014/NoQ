@@ -2,7 +2,8 @@
 include 'connect.inc.php';
 include 'user.inf.php';
 
-$sql = "SELECT * FROM $cDbName";
+$sql = "SELECT * FROM " . $user->getCompany()->getCompanyTableName() .";";
+$cName = $user->getCompany()->getCompanyName();
 $result = mysqli_query($conn, $sql);
 
 echo "<tr>";

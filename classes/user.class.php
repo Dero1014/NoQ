@@ -1,5 +1,4 @@
 <?php
-
 class User extends SQL
 {
     private $uId;
@@ -8,10 +7,11 @@ class User extends SQL
     private $uCompany;
     //private Company $company;
 
-    public function __construct($uId, $uName, $uEmail, $uCompany)
+    public function __construct(int $uId, string $uName, string $uEmail, int $uCompany)
     {
-        if ($uId != "template") {
-            parent::__construct();
+        parent::__construct("User");
+
+        if ($uId != -1) {
             $this->uId = $uId;
             $this->uName = $uName;
             $this->uEmail = $uEmail;
@@ -47,9 +47,13 @@ class User extends SQL
         return $this->uCompany;
     }
 
+    public function getUId()
+    {
+        return $this->uId;
+    }
 }
 
-class Company
+class Company extends SQL
 {
     private $cId;
     private $cName;
@@ -60,11 +64,13 @@ class Company
 
     public function __construct($cId, $cName, $xcName, $cDesc)
     {
+        parent::__construct("Company");
+
         $this->cId = $cId;
         $this->cName = $cName;
         $this->cDesc = $cDesc;
         $this->xcName = $xcName;
-        $this->cTableName = 'COMPANY_' + $this->xcName;
+        $this->cTableName = 'COMPANY_' . $this->xcName;
 
         $services = $this->fetchServices();
     }
@@ -73,11 +79,30 @@ class Company
     {
     }
 
+    public function setService($sName)
+    {
+        $this->query = $this->connect();
+        $cDbName = $this->cTableName;
+        $sql = "INSERT INTO $cDbName (sName) VALUES (?);";
+        $this->setStmtValues("s", $sql, array($sName));
+
+        return true;
+    }
+
     public function getCompanyName()
     {
         return $this->cName;
     }
 
+    public function getNoSpaceCompanyName()
+    {
+        return $this->cName;
+    }
+
+    public function getCompanyTableName()
+    {
+        return $this->cTableName;
+    }
 }
 
 class Service

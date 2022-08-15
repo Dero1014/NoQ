@@ -5,13 +5,14 @@ class SQL
     protected mysqli $query;
     protected $error;
 
-    public function __construct()
+    public function __construct($from = "nobody")
     {
+        echo "I have been called by class: '$from'\n";
         $this->error = new ErrorInfo();
         $this->query = $this->connect();
     }
 
-    // Methods
+    // Methods:
 
     // CONNECT TO DB
     /**
@@ -25,7 +26,6 @@ class SQL
         $dbname = "noQdb";
 
         $conn = new mysqli($servername, $username, $password, $dbname);
-
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
@@ -118,6 +118,7 @@ class SQL
             header("Location: index.php?error=stmtfail");
             exit();
         }
+
         echo "Statement prepared for: $command\n";
         return $stmt;
     }

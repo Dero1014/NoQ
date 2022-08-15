@@ -1,4 +1,5 @@
 <?php
+//OOPed
 header('Content-type: text/plain');
 
 //check if the user hit submit otherwise return them back

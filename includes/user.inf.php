@@ -1,16 +1,51 @@
 <?php
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
 
 // Everything commented is what we are trying to replace
-include 'autoloader.inc.php';
+$pathAuto = "autoloader.inc.php";
+$pathUser = "user.class.php";
+$pathSQL = "sql.class.php";
+$pathError = "errorinfo.class.php";
+$var = getcwd();
 
-if (!isset($_SESSION['User'])) {
-    $user = new User('template', 'template', 'template', 1);
+if (strpos($var, 'sites')) {
+    $pathAuto = "../includes/" . $pathAuto;
+    $pathUser = "../classes/" . $pathUser;
+    $pathSQL = "../classes/" . $pathSQL;
+    $pathError = "../classes/" . $pathError;
+}else if (strpos($var, 'includes')) {
+    $pathUser = "../classes/" . $pathUser;
+    $pathSQL = "../classes/" . $pathSQL;
+    $pathError = "../classes/" . $pathError;
+}else {
+    $pathUser = "classes/" . $pathUser;
+    $pathSQL = "classes/" . $pathSQL;
+    $pathError = "classes/" . $pathError;
 }
+//echo "$pathUser ";
+//echo "$pathSQL ";
+//echo "$pathError ";
+
+include_once $pathAuto;
+//include_once $pathError;
+//include_once $pathSQL;
+//include_once $pathUser;
+
+$user = new User(-1, 'template', 'template', 0);
+
 session_start();
 
 $_SESSION["gotInQueue"];
 
 $user = $_SESSION["User"];
+$company;
+//var_dump($user);
+if ($user != NULL) {
+    $company = $user->getCompany();
+}
+
 $uId = $_SESSION["userid"];
 $uName = $_SESSION["username"];
 $uComp = $_SESSION["companyTag"];
@@ -29,3 +64,18 @@ if ($uComp === 1) {
     $xcName = $_SESSION["companynamewithoutspaces"];
     $cDbName = "COMPANY_" . $xcName;
 }
+
+
+
+
+
+
+/*
+$classUser = "/user.class.php";
+$pathUser = "";
+if (str_contains(getcwd(), 'sites') || str_contains(getcwd(), 'includes')) {
+    $pathUser = "../classes";
+}
+$pathUser = $pathUser . $classUser;
+echo $pathUser;
+*/

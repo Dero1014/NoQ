@@ -4,9 +4,10 @@ class Inspector extends SQL
 {
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct("inspector");
     }
 
+    // Class ready functions : 
     // Check result for registering user
     public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {
@@ -40,6 +41,17 @@ class Inspector extends SQL
         return $result;
     }
 
+    public function serviceReady($sName, $cTableName)
+    {
+        $words = array($sName);
+        $result =  $this->error->onServiceError($this->areEmpty($words), 'empty');
+        $result = $this->error->onServiceError($this->areInvalid($words), 'invalid');
+        $result = $this->error->onServiceError($this->alreadyExists($sName, 'sName', $cTableName), 'serviceExists');
+
+        return $result;
+    }
+
+    // Inspecting classes
     // Check if any input is empty
     private function areEmpty(array $words)
     {

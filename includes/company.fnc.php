@@ -1,6 +1,7 @@
 <?php
 
 // MISC to shorten code length
+/*
 function startPrepStmt($conn, $sql)
 {
     $stmt = mysqli_stmt_init($conn);
@@ -13,20 +14,20 @@ function startPrepStmt($conn, $sql)
 
     return $stmt;
 }
-
+*/
 
 // COMPANY FUNCTIONS //
 
 // Add a service
+/*
 function addService($sName, $conn, $cDbName)
 {
+    $query = new SQL();
     $sql = "INSERT INTO $cDbName (sName) VALUES (?);";
-
-    $stmt = startPrepStmt($conn, $sql);
-
-    mysqli_stmt_bind_param($stmt, "s", $sName);
-    mysqli_stmt_execute($stmt);
+    
+    $query->setStmtValues("s", $sql, array($sName));
 }
+*/
 
 // Add a worker account
 function addWorker($conn, $rngPass, $wName, $cName)
@@ -43,6 +44,7 @@ function addWorker($conn, $rngPass, $wName, $cName)
 // ERROR HANDLERS //
 
 // check if the service already exists
+/*
 function serviceExists($conn, $service, $cName)
 {
     $xcName = str_replace(' ', '', $cName);
@@ -63,3 +65,4 @@ function serviceExists($conn, $service, $cName)
 
     mysqli_stmt_close($stmt);
 }
+*/

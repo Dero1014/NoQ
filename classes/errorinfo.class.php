@@ -78,4 +78,18 @@ class ErrorInfo
             return TRUE;
         }
     }
+
+    public function onServiceError($result, $returnValue)
+    {
+        if($result == TRUE)
+        {
+            header("Location:  ../sites/company.site.php?page=service&service=$returnValue");
+            exit();
+        }
+        else
+        {
+            // ERROR HAS PASSED
+            return TRUE;
+        }
+    }
 }
