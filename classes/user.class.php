@@ -60,7 +60,7 @@ class Company extends SQL
     private $xcName; // company name without spaces
     private $cTableName; // COMPANY_ + $xcName
     private $cDesc;
-    private Service $services;
+    private array $services = [];
 
     public function __construct($cId, $cName, $xcName, $cDesc)
     {
@@ -72,11 +72,29 @@ class Company extends SQL
         $this->xcName = $xcName;
         $this->cTableName = 'COMPANY_' . $this->xcName;
 
-        $services = $this->fetchServices();
+        $this->fetchServices();
     }
 
-    private function fetchServices()
+    public function fetchServices()
     {
+        $this->services=[];
+        $this->query = $this->connect();
+        $cDbName = $this->cTableName;
+        $sql = "SELECT * FROM $cDbName";
+        $result = $this->getStmtAll($sql);
+        $service = NULL;
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $service = new Service(
+                $result[$i][0],
+                $result[$i][1],
+                $result[$i][2],
+                $result[$i][3],
+                $result[$i][4]
+            );
+            array_push($this->services, $service);
+        }
+        //var_dump($this->services);
+        //die();
     }
 
     public function setService($sName)
@@ -87,6 +105,16 @@ class Company extends SQL
         $this->setStmtValues("s", $sql, array($sName));
 
         return true;
+    }
+
+    public function getServiceLength()
+    {
+        return sizeof($this->services);
+    }
+
+    public function getService($i)
+    {
+        return $this->services[$i];
     }
 
     public function getCompanyName()
@@ -121,4 +149,25 @@ class Service
         $this->avgTime = $avgTime;
         $this->timeSum = $timeSum;
     }
+
+    public function getSId()
+    {
+        return $this->sId;
+    }
+
+    public function getServiceName()
+    {
+        return $this->sName;
+    }
+
+    public function getServiceNumber()
+    {
+        return $this->numberOfUsers;
+    }
+    
+    public function getServiceTime()
+    {
+        return $this->avgTime;
+    }
+
 }

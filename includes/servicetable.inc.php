@@ -2,8 +2,8 @@
 include 'connect.inc.php';
 include 'user.inf.php';
 
-$sql = "SELECT * FROM " . $user->getCompany()->getCompanyTableName() .";";
-$cName = $user->getCompany()->getCompanyName();
+$sql = "SELECT * FROM " . $company->getCompanyTableName() . ";";
+$cName = $company->getCompanyName();
 $result = mysqli_query($conn, $sql);
 
 echo "<tr>";
@@ -13,10 +13,11 @@ echo "<th>Average time</th>";
 echo "<th>QR Code</th>";
 echo "</tr>";
 
-while ($row = mysqli_fetch_assoc($result)) {
-    $servName = $row['sName'];
-    $numberOfUsers = $row['numberOfUsers'];
-    $avgTime = $row['avgTime'];
+for ($i = 0; $i < $company->getServiceLength(); $i++) {
+    $service = $company->getService($i);
+    $servName = $service->getServiceName();
+    $numberOfUsers = $service->getServiceNumber();
+    $avgTime = $service->getServiceTime();
     echo "<tr>";
     echo "<td>$servName</td>";
     echo "<td>$numberOfUsers</td>";

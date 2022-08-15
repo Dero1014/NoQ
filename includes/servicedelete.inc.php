@@ -5,8 +5,8 @@ include 'user.inf.php';
 $sName = $_POST['delete'];
 
 $xsName = str_replace(' ','',$sName);
-$cDbName = $user->getCompany()->getCompanyTableName();
-$xcName = $user->getCompany()->getNoSpaceCompanyName();
+$cDbName = $company->getCompanyTableName();
+$xcName = $company->getNoSpaceCompanyName();
 
 // queue db name
 $qDbName = "QUEUE_" . $xcName . "_" . $xsName;

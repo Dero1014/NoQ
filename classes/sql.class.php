@@ -69,6 +69,19 @@ class SQL
         }
     }
 
+    public function getStmtAll(string $command)
+    {
+        $stmt = $this->PrepStmt($command);
+        $this->error->tryStmtError($stmt->execute(), $stmt);
+        $resultData = mysqli_stmt_get_result($stmt);
+        if ($resultData !== false) {
+            return mysqli_fetch_all($resultData);
+        }else {
+            return false;
+        }
+    }
+
+
     // CREATE A TABLE
     /**
      * @brief Takes a table name and its contants and creates it 
