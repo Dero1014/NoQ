@@ -45,7 +45,8 @@ $company;
 //var_dump($user);
 if ($user != NULL) {
     $company = $user->getCompany();
-    if ($company != NULL) {
+    if (is_a($company, "Company")) {
+        $company = clone $user->getCompany();
         $company->fetchServices();
     }
 }

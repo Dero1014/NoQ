@@ -1,5 +1,6 @@
 <?php
 // Holds general user info
+
 class User extends SQL
 {
     private $uId;
@@ -156,6 +157,23 @@ class Company extends SQL
         return true;
     }
 
+    // Remove service
+    /**
+     * @brief Removes service from company
+     * 
+     * @return bool
+     */
+    public function removeService($sId)
+    {
+        $this->query = $this->connect();
+        $cDbName = $this->cTableName;
+        $tableData = "sId";
+        $this->removeStmtValuesFrom($cDbName, $tableData, $sId);
+        $this->fetchServices();
+
+        return true;
+    }
+
     // Get service length
     /**
      * @brief Returns the length of service array
@@ -176,6 +194,36 @@ class Company extends SQL
     public function getService($i)
     {
         return $this->services[$i];
+    }
+
+    // Get service by Id
+    /**
+     * @brief Returns a service on index
+     * 
+     * @return Service
+     */
+    public function getServiceById($id)
+    {
+        foreach ($this->services as $service) {
+            if ( $id == $service->getSId()) {
+                return $service;
+            }
+        }
+    }
+
+    // Get service queue name
+    /**
+     * @brief Returns the queue table name of the associated service
+     * 
+     * @return string
+     */
+    public function getServiceQueueTableName($id)
+    {
+        $service = $this->getServiceById($id);
+        $xsName = $service->getNoSpaceServiceName();
+        $xcName = $this->xcName;
+        $qsName = "QUEUE_" . $xcName . "_" . $xsName;
+        return $qsName;
     }
 
     // Get company name
@@ -217,6 +265,7 @@ class Service
 {
     private $sId;
     private $sName;
+    private $xsName;
     private $numberOfUsers;
     private $avgTime;
     private $timeSum;
@@ -225,6 +274,7 @@ class Service
     {
         $this->sId = $sId;
         $this->sName = $sName;
+        $this->xsName = str_replace(' ', '', $sName);
         $this->numberOfUsers = $numberOfUsers;
         $this->avgTime = $avgTime;
         $this->timeSum = $timeSum;
@@ -250,6 +300,17 @@ class Service
     public function getServiceName()
     {
         return $this->sName;
+    }
+
+    // Get service name without spaces
+    /**
+     * @brief Returns the service name without spaces
+     * 
+     * @return string
+     */
+    public function getNoSpaceServiceName()
+    {
+        return $this->xsName;
     }
 
     // Get service number of users

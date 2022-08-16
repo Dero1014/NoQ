@@ -79,6 +79,20 @@ class Inspector extends SQL
         return $result;
     }
 
+    // Service DELETE QUEUE inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for a service QUEUE to be deleted from a company
+     * @param string $qTableName
+     * 
+     * @return bool
+     */
+    public function serviceDeletionReady($qTableName)
+    {
+        $result =  $this->tableExists($qTableName);
+
+        return $result;
+    }
+
     // Inspectors (general inspection checkers)
 
     // Empty inspector
@@ -168,16 +182,16 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-     private function tableExists($cName)
+     private function tableExists($tableName)
      {
-        if ($result = $this->query->query("SHOW TABLES LIKE '".$cName."'")) {
+        if ($result = $this->query->query("SHOW TABLES LIKE '".$tableName."'")) {
             if($result->num_rows == 1) {
-                echo "Table $cName exists\n";
+                echo "Table $tableName exists\n";
                 return true;
             }
         }
         else {
-            echo "Table $cName does not exist\n";
+            echo "Table $tableName does not exist\n";
             return false;
         }
      }

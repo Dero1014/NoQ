@@ -53,6 +53,27 @@ class SQL
         return $result;
     }
 
+    // REMOVE VALUES FROM A TABLE
+    /**
+     * @brief Takes a specific command to add values via statements and runs it
+     * @param string $types
+     * @param string $command
+     * @param array $vars
+     * @return bool true
+     */
+    public function removeStmtValuesFrom(string $tableName, string $tableData, $var)
+    {
+        $sql = "DELETE FROM $tableName WHERE $tableData = $var;";
+        if (gettype($var) === "string") 
+            $sql = "DELETE FROM $tableName WHERE $tableData = '$var';";
+
+        $stmt = $this->PrepStmt($sql);
+
+        $result = $this->error->tryStmtError($stmt->execute(), $stmt);
+
+        return $result;
+    }
+
     // GET VALUE FROM FIRST ROW
     /**
      * @brief Takes a specific command for select via statements, runs it
@@ -69,7 +90,7 @@ class SQL
 
         if ($resultData !== false) {
             return mysqli_fetch_assoc($resultData);
-        }else {
+        } else {
             return false;
         }
     }
@@ -90,7 +111,7 @@ class SQL
 
         if ($resultData !== false) {
             return mysqli_fetch_all($resultData);
-        }else {
+        } else {
             return false;
         }
     }
@@ -105,7 +126,7 @@ class SQL
      */
     public function createTable(string $tableName, string $tableContents)
     {
-        $sql = "CREATE TABLE ". $tableName . $tableContents;
+        $sql = "CREATE TABLE " . $tableName . $tableContents;
 
         $stmt = $this->PrepStmt($sql);
         return $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
@@ -119,9 +140,10 @@ class SQL
      */
     public function dropTable(string $tableName)
     {
-        $sql = "DROP TABLE ". $tableName;
+        $sql = "DROP TABLE " . $tableName;
 
         $stmt = $this->PrepStmt($sql);
+
         return $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
     }
 

@@ -3,7 +3,6 @@
 // USING THE PREFIX OF COMPANY_ + [COMPANY] NAME TO FIND THE DB   //
 header('Content-type: text/plain');
 
-include 'connect.inc.php';
 include 'company.fnc.php';
 include 'common.fnc.php';
 include 'user.inf.php';
