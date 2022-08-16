@@ -5,19 +5,23 @@
     <?php
 
     include '../includes/common.fnc.php';
-    include '../includes/connect.inc.php';
     include '../includes/company.fnc.php';
 
     if (isset($_POST['addWorker'])) {
+        $inspector = new Inspector();
+        $cName = $company->getCompanyName();
         $wName = $_POST['workerName'];
+        if ($inspector->workerReady($wName)) {
+            # code...
+        }
         $rngPass = randomString();
         $hashedPwd = password_hash($rngPass, PASSWORD_DEFAULT);
-        addWorker($conn, $hashedPwd, $wName, $cName);
-        
+        $company->setWorker($hashedPwd, $wName);
         echo "https://noq.ddns.net/sites/worker.site.php?cn=$cName&p=$hashedPwd";
         echo "<br>";
         echo "Password is : $rngPass";
-    }else
+    }
+    else
     {
         echo "Press generate to generate a worker";
     }

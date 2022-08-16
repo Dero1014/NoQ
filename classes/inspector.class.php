@@ -93,6 +93,23 @@ class Inspector extends SQL
         return $result;
     }
 
+    // Worker inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for a worker to be added in a company
+     * @param string $wName
+     * 
+     * @return bool
+     */
+    public function workerReady($wName)
+    {
+        $words = array($wName);
+        $result =  $this->error->onWorkerError($this->areEmpty($words), 'empty');
+        $result = $this->error->onWorkerError($this->areInvalid($words), 'invalid');
+        $result = $this->error->onWorkerError($this->alreadyExists($wName, 'wName', "Workers"), 'workerExists');
+
+        return $result;
+    }
+
     // Inspectors (general inspection checkers)
 
     // Empty inspector

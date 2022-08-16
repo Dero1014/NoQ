@@ -113,4 +113,25 @@ class ErrorInfo
             return TRUE;
         }
     }
+
+    // Points out any error for service adding
+    /**
+     * @brief Catches an error for service adding and returns it to the site
+     * @param bool $result
+     * @param string $returnValue
+     * @return bool true
+     */
+    public function onWorkerError($result, $returnValue)
+    {
+        if($result == TRUE)
+        {
+            header("Location:  ../sites/company.site.php?page=worker&worker=$returnValue");
+            exit();
+        }
+        else
+        {
+            // ERROR HAS PASSED
+            return TRUE;
+        }
+    }
 }

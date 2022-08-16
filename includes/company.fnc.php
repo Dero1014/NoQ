@@ -1,7 +1,7 @@
 <?php
 
 // MISC to shorten code length
-/*
+
 function startPrepStmt($conn, $sql)
 {
     $stmt = mysqli_stmt_init($conn);
@@ -14,7 +14,7 @@ function startPrepStmt($conn, $sql)
 
     return $stmt;
 }
-*/
+
 
 // COMPANY FUNCTIONS //
 
@@ -29,7 +29,7 @@ function addService($sName, $conn, $cDbName)
 }
 */
 
-/*
+
 // Add a worker account
 function addWorker($conn, $rngPass, $wName, $cName)
 {
@@ -41,7 +41,7 @@ function addWorker($conn, $rngPass, $wName, $cName)
     mysqli_stmt_bind_param($stmt, "sss", $rngPass, $cName, $wName);
     mysqli_stmt_execute($stmt);
 }
-*/
+
 
 // ERROR HANDLERS //
 

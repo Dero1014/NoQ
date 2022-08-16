@@ -2,6 +2,8 @@
 include 'connect.inc.php';
 include 'user.inf.php';
 
+$cName = $company->getCompanyName();
+
 $sql = "SELECT * FROM Workers WHERE wComp = '$cName'";
 $result = mysqli_query($conn, $sql);
 

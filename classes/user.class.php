@@ -11,7 +11,7 @@ class User extends SQL
 
     public function __construct(int $uId, string $uName, string $uEmail, int $uCompany)
     {
-        parent::__construct("User");
+        parent::__construct("User with id $uId");
 
         if ($uId != -1) {
             $this->uId = $uId;
@@ -121,7 +121,7 @@ class Company extends SQL
      */
     public function fetchServices()
     {
-        $this->services=[];
+        $this->services = [];
         $this->query = $this->connect();
         $cDbName = $this->cTableName;
         $sql = "SELECT * FROM $cDbName";
@@ -205,7 +205,7 @@ class Company extends SQL
     public function getServiceById($id)
     {
         foreach ($this->services as $service) {
-            if ( $id == $service->getSId()) {
+            if ($id == $service->getSId()) {
                 return $service;
             }
         }
@@ -224,6 +224,22 @@ class Company extends SQL
         $xcName = $this->xcName;
         $qsName = "QUEUE_" . $xcName . "_" . $xsName;
         return $qsName;
+    }
+
+    // Set service
+    /**
+     * @brief Adds service to the company
+     * 
+     * @return bool
+     */
+    public function setWorker($rngPass, $wName)
+    {
+        $this->query = $this->connect();
+        $cName = $this->cName;
+        $sql = "INSERT INTO Workers (wPass, wComp, wName) VALUES (?, ?, ?);";
+        $this->setStmtValues("sss", $sql, array($rngPass, $cName, $wName));
+
+        return true;
     }
 
     // Get company name
@@ -279,7 +295,7 @@ class Service
         $this->avgTime = $avgTime;
         $this->timeSum = $timeSum;
     }
-    
+
     // Get service id
     /**
      * @brief Returns the service id
@@ -323,7 +339,7 @@ class Service
     {
         return $this->numberOfUsers;
     }
-    
+
     // Get service average time
     /**
      * @brief Returns the average time of waiting in the service
@@ -334,5 +350,4 @@ class Service
     {
         return $this->avgTime;
     }
-
 }
