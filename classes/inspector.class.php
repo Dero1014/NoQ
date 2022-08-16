@@ -7,8 +7,20 @@ class Inspector extends SQL
         parent::__construct("inspector");
     }
 
-    // Class ready functions : 
-    // Check result for registering user
+    // Class ready functions (Functions that are used if the conditions to use a class are set) : 
+    
+    // Register user inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for registering a user
+     * @param string $uName
+     * @param string $uPass
+     * @param string $uEmail
+     * @param int $uCompany
+     * @param string $cName
+     * @param string $cDesc
+     * 
+     * @return bool
+     */
     public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {
         if ($uCompany === 1) {
@@ -26,11 +38,19 @@ class Inspector extends SQL
         $result = $this->error->onRegisterError($this->isNotEmail($uEmail), 'invalidMail');
         $result = $this->error->onRegisterError($this->alreadyExists($uName, 'uName', 'Users'), 'userExists');
         $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists');
-        if ($uCompany == 1) $result = $result = $this->error->onRegisterError($this->tableExists($cDbName), 'companyExists');
+        if ($uCompany == 1) $result = $this->error->onRegisterError($this->tableExists($cDbName), 'companyExists');
         
         return $result;
     }
-
+    
+    // Login user inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for login a user
+     * @param string $uName
+     * @param string $uPass
+     * 
+     * @return bool
+     */
     public function loginUserReady($uName, $uPass)
     {
         $words = array($uName, $uPass);
@@ -41,6 +61,14 @@ class Inspector extends SQL
         return $result;
     }
 
+    // Service inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for a service to be added in a company
+     * @param string $uName
+     * @param string $uPass
+     * 
+     * @return bool
+     */
     public function serviceReady($sName, $cTableName)
     {
         $words = array($sName);
@@ -51,8 +79,15 @@ class Inspector extends SQL
         return $result;
     }
 
-    // Inspecting classes
-    // Check if any input is empty
+    // Inspectors (general inspection checkers)
+
+    // Empty inspector
+    /**
+     * @brief Checks if the data is empty
+     * @param array $words
+     * 
+     * @return bool
+     */
     private function areEmpty(array $words)
     {
         for ($i = 0; $i < count($words); $i++) {
@@ -65,7 +100,13 @@ class Inspector extends SQL
         return false;
     }
 
-    // Check if the input is invalid
+    // Invalid input inspector
+    /**
+     * @brief Checks if the data isn't considered invalid
+     * @param array $words
+     * 
+     * @return bool
+     */
     private function areInvalid($words)
     {
         for ($i = 0; $i < count($words); $i++) {
@@ -78,7 +119,13 @@ class Inspector extends SQL
         return false;
     }
 
-    // Check if email is valid
+    // Email inspector
+    /**
+     * @brief Checks if the data provided is of a type email
+     * @param string $words
+     * 
+     * @return bool
+     */
     private function isNotEmail($email)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -90,23 +137,37 @@ class Inspector extends SQL
         return false;
     }
 
-    // Check if a STRING already exists for table
-    private function alreadyExists($string, $dbData, $db)
+    // Existing data inspector
+    /**
+     * @brief Checks if the data provided already exists in the database
+     * @param string $string
+     * @param string $tData
+     * @param string $table
+     * 
+     * @return bool
+     */
+    private function alreadyExists($string, $tData, $table)
     {
-        $sql = "SELECT * FROM $db WHERE $dbData = '$string';";
+        $sql = "SELECT * FROM $table WHERE $tData = '$string';";
 
         $row = $this->getStmtRow($sql);
 
-        if ($row[$dbData] == $string) {
-            echo "Data [$dbData] for $string exists! \n";
+        if ($row[$tData] == $string) {
+            echo "Data [$tData] for $string exists! \n";
             return true;
         } else {
-            echo "Data [$dbData] for $string doesn't exists!\n";
+            echo "Data [$tData] for $string doesn't exists!\n";
             return false;
         }
     }
 
-     // TableExists
+    // Existing table inspector
+    /**
+     * @brief Checks if a table already exists
+     * @param string $cName
+     * 
+     * @return bool
+     */
      private function tableExists($cName)
      {
         if ($result = $this->query->query("SHOW TABLES LIKE '".$cName."'")) {

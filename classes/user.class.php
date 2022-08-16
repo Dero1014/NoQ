@@ -1,11 +1,12 @@
 <?php
+// Holds general user info
 class User extends SQL
 {
     private $uId;
     private $uName;
     private $uEmail;
     private $uCompany;
-    //private Company $company;
+    private $company;
 
     public function __construct(int $uId, string $uName, string $uEmail, int $uCompany)
     {
@@ -19,40 +20,75 @@ class User extends SQL
             if ($uCompany === 1) {
                 $this->fetchCompany($uId);
             } else {
-                $this->company = NULL;
+                $this->company = new stdClass();
             }
         }
     }
 
+    // Fetch company
+    /**
+     * @brief Grabs the company associated with the user from table Companies
+     * @param int  $uId
+     * 
+     * @return void
+     */
     private function fetchCompany($uId)
     {
         //get company name
+        $this->query = $this->connect();
         $sql = "SELECT * FROM Companies WHERE userId = $uId;";
         $row = $this->getStmtRow($sql);
         $this->company = new Company($row['cId'], $row['cName'], $row['xcName'], $row['cDesc']);
     }
 
+    // Get username
+    /**
+     * @brief Returns the username of the user
+     * 
+     * @return string
+     */
     public function getUsername()
     {
         return $this->uName;
     }
 
+    // Get company object
+    /**
+     * @brief Returns the company object, conidered empty if it's 
+     *        type of stdClass
+     * 
+     * @return |company|stdclass
+     */
     public function getCompany()
     {
         return $this->company;
     }
 
+    // Get company tag
+    /**
+     * @brief Returns a company tag that tells if the user owns a company 
+     *        or not
+     * 
+     * @return int
+     */
     public function getCompanyTag()
     {
         return $this->uCompany;
     }
 
+    // Get user id
+    /**
+     * @brief Returns the user id from table Users
+     * 
+     * @return int
+     */
     public function getUId()
     {
         return $this->uId;
     }
 }
 
+// Holds info about the company and can change some data
 class Company extends SQL
 {
     private $cId;
@@ -75,6 +111,13 @@ class Company extends SQL
         $this->fetchServices();
     }
 
+    // Fetch services
+    /**
+     * @brief Grabs the services from the company and stores
+     *        them in an array
+     * 
+     * @return void
+     */
     public function fetchServices()
     {
         $this->services=[];
@@ -97,6 +140,12 @@ class Company extends SQL
         //die();
     }
 
+    // Set service
+    /**
+     * @brief Adds service to the company
+     * 
+     * @return bool
+     */
     public function setService($sName)
     {
         $this->query = $this->connect();
@@ -107,32 +156,63 @@ class Company extends SQL
         return true;
     }
 
+    // Get service length
+    /**
+     * @brief Returns the length of service array
+     * 
+     * @return int
+     */
     public function getServiceLength()
     {
         return sizeof($this->services);
     }
 
+    // Get service
+    /**
+     * @brief Returns a service on index
+     * 
+     * @return Service
+     */
     public function getService($i)
     {
         return $this->services[$i];
     }
 
+    // Get company name
+    /**
+     * @brief Returns the company name
+     * 
+     * @return string
+     */
     public function getCompanyName()
     {
         return $this->cName;
     }
 
+    // Get company name without spaces
+    /**
+     * @brief Returns the company name without spaces
+     * 
+     * @return string
+     */
     public function getNoSpaceCompanyName()
     {
-        return $this->cName;
+        return $this->xcName;
     }
 
+    // Get company table name
+    /**
+     * @brief Returns the company table name
+     * 
+     * @return string
+     */
     public function getCompanyTableName()
     {
         return $this->cTableName;
     }
 }
 
+// Holds info about the service
 class Service
 {
     private $sId;
@@ -149,22 +229,46 @@ class Service
         $this->avgTime = $avgTime;
         $this->timeSum = $timeSum;
     }
-
+    
+    // Get service id
+    /**
+     * @brief Returns the service id
+     * 
+     * @return int
+     */
     public function getSId()
     {
         return $this->sId;
     }
 
+    // Get service name
+    /**
+     * @brief Returns the service name
+     * 
+     * @return string
+     */
     public function getServiceName()
     {
         return $this->sName;
     }
 
+    // Get service number of users
+    /**
+     * @brief Returns the number of users from the service
+     * 
+     * @return int
+     */
     public function getServiceNumber()
     {
         return $this->numberOfUsers;
     }
     
+    // Get service average time
+    /**
+     * @brief Returns the average time of waiting in the service
+     * 
+     * @return int
+     */
     public function getServiceTime()
     {
         return $this->avgTime;

@@ -1,5 +1,5 @@
 <?php
-
+// SQL class handles all sql commands towards mysql
 class SQL
 {
     protected mysqli $query;
@@ -17,6 +17,8 @@ class SQL
     // CONNECT TO DB
     /**
      * @brief Connects to database
+     * 
+     * @return |connection
      */
     protected function connect()
     {
@@ -47,6 +49,7 @@ class SQL
 
         mysqli_stmt_bind_param($stmt, $types, ...$vars);
         $result = $this->error->tryStmtError($stmt->execute(), $stmt);
+
         return $result;
     }
 
@@ -55,13 +58,15 @@ class SQL
      * @brief Takes a specific command for select via statements, runs it
      *         and returns the first row
      * @param string $command
-     * @return bool true
+     * @return array | false
      */
     public function getStmtRow(string $command)
     {
         $stmt = $this->PrepStmt($command);
+
         $this->error->tryStmtError($stmt->execute(), $stmt);
         $resultData = mysqli_stmt_get_result($stmt);
+
         if ($resultData !== false) {
             return mysqli_fetch_assoc($resultData);
         }else {
@@ -69,11 +74,20 @@ class SQL
         }
     }
 
+    // GET ALL OF THE VALUES
+    /**
+     * @brief Takes a specific command for select via statements, runs it
+     *         and returns all results
+     * @param string $command
+     * @return array | false
+     */
     public function getStmtAll(string $command)
     {
         $stmt = $this->PrepStmt($command);
+
         $this->error->tryStmtError($stmt->execute(), $stmt);
         $resultData = mysqli_stmt_get_result($stmt);
+
         if ($resultData !== false) {
             return mysqli_fetch_all($resultData);
         }else {
@@ -84,7 +98,7 @@ class SQL
 
     // CREATE A TABLE
     /**
-     * @brief Takes a table name and its contants and creates it 
+     * @brief Takes a table name and its contents and creates it 
      * @param string $tableName
      * @param string $tableContents
      * @return bool true

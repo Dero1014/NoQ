@@ -1,19 +1,28 @@
 <?php
-//include_once 'user.class.php';
 
+// Class for loging in users to the site
 class Log extends SQL
 {
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct("Log");
     }
-    
+
+    // Logs the user
+    /**
+     * @brief Logs the user into the appropriate site, company or user site
+     * @param string $uName
+     * @param string $uPass
+     * 
+     * @return void
+     */
     public function loginUser($uName, $uPass)
     {
-        $query = new SQL();
+        // Find user
         $sql = "SELECT * FROM Users WHERE uName = '$uName';";
 
-        $row = $query->getStmtRow($sql);
+        $row = $this->getStmtRow($sql);
+
         if ($row !== false) {
             $uName = $row['uName'];
 
@@ -22,7 +31,7 @@ class Log extends SQL
             $checkPwd = password_verify($uPass, $pwdHashed);
 
             if ($checkPwd === true) {
-
+                // Log to appropriate site
                 if ($this->sessionSet($row)) {
                     if ($row['uCompany'] == 1) {
                         return "company.site.php?signin=success&page=service";
@@ -44,14 +53,20 @@ class Log extends SQL
         }
     }
 
+    // Creates a session
+    /**
+     * @brief Creates a session where it stores all the important user information
+     * @param array $row
+     * @return void
+     */
     private function sessionSet($row)
     {
         $user = new User($row['uId'], $row['uName'], $row['uEmail'], $row['uCompany']);
+
         if (session_start()) {
             $_SESSION["User"] = $user;
             return true;
         }
         return false;
     }
-
 }

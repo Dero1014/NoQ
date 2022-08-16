@@ -1,9 +1,16 @@
 <?php
 
+// Class for registering users to the site
 class Register extends SQL
 {
-    // Adds user to the Users table
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    // ADDS USER TO THE USERS TABLE
     /**
+     * @brief Adds a user to the table
      * @param $uName
      * @param $uPass
      * @param $uEmail
@@ -13,12 +20,6 @@ class Register extends SQL
      * 
      * @return void
      */
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {
         $sql = "INSERT INTO Users (uName, uPassword, uEmail, uCompany) 

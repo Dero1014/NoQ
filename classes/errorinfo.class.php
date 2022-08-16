@@ -51,6 +51,13 @@ class ErrorInfo
         }
     }
 
+    // Points out any error for registration
+    /**
+     * @brief Catches an error for registration and returns it to the site
+     * @param bool $result
+     * @param string $returnValue
+     * @return bool true
+     */
     public function onRegisterError($result, $returnValue)
     {
         if($result == TRUE)
@@ -65,6 +72,13 @@ class ErrorInfo
         }
     }
 
+    // Points out any error for login
+    /**
+     * @brief Catches an error for login and returns it to the site
+     * @param bool $result
+     * @param string $returnValue
+     * @return bool true
+     */
     public function onLoginError($result, $returnValue)
     {
         if($result == TRUE)
@@ -79,6 +93,13 @@ class ErrorInfo
         }
     }
 
+    // Points out any error for service adding
+    /**
+     * @brief Catches an error for service adding and returns it to the site
+     * @param bool $result
+     * @param string $returnValue
+     * @return bool true
+     */
     public function onServiceError($result, $returnValue)
     {
         if($result == TRUE)
