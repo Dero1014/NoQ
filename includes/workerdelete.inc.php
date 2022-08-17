@@ -1,12 +1,10 @@
 <?php
-
-include 'connect.inc.php';
 include 'user.inf.php';
+
 $wId = $_POST['delete'];
 
-// remove worker from company
-$sql = "DELETE FROM Workers WHERE wId = $wId";
-$result = mysqli_query($conn, $sql);
+// Remove worker from company
+$company->removeWorker($wId);
 
 $page = "page=worker";
 

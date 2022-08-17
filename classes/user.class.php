@@ -271,6 +271,22 @@ class Company extends SQL
         return true;
     }
 
+    // Remove service
+    /**
+     * @brief Removes service from company
+     * 
+     * @return bool
+     */
+    public function removeWorker($wId)
+    {
+        $this->query = $this->connect();
+        $tableData = "wId";
+        $this->removeStmtValuesFrom("Workers", $tableData, $wId);
+        $this->fetchServices();
+
+        return true;
+    }
+
     // Get worker array length
     /**
      * @brief Returns the length of the workers array
