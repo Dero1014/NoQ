@@ -57,6 +57,10 @@ class Queue extends SQL
         $this->setStmtValues("ii", $sql, array($currentQueue, $uId));
 
         // Insert user in queue
+        $sql = "INSERT INTO Queues (userId, queueName, cName, sName) 
+            VALUES (?, ?, ?, ?);";
+
+        $this->setStmtValues("isss", $sql, array($uId, $qTableName, $cName, $sName));
     }
 
     private function queueExists($qTableName)
