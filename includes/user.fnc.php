@@ -18,27 +18,29 @@ function startPrepStmt($conn, $sql)
 function queueUp($conn, $cName, $sName, $uId)
 {
     include 'common.fnc.php';
+    $query = new SQL();
 
     // spaceless names
     $xcName = str_replace(' ', '', $cName);
     $xsName = str_replace(' ', '', $sName);
 
     $cDbName = "COMPANY_" . $xcName;
-    //check if Service exists
+    
+    // Check if Service exists
     if (!alreadyExists($conn, $sName, "sName", $cDbName)) {
         echo "got into error service doesn't exists";
         die();
         return;
     }
 
-    //check if user exists
+    // Check if user exists
     if (!alreadyExistsInt($conn, $uId, "uId", "Users")) {
         echo "got into error user doesn't exists";
         die();
         return;
     }
 
-    //check if user is in queue
+    // Check if user is in queue
     if (checkQueue($conn, $uId)) {
         echo "got into error user already in queue";
         die();

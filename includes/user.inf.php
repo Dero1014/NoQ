@@ -34,7 +34,7 @@ include_once $pathAuto;
 //include_once $pathSQL;
 //include_once $pathUser;
 
-$user = new User(-1, 'template', 'template', 0);
+//$user = new User(-1, 'template', 'template', 0);
 
 session_start();
 

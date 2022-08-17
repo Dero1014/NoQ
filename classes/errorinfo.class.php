@@ -114,9 +114,9 @@ class ErrorInfo
         }
     }
 
-    // Points out any error for service adding
+    // Points out any error for worker adding
     /**
-     * @brief Catches an error for service adding and returns it to the site
+     * @brief Catches an error for worker adding and returns it to the site
      * @param bool $result
      * @param string $returnValue
      * @return bool true
@@ -126,6 +126,27 @@ class ErrorInfo
         if($result == TRUE)
         {
             header("Location:  ../sites/company.site.php?page=worker&worker=$returnValue");
+            exit();
+        }
+        else
+        {
+            // ERROR HAS PASSED
+            return TRUE;
+        }
+    }
+
+    // Points out any error for service adding
+    /**
+     * @brief Catches an error for service adding and returns it to the site
+     * @param bool $result
+     * @param string $returnValue
+     * @return bool true
+     */
+    public function onQueueError($result, $returnValue)
+    {
+        if($result == TRUE)
+        {
+            header("Location:  ../sites/user.site.php?queue=$returnValue");
             exit();
         }
         else

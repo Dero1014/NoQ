@@ -110,6 +110,23 @@ class Inspector extends SQL
         return $result;
     }
 
+    // Queue inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for a worker to be added in a company
+     * @param string $wName
+     * 
+     * @return bool
+     */
+    public function queueReady($sName, $cName, $uId)
+    {
+        $xcName = str_replace(' ', '', $cName);
+        $cDbName = "COMPANY_" . $xcName;
+        $result = $this->error->onQueueError(!$this->alreadyExists($sName, 'sName', $cDbName), 'fail');
+        $result = $this->error->onQueueError(!$this->alreadyExists($uId, 'uId', "Users"), 'fail2');
+
+        return $result;
+    }
+
     // Inspectors (general inspection checkers)
 
     // Empty inspector
@@ -171,23 +188,27 @@ class Inspector extends SQL
     // Existing data inspector
     /**
      * @brief Checks if the data provided already exists in the database
-     * @param string $string
+     * @param $string
      * @param string $tData
      * @param string $table
      * 
      * @return bool
      */
-    private function alreadyExists($string, $tData, $table)
+    private function alreadyExists($var, $tData, $table)
     {
-        $sql = "SELECT * FROM $table WHERE $tData = '$string';";
+        $sql = "SELECT * FROM $table WHERE $tData = $var;";
+
+        if (gettype($var) === "string") 
+            $sql = "SELECT * FROM $table WHERE $tData = '$var';";
+
 
         $row = $this->getStmtRow($sql);
 
-        if ($row[$tData] == $string) {
-            echo "Data [$tData] for $string exists! \n";
+        if ($row[$tData] == $var) {
+            echo "Data [$tData] for $var exists! \n";
             return true;
         } else {
-            echo "Data [$tData] for $string doesn't exists!\n";
+            echo "Data [$tData] for $var doesn't exists!\n";
             return false;
         }
     }

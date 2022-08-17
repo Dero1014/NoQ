@@ -3,10 +3,12 @@
 // A DB WILL BE CREATED FOR THE SERVICE WITH THE FORMAT OF         //
 // QUEUE_[companyname]_[service] AND IT WILL BE DELETED IF THERE   //
 // IS NO ONE IN THE QUEUE                                          //
+header('Content-type: text/plain');
 
 include 'connect.inc.php';
 include 'user.inf.php';
 include 'user.fnc.php';
+include 'autoloader.inc.php';
 
 if (!isset($_POST["queueUp"])) {
     header("Location: ../user.site.php?error=hacktry");
@@ -14,6 +16,11 @@ if (!isset($_POST["queueUp"])) {
 }
 $cName = $_POST['companies'];
 $sName = $_POST['services'];
-echo("whoops");
+$uId = $user->getUId();
+
+$inspector = new Inspector();
+
+$inspector->queueReady($sName, $cName, $uId);
+
 queueUp($conn, $cName, $sName, $uId);
 header("Location: ../sites/user.site.php?queueup=success");
