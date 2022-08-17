@@ -47,7 +47,16 @@ class Queue extends SQL
         $qTableName = $this->qTableName;
 
         // Check if a queue already exists
-        $this->queueExists($qTableName);
+        $qeueuExists = $this->queueExists($qTableName);
+        $currentQueue = ($qeueuExists === true) ? $this->getQueue($qTableName) : 1;
+
+        // Insert user in queue table db
+        $sql = "INSERT INTO $qTableName (queue, userId) 
+            VALUES (?, ?);";
+
+        $this->setStmtValues("ii", $sql, array($currentQueue, $uId));
+
+        // Insert user in queue
     }
 
     private function queueExists($qTableName)
@@ -72,5 +81,16 @@ class Queue extends SQL
 
             return false;
         }
+    }
+
+    private function getQueue($qDbName)
+    {
+        $sql = "SELECT * FROM $qDbName ORDER BY qId DESC LIMIT 1;";
+
+        $row = $this->getStmtRow($sql);
+
+        $queue = $row['queue'] + 1;
+
+        return $queue;
     }
 }
