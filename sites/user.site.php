@@ -19,8 +19,7 @@ if (isset($user)) {
 <?php
 // check if user is already in queue
 include '../includes/user.fnc.php';
-include '../includes/connect.inc.php';
-checkQueue($conn, $uId);
+//$queue->inQueue($user->getUId());
 ?>
 
 <!-- SERVICE SELECT FORM IF USER NOT IN A QUEUE -->
@@ -29,6 +28,7 @@ $uId = $user->getUId();
 if (!$queue->inQueue($uId)) {
     include 'uservice.site.php';
 }
+
 ?>
 
 <!-- USER IN QUEUE -->

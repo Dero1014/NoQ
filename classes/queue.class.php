@@ -9,8 +9,18 @@ class Queue extends SQL
     private $cTableName;
     private $qTableName;
     private $queueNum;
-    private $inLine;
+    private $myTurn;
     private $uId;
+
+    public function getAvgTime()
+    {
+        $sName = $this->sName;
+        $cTableName = $this->cTableName;
+        $sql = "SELECT * FROM $cTableName WHERE sName = '$sName'";
+        $row = $this->getStmtRow($sql);
+
+        return (int)$row['avgTime'] / 60;
+    }
 
     public function dropQueueTable($qDbName)
     {
@@ -69,13 +79,14 @@ class Queue extends SQL
     {
         // Fetch data from Queues
         $sql = "SELECT * FROM Queues WHERE userId = $uId;";
+        echo "started";
         $row = $this->getStmtRow($sql);
         if (isset($row['userId'])) {
             $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
 
             $this->queueNum =  $this->getQueue($this->qTableName) - 1;
-            $this->inLine = ($row['inLine'] !== 0) ? 1 : 0;
-
+            $this->myTurn = ($row['inLine'] !== 0) ? 1 : 0;
+            echo "passes ";
             return true;
         } else {
             session_start();
@@ -83,19 +94,11 @@ class Queue extends SQL
             unset($_SESSION["inLine"]);
             session_unset($_SESSION["queue"]);
             session_unset($_SESSION["inLine"]);
+            echo "no pass ";
             return false;
         }
     }
 
-    public function getAvgTime($uId)
-    {
-        $sName = $this->sName;
-        $cTableName = $this->cTableName;
-        $sql = "SELECT * FROM $cTableName WHERE sName = '$sName'";
-        $row = $this->getStmtRow($sql);
-
-        return (int)$row['avgTime'] / 60;
-    }
 
     private function queueExists($qTableName)
     {
@@ -126,9 +129,9 @@ class Queue extends SQL
         return $this->queueNum;
     }
 
-    public function getInLine()
+    public function getMyTurn()
     {
-        return $this->inLine;
+        return $this->myTurn;
     }
 
     private function getQueue($qDbName)
