@@ -9,7 +9,7 @@ include '../includes/user.chk.php';
 <?php
 if (isset($user)) {
     $name = $user->getUsername();
-    echo "<h1>Welcome user " . $user->getUsername() ."</h1>";
+    echo "<h1>Welcome user " . $user->getUsername() . "</h1>";
 } else {
     echo "<h1>No name exists</h1>";
 }
@@ -25,17 +25,26 @@ include '../includes/user.fnc.php';
 <!-- SERVICE SELECT FORM IF USER NOT IN A QUEUE -->
 <?php
 $uId = $user->getUId();
-if (!$queue->inQueue($uId)) {
+$result = $queue->inQueue($uId);
+
+if (isset($_POST['drop'])) {
+    $queue->dropFromQueue();
+    $result = $queue->inQueue($uId);
+}
+
+if (!$result) {
     include 'uservice.site.php';
+} else {
+    echo "<p id='id' style='display:none'>$uId</p>";
+    echo "<button type='submit' name='drop' form='dropform'>Drop queue</button>";
 }
 
 ?>
 
+<form id="dropform" method="POST"></form>
+
 <!-- USER IN QUEUE -->
-<?php
-    echo"<p id='id' style='display:none'>$uId</p>";
-?>
-<DIV id ='queueInfo' ></DIV>
+<DIV id='queueInfo'></DIV>
 
 </body>
 

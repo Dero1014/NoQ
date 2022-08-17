@@ -4,7 +4,6 @@ include 'user.inf.php';
 include 'user.fnc.php';
 
 $uId = $user->getUId();
-echo "<p>Result $uId</p> ";
 if ($queue->inQueue($uId)) {
     $qNumber = $queue->getQueueNumber();
     echo "<p >My Current queue is $qNumber</p>";
