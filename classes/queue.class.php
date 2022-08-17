@@ -73,7 +73,7 @@ class Queue extends SQL
         if (isset($row['userId'])) {
             $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
 
-            $this->queueNum =  $this->getQueue($this->qTableName);
+            $this->queueNum =  $this->getQueue($this->qTableName) - 1;
             $this->inLine = ($row['inLine'] !== 0) ? 1 : 0;
 
             return true;
@@ -85,6 +85,16 @@ class Queue extends SQL
             session_unset($_SESSION["inLine"]);
             return false;
         }
+    }
+
+    public function getAvgTime($uId)
+    {
+        $sName = $this->sName;
+        $cTableName = $this->cTableName;
+        $sql = "SELECT * FROM $cTableName WHERE sName = '$sName'";
+        $row = $this->getStmtRow($sql);
+
+        return (int)$row['avgTime'] / 60;
     }
 
     private function queueExists($qTableName)
@@ -109,6 +119,16 @@ class Queue extends SQL
 
             return false;
         }
+    }
+
+    public function getQueueNumber()
+    {
+        return $this->queueNum;
+    }
+
+    public function getInLine()
+    {
+        return $this->inLine;
     }
 
     private function getQueue($qDbName)
