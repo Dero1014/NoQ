@@ -3,15 +3,13 @@
     <select id="selCompanies" name="companies">
         <option>-----</option>
         <?php
-        include '../includes/connect.inc.php';
-
-        $sql = "SELECT cName FROM Companies";
-        $result = mysqli_query($conn, $sql);
-
-        while ($row = mysqli_fetch_array($result)) {
-            $compName = $row['cName'];
-            $value = str_replace(' ', '', $compName);
-            echo "<option value=$value>$compName</option>";
+        $query = new SQL();
+        $sql = "SELECT cName FROM Companies;";
+        $result = $query->getStmtAll($sql);
+        for ($i=0; $i < sizeof($result); $i++) { 
+            $cName = $result[$i][0];
+            $xcName = str_replace(' ', '', $cName);
+            echo "<option value=$xcName>$cName</option>";
         }
 
         ?>

@@ -1,16 +1,20 @@
 <?php
+// Display services of the selected company
 
 include 'connect.inc.php';
+include 'autoloader.inc.php';
 
-$cName = $_POST['compName'];
+$query = new SQL();
+
+$cName = $_POST['cName'];
 $xcName = str_replace(' ', '', $cName);
 $cDbName = "COMPANY_" . $xcName;
 
 $sql = "SELECT * FROM $cDbName";
-$result = mysqli_query($conn, $sql);
+$result = $query->getStmtAll($sql);
 
-while ($row = mysqli_fetch_assoc($result)) {
-    $servName = $row['sName'];
-    $value = str_replace(' ', '', $servName);
-    echo "<option value=$value>$servName</option>";
-}
+for ($i=0; $i < sizeof($result); $i++) { 
+    $sName = $result[$i][1];
+    $xsName = str_replace(' ', '', $sName);
+    echo "<option value=$xsName>$sName</option>";
+} 

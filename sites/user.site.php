@@ -8,12 +8,13 @@ include '../includes/user.chk.php';
 <!-- WELCOME TITLE-->
 <?php
 if (isset($user)) {
-    $name = $_SESSION["username"];
+    $name = $user->getUsername();
     echo "<h1>Welcome user " . $user->getUsername() ."</h1>";
 } else {
     echo "<h1>No name exists</h1>";
 }
 ?>
+
 <!-- QUEUE CHECKING -->
 <?php
 // check if user is already in queue
@@ -43,7 +44,7 @@ if (!isset($_SESSION["queue"]) && !isset($_SESSION["inLine"])) {
 <script>
     var selComp = document.getElementById("selCompanies");
     var div = document.getElementById("id");
-    var compValue;
+    var cNameValue;
     var uId;
     $(document).ready(function() {
         setInterval(function() {
@@ -54,9 +55,9 @@ if (!isset($_SESSION["queue"]) && !isset($_SESSION["inLine"])) {
         }, 100)
 
         $("#selCompanies").change(function() {
-            compValue = selComp.value;
+            cNameValue = selComp.value;
             $("#selServices").load("../includes/services.inc.php", {
-                compName: compValue
+                cName: cNameValue
             });
         });
     });

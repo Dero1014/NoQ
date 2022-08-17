@@ -100,7 +100,7 @@ class SQL
      * @brief Takes a specific command for select via statements, runs it
      *         and returns all results
      * @param string $command
-     * @return array | false
+     * @return array | false the returned array always is in format [row][column]
      */
     public function getStmtAll(string $command)
     {
