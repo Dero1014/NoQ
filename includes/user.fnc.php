@@ -112,7 +112,7 @@ function getQueue($conn, $qDbName)
     return $queue;
 }
 
-// check if the user is already in queue
+// Check if the user is already in queue
 function checkQueue($conn, $uId)
 {
     // fetch data from queues

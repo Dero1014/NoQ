@@ -8,7 +8,6 @@ class SQL
     public function __construct($from = "nobody")
     {
         echo "I have been called by class: '$from'\n";
-        $this->error = new ErrorInfo();
         $this->query = $this->connect();
     }
 
@@ -31,6 +30,8 @@ class SQL
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
+
+        $this->error = new ErrorInfo();
 
         return $conn;
     }

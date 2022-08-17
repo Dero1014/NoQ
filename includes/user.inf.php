@@ -42,6 +42,8 @@ $_SESSION["gotInQueue"];
 
 $user = $_SESSION["User"];
 $company;
+$queue = new Queue();
+
 //var_dump($user);
 if ($user != NULL) {
     $company = $user->getCompany();

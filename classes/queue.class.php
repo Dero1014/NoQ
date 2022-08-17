@@ -8,6 +8,8 @@ class Queue extends SQL
     private $xsName;
     private $cTableName;
     private $qTableName;
+    private $queueNum;
+    private $inLine;
     private $uId;
 
     public function dropQueueTable($qDbName)
@@ -61,6 +63,28 @@ class Queue extends SQL
             VALUES (?, ?, ?, ?);";
 
         $this->setStmtValues("isss", $sql, array($uId, $qTableName, $cName, $sName));
+    }
+
+    public function inQueue($uId)
+    {
+        // Fetch data from Queues
+        $sql = "SELECT * FROM Queues WHERE userId = $uId;";
+        $row = $this->getStmtRow($sql);
+        if (isset($row['userId'])) {
+            $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
+
+            $this->queueNum =  $this->getQueue($this->qTableName);
+            $this->inLine = ($row['inLine'] !== 0) ? 1 : 0;
+
+            return true;
+        } else {
+            session_start();
+            unset($_SESSION["queue"]);
+            unset($_SESSION["inLine"]);
+            session_unset($_SESSION["queue"]);
+            session_unset($_SESSION["inLine"]);
+            return false;
+        }
     }
 
     private function queueExists($qTableName)
