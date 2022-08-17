@@ -24,21 +24,8 @@ function queueUp($conn, $cName, $sName, $uId)
     $xcName = str_replace(' ', '', $cName);
     $xsName = str_replace(' ', '', $sName);
 
+    // Company db
     $cDbName = "COMPANY_" . $xcName;
-    
-    // Check if Service exists
-    if (!alreadyExists($conn, $sName, "sName", $cDbName)) {
-        echo "got into error service doesn't exists";
-        die();
-        return;
-    }
-
-    // Check if user exists
-    if (!alreadyExistsInt($conn, $uId, "uId", "Users")) {
-        echo "got into error user doesn't exists";
-        die();
-        return;
-    }
 
     // Check if user is in queue
     if (checkQueue($conn, $uId)) {

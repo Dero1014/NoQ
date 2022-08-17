@@ -64,7 +64,7 @@ class SQL
     public function removeStmtValuesFrom(string $tableName, string $tableData, $var)
     {
         $sql = "DELETE FROM $tableName WHERE $tableData = $var;";
-        if (gettype($var) === "string") 
+        if (gettype($var) === "string")
             $sql = "DELETE FROM $tableName WHERE $tableData = '$var';";
 
         $stmt = $this->PrepStmt($sql);
@@ -121,7 +121,7 @@ class SQL
     /**
      * @brief Takes a table name and its contents and creates it 
      * @param string $tableName
-     * @param string $tableContents
+     * @param string $tableContents including the parantheses '()'
      * @return bool true
      */
     public function createTable(string $tableName, string $tableContents)
@@ -151,6 +151,26 @@ class SQL
     public function updateTable()
     {
     }
+
+    // FIND A TABLE
+    /**
+     * @brief Takes a table name and deletes it 
+     * @param string $tableName
+     * @return bool true
+     */
+    public function findTable(string $tableName)
+    {
+        if ($result = $this->query->query("SHOW TABLES LIKE '$tableName'")) {
+            if ($result->num_rows == 1) {
+                echo "Table $tableName exists\n";
+                return true;
+            }
+        } else {
+            echo "Table $tableName does not exist\n";
+            return false;
+        }
+    }
+
 
     // PREPARES A STATEMENT
     /**

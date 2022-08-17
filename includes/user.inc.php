@@ -19,8 +19,11 @@ $sName = $_POST['services'];
 $uId = $user->getUId();
 
 $inspector = new Inspector();
+echo "olay";
+
+$queue = new Queue();
 
 $inspector->queueReady($sName, $cName, $uId);
-
-queueUp($conn, $cName, $sName, $uId);
+$queue->queueUp($cName, $sName, $uId);
+//queueUp($conn, $cName, $sName, $uId);
 header("Location: ../sites/user.site.php?queueup=success");
