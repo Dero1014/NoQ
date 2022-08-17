@@ -3,19 +3,21 @@
 <form method="POST">
 
     <?php
-
+    // this has been oopec
     include '../includes/common.fnc.php';
     include '../includes/company.fnc.php';
 
     if (isset($_POST['addWorker'])) {
         $inspector = new Inspector();
+        
         $cName = $company->getCompanyName();
         $wName = $_POST['workerName'];
-        if ($inspector->workerReady($wName)) {
-            # code...
-        }
+
+        $inspector->workerReady($wName);
+
         $rngPass = randomString();
         $hashedPwd = password_hash($rngPass, PASSWORD_DEFAULT);
+
         $company->setWorker($hashedPwd, $wName);
         echo "https://noq.ddns.net/sites/worker.site.php?cn=$cName&p=$hashedPwd";
         echo "<br>";

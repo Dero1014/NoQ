@@ -48,6 +48,7 @@ if ($user != NULL) {
     if (is_a($company, "Company")) {
         $company = clone $user->getCompany();
         $company->fetchServices();
+        $company->fetchWorkers();
     }
 }
 

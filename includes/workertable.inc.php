@@ -1,5 +1,5 @@
 <?php
-include 'connect.inc.php';
+// This site has been ooped
 include 'user.inf.php';
 
 $cName = $company->getCompanyName();
@@ -12,6 +12,19 @@ echo "<th>WorkerId</th>";
 echo "<th>User names</th>";
 echo "</tr>";
 
+for ($i = 0; $i < $company->getWorkerLength(); $i++) {
+    $worker = $company->getWorker($i);
+    $wId = $worker->getWorkerId();
+    $wName = $worker->getWorkerName();
+    
+    echo "<tr>";
+    echo "<td>$wId</td>";
+    echo "<td>$wName</td>";
+    echo "<td><button type='submit' name='delete' form='deleteform' value='$wId'> Delete </button>";
+    echo "</tr>";
+}
+
+/*
 while ($row = mysqli_fetch_assoc($result)) {
     $wId = $row['wId'];
     $wName = $row['wName'];
@@ -21,3 +34,4 @@ while ($row = mysqli_fetch_assoc($result)) {
     echo "<td><button type='submit' name='delete' form='deleteform' value='$wId'> Delete </button>";
     echo "</tr>";
 }
+*/

@@ -98,6 +98,7 @@ class Company extends SQL
     private $cTableName; // COMPANY_ + $xcName
     private $cDesc;
     private array $services = [];
+    private array $workers = [];
 
     public function __construct($cId, $cName, $xcName, $cDesc)
     {
@@ -226,9 +227,37 @@ class Company extends SQL
         return $qsName;
     }
 
-    // Set service
+    // Fetch workers
     /**
-     * @brief Adds service to the company
+     * @brief Fetches workers from the Workers table that
+     *        are part of the company
+     * 
+     * @return void
+     */
+    public function fetchWorkers()
+    {
+        $this->workers = [];
+        $this->query = $this->connect();
+        $cName = $this->cName;
+        $sql = "SELECT * FROM Workers WHERE wComp = '$cName'";
+        $result = $this->getStmtAll($sql);
+        $worker = NULL;
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $worker = new Worker(
+                $result[$i][0],
+                $result[$i][1],
+                $result[$i][2],
+                $result[$i][3]
+            );
+            array_push($this->workers, $worker);
+        }
+        //var_dump($this->services);
+        //die();
+    }
+
+    // Set worker
+    /**
+     * @brief Adds worker to the Workers table
      * 
      * @return bool
      */
@@ -240,6 +269,28 @@ class Company extends SQL
         $this->setStmtValues("sss", $sql, array($rngPass, $cName, $wName));
 
         return true;
+    }
+
+    // Get worker array length
+    /**
+     * @brief Returns the length of the workers array
+     * 
+     * @return int
+     */
+    public function getWorkerLength()
+    {
+        return sizeof($this->workers);
+    }
+
+    // Get worker
+    /**
+     * @brief Returns a worker on index
+     * 
+     * @return Service
+     */
+    public function getWorker($i)
+    {
+        return $this->workers[$i];
     }
 
     // Get company name
