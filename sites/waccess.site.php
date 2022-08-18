@@ -2,6 +2,7 @@
 
 <!-- WELCOME TITLE -->
 <?php
+$wName = $worker->getWorkerName();
 echo "<h1>Welcome $wName</h1> <br>";
 ?>
 
@@ -12,14 +13,18 @@ echo "<h1>Welcome $wName</h1> <br>";
     <?php
     include '../includes/connect.inc.php';
 
+    $query = new SQL();
+    $cTableName = 'COMPANY_' . str_replace(' ', '',$worker->getWorkerCompanyName());
+    
     // select service
-    $sql = "SELECT sName FROM $cDbName";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT sName FROM $cTableName";
+    $result = $query->getStmtAll($sql);
 
-    while ($row = mysqli_fetch_array($result)) {
-        $sName = $row['sName'];
+    for ($i=0; $i < sizeof($result); $i++) { 
+        $sName = $result[$i][0];
         echo "<option value='$sName'>$sName</option>";
     }
+
     ?>
 </select>
 <br>

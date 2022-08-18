@@ -8,7 +8,7 @@ class Inspector extends SQL
     }
 
     // Class ready functions (Functions that are used if the conditions to use a class are set) : 
-    
+
     // Register user inspection
     /**
      * @brief Checks if the data that is being provided is suficient for registering a user
@@ -39,10 +39,10 @@ class Inspector extends SQL
         $result = $this->error->onRegisterError($this->alreadyExists($uName, 'uName', 'Users'), 'userExists');
         $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists');
         if ($uCompany == 1) $result = $this->error->onRegisterError($this->tableExists($cDbName), 'companyExists');
-        
+
         return $result;
     }
-    
+
     // Login user inspection
     /**
      * @brief Checks if the data that is being provided is suficient for login a user
@@ -134,11 +134,13 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-    public function workerLoginReady($wPass, $wComp)
+    public function workerLoginReady($wComp, $wPass, $cn, $p)
     {
-        $words = array($wPass , $wComp);
-        $result = $this->error->onWorkerLoginError($this->areEmpty($words), 'empty');
-        $result = $this->error->onWorkerLoginError($this->areInvalid($words), 'invalid');
+        $words = array($wComp, $wPass);
+        $wTableName =  'WORKERS_' * str_replace(' ', '', $wComp);
+        $result = $this->error->onWorkerLoginError($this->areEmpty($words), 'empty', $cn, $p);
+        $result = $this->error->onWorkerLoginError($this->areInvalid($words), 'invalid', $cn, $p);
+        $result = $this->error->onWorkerLoginError($this->tableExists($wTableName), 'companyNonExistent', $cn, $p);
 
         return $result;
     }
@@ -214,7 +216,7 @@ class Inspector extends SQL
     {
         $sql = "SELECT * FROM $table WHERE $tData = $var;";
 
-        if (gettype($var) === "string") 
+        if (gettype($var) === "string")
             $sql = "SELECT * FROM $table WHERE $tData = '$var';";
 
 
@@ -237,19 +239,18 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-     private function tableExists($tableName)
-     {
-        if ($result = $this->query->query("SHOW TABLES LIKE '".$tableName."'")) {
-            if($result->num_rows == 1) {
+    private function tableExists($tableName)
+    {
+        if ($result = $this->query->query("SHOW TABLES LIKE '" . $tableName . "'")) {
+            if ($result->num_rows == 1) {
                 echo "Table $tableName exists\n";
                 return true;
             }
-        }
-        else {
+        } else {
             echo "Table $tableName does not exist\n";
             return false;
         }
-     }
+    }
 
     // Check if an interger exists
     private function alreadyExistsInt($conn, $int, $dbData, $db)

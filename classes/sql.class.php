@@ -81,9 +81,22 @@ class SQL
      * @param string $command
      * @return array | false
      */
-    public function getStmtRow(string $command)
+    public function getStmtRow(string $command, string $types = "", array $vars = [])
     {
+
         $stmt = $this->PrepStmt($command);
+
+        if ($types != "") {
+            mysqli_stmt_bind_param($stmt, $types, ...$vars);
+            $result = $this->error->tryStmtError($stmt->execute(), $stmt);
+            $resultData = mysqli_stmt_get_result($stmt);
+            
+            if ($resultData !== false) {
+                return mysqli_fetch_assoc($resultData);
+            } else {
+                return false;
+            }
+        }
 
         $this->error->tryStmtError($stmt->execute(), $stmt);
         $resultData = mysqli_stmt_get_result($stmt);

@@ -7,9 +7,8 @@ include '../header/header.php';
 // without loging in first
 include '../includes/worker.chk.php';
 
-
 // if not loged in show login page otherwise give access
-if (!isset($_SESSION["workerid"])) {
+if ($worker == NULL) {
     include 'wlogin.site.php';
 }else {
     include 'waccess.site.php';

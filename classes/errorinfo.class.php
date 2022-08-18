@@ -20,12 +20,9 @@ class ErrorInfo
      */
     public function tryStmtError($result, $stmt)
     {
-        if($result == FALSE)
-        {
+        if ($result == FALSE) {
             die('Stmt error caused by: ' + mysqli_stmt_error($stmt));
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -40,12 +37,9 @@ class ErrorInfo
      */
     public function tryStmtReturnValue($result, $stmt)
     {
-        if($result == NULL)
-        {
+        if ($result == NULL) {
             die("Returned value was null: " + mysqli_stmt_error($stmt));
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -60,13 +54,10 @@ class ErrorInfo
      */
     public function onRegisterError($result, $returnValue)
     {
-        if($result == TRUE)
-        {
+        if ($result == TRUE) {
             header("Location: ../sites/signup.site.php?signup=$returnValue");
             exit();
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -81,13 +72,10 @@ class ErrorInfo
      */
     public function onLoginError($result, $returnValue)
     {
-        if($result == TRUE)
-        {
+        if ($result == TRUE) {
             header("Location: ../sites/login.site.php?signin=$returnValue");
             exit();
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -102,13 +90,10 @@ class ErrorInfo
      */
     public function onServiceError($result, $returnValue)
     {
-        if($result == TRUE)
-        {
+        if ($result == TRUE) {
             header("Location:  ../sites/company.site.php?page=service&service=$returnValue");
             exit();
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -123,13 +108,10 @@ class ErrorInfo
      */
     public function onWorkerError($result, $returnValue)
     {
-        if($result == TRUE)
-        {
+        if ($result == TRUE) {
             header("Location:  ../sites/company.site.php?page=worker&worker=$returnValue");
             exit();
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -144,13 +126,10 @@ class ErrorInfo
      */
     public function onQueueError($result, $returnValue)
     {
-        if($result == TRUE)
-        {
+        if ($result == TRUE) {
             header("Location:  ../sites/user.site.php?queue=$returnValue");
             exit();
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
@@ -163,15 +142,12 @@ class ErrorInfo
      * @param string $returnValue
      * @return bool true
      */
-    public function onWorkerLoginError($result, $returnValue)
+    public function onWorkerLoginError($result, $returnValue, $cn = "none", $p = "none")
     {
-        if($result == TRUE)
-        {
-            header("Location:  ../sites/worker.site.php?login=$returnValue");
+        if ($result == TRUE) {
+            header("Location:  ../sites/worker.site.php?cn=$cn&p=$p&login=$returnValue");
             exit();
-        }
-        else
-        {
+        } else {
             // ERROR HAS PASSED
             return TRUE;
         }
