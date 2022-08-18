@@ -100,19 +100,19 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-    public function workerReady($wName)
+    public function workerReady($wName, $wcName)
     {
         $words = array($wName);
         $result =  $this->error->onWorkerError($this->areEmpty($words), 'empty');
         $result = $this->error->onWorkerError($this->areInvalid($words), 'invalid');
-        $result = $this->error->onWorkerError($this->alreadyExists($wName, 'wName', "Workers"), 'workerExists');
+        $result = $this->error->onWorkerError($this->alreadyExists($wName, 'wName', $wcName), 'workerExists');
 
         return $result;
     }
 
     // Queue inspection
     /**
-     * @brief Checks if the data that is being provided is suficient for a worker to be added in a company
+     * @brief Checks if the data that is being provided is suficient for a queue to be started
      * @param string $wName
      * 
      * @return bool
@@ -123,6 +123,22 @@ class Inspector extends SQL
         $cDbName = "COMPANY_" . $xcName;
         $result = $this->error->onQueueError(!$this->alreadyExists($sName, 'sName', $cDbName), 'fail');
         $result = $this->error->onQueueError(!$this->alreadyExists($uId, 'uId', "Users"), 'fail2');
+
+        return $result;
+    }
+
+    // Worker inspection
+    /**
+     * @brief Checks if the data that is being provided is suficient for a worker loged in
+     * @param string $wName
+     * 
+     * @return bool
+     */
+    public function workerLoginReady($wPass, $wComp)
+    {
+        $words = array($wPass , $wComp);
+        $result = $this->error->onWorkerLoginError($this->areEmpty($words), 'empty');
+        $result = $this->error->onWorkerLoginError($this->areInvalid($words), 'invalid');
 
         return $result;
     }
@@ -212,6 +228,7 @@ class Inspector extends SQL
             return false;
         }
     }
+
 
     // Existing table inspector
     /**

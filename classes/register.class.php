@@ -60,7 +60,7 @@ class Register extends SQL
         $userId = $row['uId'];
 
         // Insert company into table
-        $sql = "INSERT INTO Companies (cName, xcName, cDecs, userId) 
+        $sql = "INSERT INTO Companies (cName, xcName, cDesc, userId) 
         VALUES (?, ?, ?, ?);";
         $this->setStmtValues("sssi", $sql, array($cName, $xcName, $cDesc, $userId));
 
@@ -73,6 +73,16 @@ class Register extends SQL
         avgTime INT DEFAULT 0,
         timeSum INT DEFAULT 0,
         PRIMARY KEY (sId)
+        );";
+        $result = $this->createTable($tableName, $tableContents);
+
+        // Create worker table
+        $tableName = "WORKERS_" . $xcName;
+        $tableContents = "(
+        wId INT NOT NULL auto_increment,
+        wName VARCHAR(100) NOT NULL,
+        wPass VARCHAR(100) NOT NULL,
+        PRIMARY KEY (wId)
         );";
         $result = $this->createTable($tableName, $tableContents);
 

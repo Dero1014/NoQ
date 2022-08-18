@@ -13,15 +13,15 @@
         $cName = $company->getCompanyName();
         $wName = $_POST['workerName'];
 
-        $inspector->workerReady($wName);
+        $inspector->workerReady($wName, $company->getWorkerTableName());
 
         $rngPass = randomString();
         $hashedPwd = password_hash($rngPass, PASSWORD_DEFAULT);
 
         $company->setWorker($hashedPwd, $wName);
-        echo "https://noq.ddns.net/sites/worker.site.php?cn=$cName&p=$hashedPwd";
+        echo "<p>https://noq.ddns.net/sites/worker.site.php?cn=$cName&p=$hashedPwd</p>";
         echo "<br>";
-        echo "Password is : $rngPass";
+        echo "<p>Password is : $rngPass</p>";
     }
     else
     {

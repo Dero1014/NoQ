@@ -47,7 +47,6 @@ class SQL
     public function setStmtValues(string $types, string $command, array $vars)
     {
         $stmt = $this->PrepStmt($command);
-
         mysqli_stmt_bind_param($stmt, $types, ...$vars);
         $result = $this->error->tryStmtError($stmt->execute(), $stmt);
 
@@ -184,7 +183,8 @@ class SQL
         $stmt = mysqli_stmt_init($this->query);
 
         if (!mysqli_stmt_prepare($stmt, $command)) {
-            die("Command failed : $command");
+            $str = mysqli_stmt_error($stmt);
+            die("Command failed : $command \n Error : $str \n");
             header("Location: index.php?error=stmtfail");
             exit();
         }

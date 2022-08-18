@@ -96,6 +96,7 @@ class Company extends SQL
     private $cName;
     private $xcName; // company name without spaces
     private $cTableName; // COMPANY_ + $xcName
+    private $wcName; // WORKERS_ + $xcName
     private $cDesc;
     private array $services = [];
     private array $workers = [];
@@ -109,6 +110,7 @@ class Company extends SQL
         $this->cDesc = $cDesc;
         $this->xcName = $xcName;
         $this->cTableName = 'COMPANY_' . $this->xcName;
+        $this->wcName = 'WORKERS_' . $this->xcName;
 
         $this->fetchServices();
     }
@@ -238,8 +240,8 @@ class Company extends SQL
     {
         $this->workers = [];
         $this->query = $this->connect();
-        $cName = $this->cName;
-        $sql = "SELECT * FROM Workers WHERE wComp = '$cName'";
+        $wcName = $this->wcName;
+        $sql = "SELECT * FROM $wcName;";
         $result = $this->getStmtAll($sql);
         $worker = NULL;
         for ($i = 0; $i < sizeof($result); $i++) {
@@ -247,7 +249,7 @@ class Company extends SQL
                 $result[$i][0],
                 $result[$i][1],
                 $result[$i][2],
-                $result[$i][3]
+                $this->cName
             );
             array_push($this->workers, $worker);
         }
@@ -264,9 +266,9 @@ class Company extends SQL
     public function setWorker($rngPass, $wName)
     {
         $this->query = $this->connect();
-        $cName = $this->cName;
-        $sql = "INSERT INTO Workers (wPass, wComp, wName) VALUES (?, ?, ?);";
-        $this->setStmtValues("sss", $sql, array($rngPass, $cName, $wName));
+        $wcName = $this->wcName;
+        $sql = "INSERT INTO $wcName (wName, wPass) VALUES (?, ?);";
+        $this->setStmtValues("ss", $sql, array($wName, $rngPass));
 
         return true;
     }
@@ -281,7 +283,7 @@ class Company extends SQL
     {
         $this->query = $this->connect();
         $tableData = "wId";
-        $this->removeStmtValuesFrom("Workers", $tableData, $wId);
+        $this->removeStmtValuesFrom($this->wcName, $tableData, $wId);
         $this->fetchServices();
 
         return true;
@@ -302,11 +304,22 @@ class Company extends SQL
     /**
      * @brief Returns a worker on index
      * 
-     * @return Service
+     * @return Worker
      */
     public function getWorker($i)
     {
         return $this->workers[$i];
+    }
+
+    // Get worker table name
+    /**
+     * @brief Returns worker table name
+     * 
+     * @return Worker
+     */
+    public function getWorkerTableName()
+    {
+        return $this->wcName;
     }
 
     // Get company name
