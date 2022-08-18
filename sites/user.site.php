@@ -27,8 +27,6 @@ include '../includes/user.fnc.php';
 $uId = $user->getUId();
 $result = $queue->inQueue($uId);
 
-
-
 if (!$result) {
     include 'uservice.site.php';
 } else {

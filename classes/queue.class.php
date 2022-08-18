@@ -9,6 +9,7 @@ class Queue extends SQL
     private $cTableName;
     private $qTableName;
     private $queueNum;
+    private $positionNum;
     private $myTurn;
     private $uId;
 
@@ -76,7 +77,8 @@ class Queue extends SQL
             $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
 
             $this->queueNum =  $this->getMyQueue($this->qTableName, $uId);
-            $this->myTurn = ($row['inLine'] !== 0) ? 1 : 0;
+            $this->positionNum =  $this->getMyPosition($this->qTableName, $this->queueNum);
+            $this->myTurn = ($this->getTurn($this->qTableName, $uId) !== 0) ? 1 : 0;
 
             echo "passes ";
             return true;
@@ -122,6 +124,11 @@ class Queue extends SQL
         return $this->queueNum;
     }
 
+    public function getPositionNumber()
+    {
+        return $this->positionNum;
+    }
+
     public function getMyTurn()
     {
         return $this->myTurn;
@@ -141,6 +148,7 @@ class Queue extends SQL
             qId int not null auto_increment,
             queue int not null,
             userId int,
+            myTurn bit default 0,
             foreign key (userId) references Users(uId),
             primary key (qId)
             );";
@@ -173,5 +181,26 @@ class Queue extends SQL
         return $queue;
     }
 
+    private function getMyPosition($qDbName, $queueNum)
+    {
+        $sql = "SELECT * FROM $qDbName WHERE queue < $queueNum;";
+
+        $result = $this->getStmtAll($sql);
+
+        $position = sizeof($result) + 1;
+
+        return $position;
+    }
+
+    private function getTurn($qDbName, $uId)
+    {
+        $sql = "SELECT * FROM $qDbName WHERE userId = $uId;";
+
+        $row = $this->getStmtRow($sql);
+
+        $myTurn = $row['myTurn'];
+
+        return $myTurn;
+    }
 
 }
