@@ -51,6 +51,8 @@ if ($user != NULL) {
         $company = clone $user->getCompany();
         $company->fetchServices();
         $company->fetchWorkers();
+    }else {
+        $queue->inQueue($user->getUId());
     }
 }
 

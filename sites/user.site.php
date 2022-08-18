@@ -27,10 +27,7 @@ include '../includes/user.fnc.php';
 $uId = $user->getUId();
 $result = $queue->inQueue($uId);
 
-if (isset($_POST['drop'])) {
-    $queue->dropFromQueue();
-    $result = $queue->inQueue($uId);
-}
+
 
 if (!$result) {
     include 'uservice.site.php';
@@ -41,7 +38,7 @@ if (!$result) {
 
 ?>
 
-<form id="dropform" method="POST"></form>
+<form id="dropform" action="../includes/dropqueue.inc.php" method="POST"></form>
 
 <!-- USER IN QUEUE -->
 <DIV id='queueInfo'></DIV>
