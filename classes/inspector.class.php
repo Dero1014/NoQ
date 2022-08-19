@@ -241,7 +241,7 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-    private function tableExists($tableName)
+    public function tableExists($tableName)
     {
         if ($result = $this->query->query("SHOW TABLES LIKE '" . $tableName . "'")) {
             if ($result->num_rows == 1) {

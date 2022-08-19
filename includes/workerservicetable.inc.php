@@ -6,14 +6,37 @@ include 'worker.fnc.php';
 include 'autoloader.inc.php';
 
 session_start();
-
+$inspector = new Inspector();
+$queue = new Queue();
 $userInWorker = false;
 $sName = $_POST['servName']; // remember to change it back to servName
 
-$worker->showQueue($sName);
-//Service name
+$queue->queueSetup($worker->getWorkerCompanyName(), $sName, -1);
+
 $xsName = str_replace(' ', '', $sName);
-echo "<p> You are working on : $sName</p>";
+
+if ($sName != '-----') {
+    echo "<p> You are working on $sName service</p>";
+} else {
+    echo "<p> Pick a service to start working on</p>";
+}
+if ($inspector->tableExists($queue->getQueueName())) {
+    if ($worker->getMyUser() != NULL) {
+        $myUser = $worker->getMyUser();
+        $uName = $myUser->getUsername();
+        echo "<p> My User : $uName  </p>";
+    }
+    $worker->showQueue($sName);
+} else {
+    if ($worker->getMyUser() != NULL) {
+        $myUser = $worker->getMyUser();
+        $uId = $myUser->getUId();
+        $worker->dropOut($uId);
+    }
+    echo "<p> This queue is empty </p>";
+}
+
+// Show users
 
 // name the queue
 $qDbName = "QUEUE_" . $xwComp . "_" . $xsName;
@@ -24,13 +47,6 @@ $sql = "SELECT * FROM $qDbName JOIN Users ON userId = Users.uId";
 // grab user from worker
 $userInWorker = userInProcess($conn);
 
-// check if there is a line 
-if (!$conn->query($sql) && $userInWorker == false) {
-    $_SESSION["tStart"] = 0;
-    $_SESSION["tEnd"] = 0;
-    echo "<p>There is nobody in the line</p>";
-    exit();
-} 
 
 if ($userInWorker) { // if there is a user being served display it
     $mysql = "SELECT uName FROM Workers JOIN Users ON userId = Users.uId WHERE wId = $wId;";
@@ -38,13 +54,11 @@ if ($userInWorker) { // if there is a user being served display it
     $result = mysqli_query($conn, $mysql);
     $row = mysqli_fetch_assoc($result);
     $uName = $row['uName'];
-    echo"<p>Currently serving $uName<p>";
+    echo "<p>Currently serving $uName<p>";
     echo $_SESSION["tEnd"];
-}else {
-    echo"<p>Press Next to advance the line<p>";
+} else {
+    echo "<p>Press Next to advance the line<p>";
 }
-
-
 
 $result = mysqli_query($conn, $sql);
 

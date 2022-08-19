@@ -82,6 +82,8 @@ class Register extends SQL
         wId INT NOT NULL auto_increment,
         wName VARCHAR(100) NOT NULL,
         wPass VARCHAR(100) NOT NULL,
+        myUser INT DEFAULT NULL,
+        FOREIGN KEY (myUser) REFERENCES Users(uId),
         PRIMARY KEY (wId)
         );";
         $result = $this->createTable($tableName, $tableContents);

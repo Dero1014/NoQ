@@ -7,7 +7,7 @@ class SQL
 
     public function __construct($from = "nobody")
     {
-        echo "I have been called by class: '$from'\n";
+        //echo "I have been called by class: '$from'\n";
         $this->query = $this->connect();
     }
 

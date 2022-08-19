@@ -7,7 +7,7 @@ echo "<h1>Welcome $wName</h1> <br>";
 ?>
 
 <!-- SERVICE SELECTION-->
-<!-- <form action="../includes/workservice.inc.php" method="POST"> -->
+<!-- <form action="../includes/workerservice.inc.php" method="POST"> -->
 <select id="selService" name="services">
     <option>-----</option>
 
@@ -29,9 +29,9 @@ echo "<h1>Welcome $wName</h1> <br>";
     ?>
 </select>
 <br>
-<button type="submit" id="next">NEXT</button>
+<button id="next">NEXT</button>
 <button id="servSelect" name="none">SELECT SERVICE</button>
-
+<button id="drop" name="none">DROP</button>
 <!-- </form> -->
 
 <div id="cont">
@@ -59,9 +59,15 @@ echo "<h1>Welcome $wName</h1> <br>";
         $("#next").click(function() {
             $("#cont").load("../includes/workerservice.inc.php", {
                 servName: value,
-                next:""
             });
         });
         
+        $("#drop").click(function() {
+            $("#cont").load("../includes/workerservice.inc.php", {
+                servName: value,
+                drop:"drop"
+            });
+        });
+
     });
 </script>

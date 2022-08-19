@@ -31,10 +31,10 @@ include_once $pathAuto;
 
 session_start();
 $wComp = $_GET["cn"];
-echo "This company is for " . $wComp;
 $worker = new Worker(0, "find", "", $wComp);
 
 $worker = $_SESSION['worker'];
+
 
 $wId = $_SESSION["workerid"];
 $wName = $_SESSION["workerName"];

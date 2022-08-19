@@ -119,6 +119,11 @@ class Queue extends SQL
         return (int)$row['avgTime'] / 60;
     }
 
+    public function getQueueName()
+    {
+        return $this->qTableName;
+    }
+
     public function getQueueNumber()
     {
         return $this->queueNum;
