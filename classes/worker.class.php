@@ -72,4 +72,39 @@ class Worker extends SQL
             exit();
         }
     }
+
+    // QUEUE PROCESS METHODS
+    public function nextInQueue($sName)
+    {
+        $this->query = $this->connect();
+        $qsTableName = 'QUEUE_' . str_replace(' ', '', $this->wComp). '_' . str_replace(' ', '', $sName);
+        $sql = "SELECT * FROM $qsTableName;";
+        $result = $this->getStmtAll($sql);
+        $target = null;
+        for ($i=0; $i < sizeof($result); $i++) { 
+            if ($result[$i][3] == 0) {
+                $target = $result[$i][2];
+                $sql = "UPDATE $qsTableName SET myTurn = 1 WHERE userId = $target;";
+                $this->updateTable($sql);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function showQueue($sName)
+    {
+        $this->query = $this->connect();
+        $qsTableName = 'QUEUE_' . str_replace(' ', '', $this->wComp). '_' . str_replace(' ', '', $sName);
+        $sql = "SELECT * FROM $qsTableName JOIN Users ON userId = Users.uId;";
+        // Result for name is on 5 just add worker columns and user columns and
+        // stick it next to each other
+        $result = $this->getStmtAll($sql);
+        var_dump($result);
+        for ($i=0; $i < sizeof($result); $i++) { 
+            $uName = $result[$i][5];
+            echo "<p>User: $uName</p>";
+        }
+
+    }
 }

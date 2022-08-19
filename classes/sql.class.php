@@ -161,8 +161,11 @@ class SQL
     }
 
 
-    public function updateTable()
+    public function updateTable(string $command)
     {
+        $stmt = $this->PrepStmt($command);
+
+        return $this->error->tryStmtError(mysqli_stmt_execute($stmt), $stmt);
     }
 
     // FIND A TABLE

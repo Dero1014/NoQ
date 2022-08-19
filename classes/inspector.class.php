@@ -137,10 +137,12 @@ class Inspector extends SQL
     public function workerLoginReady($wComp, $wPass, $cn, $p)
     {
         $words = array($wComp, $wPass);
-        $wTableName =  'WORKERS_' * str_replace(' ', '', $wComp);
+        echo "Company name $wComp \n";
+        $wTableName =  'WORKERS_' . str_replace(' ', '', $wComp);
+        echo "Table name" .$wTableName;
         $result = $this->error->onWorkerLoginError($this->areEmpty($words), 'empty', $cn, $p);
         $result = $this->error->onWorkerLoginError($this->areInvalid($words), 'invalid', $cn, $p);
-        $result = $this->error->onWorkerLoginError($this->tableExists($wTableName), 'companyNonExistent', $cn, $p);
+        $result = $this->error->onWorkerLoginError(!$this->tableExists($wTableName), 'companyNonExistent', $cn, $p);
 
         return $result;
     }

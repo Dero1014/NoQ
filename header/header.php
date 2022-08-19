@@ -49,7 +49,7 @@ if (getcwd() === "/var/www/html") {
                     echo "<a href='https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=Qu=$uId&choe=UTF-8'>Your QR</a>";
                     echo "<a href='../sites/user.site.php'>Service Registration</a>";
                 }
-            }elseif (isset($_SESSION["workerid"])) {
+            }elseif ($worker != NULL) {
                 echo "<a href='../sites/worker.site.php?access=granted'>Working services</a>";
                 echo "<a href='../includes/logout.inc.php'>LogOut</a>";
             } else {

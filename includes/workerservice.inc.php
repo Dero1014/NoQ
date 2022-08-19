@@ -1,12 +1,15 @@
 <?php
+header('Content-type: text/plain');
 include 'connect.inc.php';
 include 'worker.inf.php';
 include 'worker.fnc.php';
+include 'autoloader.inc.php';
+
 session_start();
 
 $userInWorker = false;
-$sName = $_POST['servName'];
-
+$sName = $_POST['servName']; // remember to change it back to servName
+$worker->nextInQueue($sName);
 //Service name
 $xsName = str_replace(' ', '', $sName);
 echo "<p> You are working on : $sName</p>";

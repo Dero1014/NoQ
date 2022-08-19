@@ -7,6 +7,7 @@ echo "<h1>Welcome $wName</h1> <br>";
 ?>
 
 <!-- SERVICE SELECTION-->
+<!-- <form action="../includes/workservice.inc.php" method="POST"> -->
 <select id="selService" name="services">
     <option>-----</option>
 
@@ -22,14 +23,16 @@ echo "<h1>Welcome $wName</h1> <br>";
 
     for ($i=0; $i < sizeof($result); $i++) { 
         $sName = $result[$i][0];
-        echo "<option value='$sName'>$sName</option>";
+        echo "<option  value='$sName'>$sName</option>";
     }
 
     ?>
 </select>
 <br>
-<button id="servSelect">SELECT SERVICE</button>
-<button id="next">NEXT</button>
+<button type="submit" id="next">NEXT</button>
+<button id="servSelect" name="none">SELECT SERVICE</button>
+
+<!-- </form> -->
 
 <div id="cont">
 
@@ -47,16 +50,18 @@ echo "<h1>Welcome $wName</h1> <br>";
 
         // refreshes who is in line every 0.1 seconds
         setInterval(function() {
-            $("#cont").load("../includes/workservice.inc.php", {
+            $("#cont").load("../includes/workerservicetable.inc.php", {
                 servName: value
             });
         }, 100)
 
+        
         $("#next").click(function() {
-            $("#cont").load("../includes/workservice.inc.php", {
+            $("#cont").load("../includes/workerservice.inc.php", {
                 servName: value,
                 next:""
             });
         });
+        
     });
 </script>
