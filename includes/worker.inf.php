@@ -31,13 +31,6 @@ include_once $pathAuto;
 
 session_start();
 $wComp = $_GET["cn"];
-$worker = new Worker(0, "find", "", $wComp);
+$worker;
 
 $worker = $_SESSION['worker'];
-
-
-$wId = $_SESSION["workerid"];
-$wName = $_SESSION["workerName"];
-$wComp = $_SESSION["workercompany"];
-$xwComp = $_SESSION["workercompanywithoutspaces"];
-$cDbName = "COMPANY_" . $xwComp;

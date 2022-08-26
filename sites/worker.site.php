@@ -3,7 +3,7 @@
 <?php
 include '../header/header.php';
 
-// add a safety feature to not allow to go into the page 
+// Added a safety feature to not allow to go into the page 
 // without loging in first
 include '../includes/worker.chk.php';
 
