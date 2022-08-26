@@ -53,21 +53,3 @@ if ($user != NULL) {
         $queue->inQueue($user->getUId());
     }
 }
-
-// Delete
-$uId = $_SESSION["userid"];
-
-// Delete
-$cName; 
-// Delete
-$xcName;
-// Delete
-$cDbName;
-// Delete
-
-// Delete
-if ($uComp === 1) {
-    $cName = $_SESSION["companyname"];
-    $xcName = $_SESSION["companynamewithoutspaces"];
-    $cDbName = "COMPANY_" . $xcName;
-}
