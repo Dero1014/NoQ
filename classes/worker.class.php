@@ -10,6 +10,10 @@ class Worker extends SQL
     private $cTableName;
     private $myUser = null;
 
+    private $timeStart;
+    private $timeEnd;
+    private $time;
+
     public function __construct($wId, $wName, $wPass, $wComp)
     {
         parent::__construct("Worker");
@@ -111,6 +115,7 @@ class Worker extends SQL
                 $sql = "UPDATE $qsTableName SET myTurn = 1 WHERE userId = $target;";
                 $this->updateTable($sql);
                 $this->myUser = $this->findMyUser($target);
+                $this->timerStart();
                 return true;
             }
         }
@@ -196,11 +201,52 @@ class Worker extends SQL
             $this->dropTable($qsTableName);
         }
 
+        // End timer, get result and update service
+        $this->updateServiceTime($this->timerResult($this->timeStart, $this->timerEnd()), $sName);
+
         return true;
     }
 
     public function getQueueName($sName)
     {
         return 'QUEUE_' . str_replace(' ', '', $this->wComp) . '_' . str_replace(' ', '', $sName);;
+    }
+
+    public function getCurrentTime()
+    {
+        return $this->timerResult($this->timeStart, $this->timerEnd());
+    }
+
+    // Service timing
+    private function timerStart()
+    {
+        return $this->timeStart = time();
+    }
+
+    private function timerEnd()
+    {
+        return $this->timeEnd = time();
+    }
+
+    private function timerResult($timeStart, $timeEnd)
+    {
+        return $timeEnd - $timeStart;
+    }
+
+    private function updateServiceTime($time, $sName)
+    {
+        $this->query = $this->connect();
+        // Company name db
+        $cTableName = $this->cTableName;
+
+        $sql = "UPDATE $cTableName SET timeSum = timeSum + $time 
+            WHERE sName = '$sName';";
+
+        $this->updateTable($sql);
+
+        $sql = "UPDATE $cTableName SET avgTime = timeSum / numberOfUsers 
+            WHERE sName = '$sName';";
+
+        $this->updateTable($sql);
     }
 }

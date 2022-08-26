@@ -17,10 +17,9 @@ if (!$inspector->tableExists($queue->getQueueName())) {
     exit();
 }
 
-if (isset($_POST['drop']) ) {
+if (isset($_POST['drop'])) {
     $worker->dropOut($worker->getMyUser()->getUId());
-}else {
+} else {
     $worker->processUser($sName);
     $worker->nextInQueue($sName);
 }
-

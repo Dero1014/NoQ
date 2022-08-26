@@ -24,7 +24,9 @@ if ($inspector->tableExists($queue->getQueueName())) {
     if ($worker->getMyUser() != NULL) {
         $myUser = $worker->getMyUser();
         $uName = $myUser->getUsername();
+        $time = $worker->getCurrentTime();
         echo "<p> My User : $uName  </p>";
+        echo "<p> Time elpased : $time  </p>";
     }
     $worker->showQueue($sName);
 } else {
