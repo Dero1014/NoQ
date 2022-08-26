@@ -4,11 +4,12 @@
         <option>-----</option>
         <?php
         $query = new SQL();
-        $sql = "SELECT cName FROM Companies;";
+        $sql = "SELECT cName, xcName FROM Companies;";
         $result = $query->getStmtAll($sql);
+        
         for ($i=0; $i < sizeof($result); $i++) { 
             $cName = $result[$i][0];
-            $xcName = str_replace(' ', '', $cName);
+            $xcName =  $result[$i][1];
             echo "<option value=$xcName>$cName</option>";
         }
 

@@ -1,5 +1,4 @@
 <?php
-// This site has been ooped
 include 'user.inf.php';
 
 $cName = $company->getCompanyName();
@@ -23,15 +22,3 @@ for ($i = 0; $i < $company->getWorkerLength(); $i++) {
     echo "<td><button type='submit' name='delete' form='deleteform' value='$wId'> Delete </button>";
     echo "</tr>";
 }
-
-/*
-while ($row = mysqli_fetch_assoc($result)) {
-    $wId = $row['wId'];
-    $wName = $row['wName'];
-    echo "<tr>";
-    echo "<td>$wId</td>";
-    echo "<td>$wName</td>";
-    echo "<td><button type='submit' name='delete' form='deleteform' value='$wId'> Delete </button>";
-    echo "</tr>";
-}
-*/

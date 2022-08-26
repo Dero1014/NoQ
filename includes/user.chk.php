@@ -11,7 +11,7 @@ if (!isset($user)) {
     header("Location: ../index.php?error=youAreNotLogedIn");
     exit();
 }
-if ($_SESSION["companyTag"] == 1 || $user->getCompanyTag() == 1) {
+if ($user->getCompanyTag() == 1) {
     header("Location: ../index.php?error=notAUser");
     exit();
 }

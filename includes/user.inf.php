@@ -56,35 +56,26 @@ if ($user != NULL) {
     }
 }
 
+// Delete
 $uId = $_SESSION["userid"];
-$uComp = $_SESSION["companyTag"];
 
+// Delete
 $cName; 
+// Delete
 $xcName;
+// Delete
 $cDbName;
+// Delete
 $qNumber;
 
+// Delete
 if (isset($_SESSION["queue"])) {
     $qNumber = $_SESSION["queue"];
 }
 
+// Delete
 if ($uComp === 1) {
     $cName = $_SESSION["companyname"];
     $xcName = $_SESSION["companynamewithoutspaces"];
     $cDbName = "COMPANY_" . $xcName;
 }
-
-
-
-
-
-
-/*
-$classUser = "/user.class.php";
-$pathUser = "";
-if (str_contains(getcwd(), 'sites') || str_contains(getcwd(), 'includes')) {
-    $pathUser = "../classes";
-}
-$pathUser = $pathUser . $classUser;
-echo $pathUser;
-*/

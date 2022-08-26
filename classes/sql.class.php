@@ -5,7 +5,7 @@ class SQL
     protected mysqli $query;
     protected $error;
 
-    protected $log = true;
+    protected $log = false;
 
     public function __construct($from = "nobody")
     {

@@ -1,7 +1,6 @@
 <?php
 // Display services of the selected company
 
-include 'connect.inc.php';
 include 'autoloader.inc.php';
 
 $query = new SQL();
@@ -12,6 +11,10 @@ $cDbName = "COMPANY_" . $xcName;
 
 $sql = "SELECT * FROM $cDbName";
 $result = $query->getStmtAll($sql);
+
+if (!isset($result[0][0])) {
+    echo "<option> none </option>";
+}
 
 for ($i=0; $i < sizeof($result); $i++) { 
     $sName = $result[$i][1];

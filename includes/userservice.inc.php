@@ -1,5 +1,4 @@
 <?php
-include 'connect.inc.php';
 include 'user.inf.php';
 include 'user.fnc.php';
 

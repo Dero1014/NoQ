@@ -8,8 +8,8 @@ include '../includes/user.chk.php';
 <!-- WELCOME TITLE-->
 <?php
 if (isset($user)) {
-    $name = $user->getUsername();
-    echo "<h1>Welcome user " . $user->getUsername() . "</h1>";
+    $uName = $user->getUsername();
+    echo "<h1>Welcome user $uName</h1>";
 } else {
     echo "<h1>No name exists</h1>";
 }
@@ -17,7 +17,7 @@ if (isset($user)) {
 
 <!-- QUEUE CHECKING -->
 <?php
-// check if user is already in queue
+// Check if user is already in queue
 include '../includes/user.fnc.php';
 //$queue->inQueue($user->getUId());
 ?>
@@ -61,7 +61,7 @@ if (!$result) {
 
         $("#selCompanies").change(function() {
             cNameValue = selComp.value;
-            $("#selServices").load("../includes/services.inc.php", {
+            $("#selServices").load("../includes/pservices.inc.php", {
                 cName: cNameValue
             });
         });

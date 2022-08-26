@@ -71,7 +71,7 @@ class Queue extends SQL
     {
         // Fetch data from Queues
         $sql = "SELECT * FROM Queues WHERE userId = $uId;";
-        echo "started";
+        $this->Log("started");
         $row = $this->getStmtRow($sql);
         if (isset($row['userId'])) {
             $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
@@ -80,7 +80,7 @@ class Queue extends SQL
             $this->positionNum =  $this->getMyPosition($this->qTableName, $this->queueNum);
             $this->myTurn = ($this->getTurn($this->qTableName, $uId) !== 0) ? 1 : 0;
 
-            echo "passes ";
+            $this->Log("passes ");
             return true;
         } else {
             session_start();
@@ -88,7 +88,7 @@ class Queue extends SQL
             unset($_SESSION["inLine"]);
             session_unset($_SESSION["queue"]);
             session_unset($_SESSION["inLine"]);
-            echo "no pass ";
+            $this->Log("no pass ");
             return false;
         }
     }
