@@ -7,12 +7,10 @@ echo "<h1>Welcome $wName</h1> <br>";
 ?>
 
 <!-- SERVICE SELECTION-->
-<!-- <form action="../includes/workerservice.inc.php" method="POST"> -->
 <select id="selService" name="services">
     <option>-----</option>
 
     <?php
-    include '../includes/connect.inc.php';
 
     $query = new SQL();
     $cTableName = 'COMPANY_' . str_replace(' ', '',$worker->getWorkerCompanyName());
@@ -32,7 +30,6 @@ echo "<h1>Welcome $wName</h1> <br>";
 <button id="next">NEXT</button>
 <button id="servSelect" name="none">SELECT SERVICE</button>
 <button id="drop" name="none">DROP</button>
-<!-- </form> -->
 
 <div id="cont">
 

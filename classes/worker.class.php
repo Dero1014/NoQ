@@ -126,8 +126,10 @@ class Worker extends SQL
     {
         $this->query = $this->connect();
         $qsTableName = $this->getQueueName($sName);
+
         // Is a user active
         if ($this->myUser != NULL) {
+            
             // Find out if this user is in the current queue
             $uId = $this->myUser->getUId();
             $sql = "SELECT * FROM $qsTableName WHERE userId = $uId;";
@@ -154,6 +156,7 @@ class Worker extends SQL
     {
         $this->query = $this->connect();
         $wTableName  = $this->wTableName;
+
         // Find the queue the user is in
         $sql = "SELECT * FROM Queues WHERE userId = $uId;";
         $row = $this->getStmtRow($sql);
