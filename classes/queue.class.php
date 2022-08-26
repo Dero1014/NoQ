@@ -93,6 +93,15 @@ class Queue extends SQL
         }
     }
 
+    public function dropQueueTable($qDbName)
+    {
+        // Remove users from queue
+        $this->removeStmtValuesFrom("Queues", "queueName", $qDbName);
+
+        // Remove queue table
+        $this->dropTable($qDbName);
+    }
+
     private function queueFullnes()
     {
         $qTableName = $this->qTableName;

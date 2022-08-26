@@ -5,7 +5,7 @@ class SQL
     protected mysqli $query;
     protected $error;
 
-    private $log = true;
+    protected $log = true;
 
     public function __construct($from = "nobody")
     {
@@ -207,12 +207,16 @@ class SQL
             exit();
         }
 
-        if ($this->log === true)
-        {
-            echo "Statement prepared for: $command\n";
-        }
+        $this->Log("Statement prepared for: $command\n");
 
         return $stmt;
+    }
+
+    protected function Log($string)
+    {
+        if ($this->log) {
+            echo $string;
+        }
     }
 }
 

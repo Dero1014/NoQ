@@ -1,6 +1,6 @@
 <?php
-// OOPED!
 include 'user.inf.php';
+
 $sId = $_POST['delete'];
 $service = $company->getServiceById($sId);
 $sName = $service->getServiceName();

@@ -3,7 +3,7 @@
 <form method="POST">
 
     <?php
-    // this has been oopec
+    // Add a worker to company
     include '../includes/common.fnc.php';
     include '../includes/company.fnc.php';
 

@@ -13,11 +13,13 @@ echo "<th>QR Code</th>";
 echo "</tr>";
 
 for ($i = 0; $i < $company->getServiceLength(); $i++) {
+    
     $service = $company->getService($i);
     $servName = $service->getServiceName();
     $sId = $service->getSId();
     $numberOfUsers = $service->getServiceNumber();
     $avgTime = $service->getServiceTime();
+
     echo "<tr>";
     echo "<td>$servName</td>";
     echo "<td>$numberOfUsers</td>";

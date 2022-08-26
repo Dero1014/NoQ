@@ -137,9 +137,10 @@ class Inspector extends SQL
     public function workerLoginReady($wComp, $wPass, $cn, $p)
     {
         $words = array($wComp, $wPass);
-        echo "Company name $wComp \n";
+        
+        $this->Log("Company name $wComp \n");
         $wTableName =  'WORKERS_' . str_replace(' ', '', $wComp);
-        echo "Table name" .$wTableName;
+        $this->Log("Table name" .$wTableName);
         $result = $this->error->onWorkerLoginError($this->areEmpty($words), 'empty', $cn, $p);
         $result = $this->error->onWorkerLoginError($this->areInvalid($words), 'invalid', $cn, $p);
         $result = $this->error->onWorkerLoginError(!$this->tableExists($wTableName), 'companyNonExistent', $cn, $p);
@@ -160,11 +161,11 @@ class Inspector extends SQL
     {
         for ($i = 0; $i < count($words); $i++) {
             if (empty($words[$i])) {
-                echo "Empty at " . $i . "\n";
+                $this->Log("Empty at " . $i . "\n");
                 return true;
             }
         }
-        echo "Inputs aren't empty\n";
+        $this->Log("Inputs aren't empty\n");
         return false;
     }
 
@@ -179,11 +180,11 @@ class Inspector extends SQL
     {
         for ($i = 0; $i < count($words); $i++) {
             if (preg_match('/[\^£$%&*()}{#~?><>|=_+¬-]/', $words[$i])) {
-                echo "Word: " . $words[$i] . " is empty\n";
+                $this->Log("Word: " . $words[$i] . " is empty\n");
                 return true;
             }
         }
-        echo "Array isn't invalid\n";
+        $this->Log("Array isn't invalid\n");
         return false;
     }
 
@@ -197,11 +198,11 @@ class Inspector extends SQL
     private function isNotEmail($email)
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "Email is invalid $email\n";
+            $this->Log("Email is invalid $email\n");
             return true;
             //header("Location: ../sites/signup.site.php?signup=invalidemail");
         }
-        echo "Email is valid \n";
+        $this->Log("Email is valid \n");
         return false;
     }
 
@@ -225,10 +226,10 @@ class Inspector extends SQL
         $row = $this->getStmtRow($sql);
 
         if ($row[$tData] == $var) {
-            echo "Data [$tData] for $var exists! \n";
+            $this->Log("Data [$tData] for $var exists! \n");
             return true;
         } else {
-            echo "Data [$tData] for $var doesn't exists!\n";
+            $this->Log("Data [$tData] for $var doesn't exists!\n");
             return false;
         }
     }
@@ -245,34 +246,13 @@ class Inspector extends SQL
     {
         if ($result = $this->query->query("SHOW TABLES LIKE '" . $tableName . "'")) {
             if ($result->num_rows == 1) {
-                echo "Table $tableName exists\n";
+                $this->Log("Table $tableName exists\n");
                 return true;
             }
         } else {
-            echo "Table $tableName does not exist\n";
+            $this->Log("Table $tableName does not exist\n");
             return false;
         }
     }
 
-    // Check if an interger exists
-    private function alreadyExistsInt($conn, $int, $dbData, $db)
-    {
-        $sql = "SELECT * FROM $db WHERE $dbData = ?;";
-        $stmt = startPrepStmt($conn, $sql);
-
-        mysqli_stmt_bind_param($stmt, "i", $int);
-        mysqli_stmt_execute($stmt);
-
-        $resultData = mysqli_stmt_get_result($stmt);
-        $row = mysqli_fetch_assoc($resultData);
-        if ($row[$dbData] == $int) {
-            echo "It exists\n";
-            return true;
-        } else {
-            echo "It doesn't exist\n";
-            return false;
-        }
-
-        mysqli_stmt_close($stmt);
-    }
 }
