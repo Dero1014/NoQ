@@ -18,6 +18,5 @@ if (!isset($result[0][0])) {
 
 for ($i=0; $i < sizeof($result); $i++) { 
     $sName = $result[$i][1];
-    $xsName = str_replace(' ', '', $sName);
-    echo "<option value=$xsName>$sName</option>";
+    echo "<option value='$sName'>$sName</option>";
 } 

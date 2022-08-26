@@ -9,8 +9,7 @@
         
         for ($i=0; $i < sizeof($result); $i++) { 
             $cName = $result[$i][0];
-            $xcName =  $result[$i][1];
-            echo "<option value=$xcName>$cName</option>";
+            echo "<option value='$cName'>$cName</option>";
         }
 
         ?>

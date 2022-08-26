@@ -1,7 +1,7 @@
 <?php
 
 // Class for loging in users to the site
-class Log extends SQL
+class Login extends SQL
 {
     public function __construct()
     {
