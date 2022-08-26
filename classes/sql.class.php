@@ -5,6 +5,8 @@ class SQL
     protected mysqli $query;
     protected $error;
 
+    private $log = true;
+
     public function __construct($from = "nobody")
     {
         //echo "I have been called by class: '$from'\n";
@@ -90,7 +92,7 @@ class SQL
             mysqli_stmt_bind_param($stmt, $types, ...$vars);
             $result = $this->error->tryStmtError($stmt->execute(), $stmt);
             $resultData = mysqli_stmt_get_result($stmt);
-            
+
             if ($resultData !== false) {
                 return mysqli_fetch_assoc($resultData);
             } else {
@@ -205,7 +207,11 @@ class SQL
             exit();
         }
 
-        echo "Statement prepared for: $command\n";
+        if ($this->log === true)
+        {
+            echo "Statement prepared for: $command\n";
+        }
+
         return $stmt;
     }
 }
