@@ -5,13 +5,11 @@
 // IS NO ONE IN THE QUEUE                                          //
 header('Content-type: text/plain');
 
-include 'connect.inc.php';
 include 'user.inf.php';
-include 'user.fnc.php';
 include 'autoloader.inc.php';
 
 if (!isset($_POST["queueUp"])) {
-    header("Location: ../user.site.php?error=hacktry");
+    header("Location: ../user.site.php?error=invalidAccess");
     exit();
 }
 $cName = $_POST['companies'];
@@ -19,11 +17,9 @@ $sName = $_POST['services'];
 $uId = $user->getUId();
 
 $inspector = new Inspector();
-echo "olay";
 
 $queue = new Queue();
 
 $inspector->queueReady($sName, $cName, $uId);
 $queue->queueUp($cName, $sName, $uId);
-//queueUp($conn, $cName, $sName, $uId);
 header("Location: ../sites/user.site.php?queueup=success");

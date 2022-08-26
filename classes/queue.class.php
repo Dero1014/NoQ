@@ -31,9 +31,6 @@ class Queue extends SQL
         $this->queueSetup($cName, $sName, $uId);
 
         // Extra variables 
-        $xcName = $this->xcName;
-        $xsName = $this->xsName;
-        $cTableName = $this->cTableName;
         $qTableName = $this->qTableName;
 
         // Check if a queue already exists
@@ -73,6 +70,7 @@ class Queue extends SQL
         $sql = "SELECT * FROM Queues WHERE userId = $uId;";
         $this->Log("started");
         $row = $this->getStmtRow($sql);
+        
         if (isset($row['userId'])) {
             $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
 
@@ -83,11 +81,6 @@ class Queue extends SQL
             $this->Log("passes ");
             return true;
         } else {
-            session_start();
-            unset($_SESSION["queue"]);
-            unset($_SESSION["inLine"]);
-            session_unset($_SESSION["queue"]);
-            session_unset($_SESSION["inLine"]);
             $this->Log("no pass ");
             return false;
         }

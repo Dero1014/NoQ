@@ -16,12 +16,6 @@ if (isset($user)) {
 ?>
 
 <!-- QUEUE CHECKING -->
-<?php
-// Check if user is already in queue
-include '../includes/user.fnc.php';
-//$queue->inQueue($user->getUId());
-?>
-
 <!-- SERVICE SELECT FORM IF USER NOT IN A QUEUE -->
 <?php
 $uId = $user->getUId();
@@ -61,7 +55,7 @@ if (!$result) {
 
         $("#selCompanies").change(function() {
             cNameValue = selComp.value;
-            $("#selServices").load("../includes/pservices.inc.php", {
+            $("#selServices").load("../includes/services.inc.php", {
                 cName: cNameValue
             });
         });

@@ -1,6 +1,5 @@
 <?php
 include 'user.inf.php';
-include 'user.fnc.php';
 
 $uId = $user->getUId();
 
@@ -16,6 +15,7 @@ if ($queue->inQueue($uId)) {
     // Show users position and average wait time
     $qPosition = $queue->getPositionNumber();
     echo "<p >My Current queue is $qPosition</p>";
+
     $avgTime = $queue->getAvgTime();
     if ($avgTime < 1) {
         $avgTime = 1;
@@ -27,5 +27,4 @@ if ($queue->inQueue($uId)) {
 
 } else if ($queue->getMyTurn() !== 1) {
     echo '<script type="text/JavaScript"> location.reload(); </script>';
-    $_SESSION["gotInQueue"] = 0;
 }

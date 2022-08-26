@@ -38,8 +38,6 @@ include_once $pathAuto;
 
 session_start();
 
-$_SESSION["gotInQueue"];
-
 $user = $_SESSION["User"];
 $company;
 $queue = new Queue();
@@ -66,12 +64,6 @@ $xcName;
 // Delete
 $cDbName;
 // Delete
-$qNumber;
-
-// Delete
-if (isset($_SESSION["queue"])) {
-    $qNumber = $_SESSION["queue"];
-}
 
 // Delete
 if ($uComp === 1) {
