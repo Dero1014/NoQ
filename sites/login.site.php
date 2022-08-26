@@ -4,8 +4,8 @@
 include '../header/header.php';
 
 // Can't access if you are already loged in
-if (isset($_SESSION["User"]) ) {
-    header("Location: ../index.php?error=youarelogedin");
+if (isset($_SESSION["User"])) {
+    header("Location: ../index.php?error=youAreLogedIn");
 }
 ?>
 

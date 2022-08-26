@@ -2,10 +2,11 @@
 
 <?php
 include '../header/header.php';
+include '../includes/user.inf.php';
 
 // can't access if you are already loged in
-if (isset($_SESSION["username"])) {
-    header("Location: ../index.php?error=youarelogedin");
+if (isset($_SESSION["User"])) {
+    header("Location: ../index.php?error=youAreLogedIn");
 }
 ?>
 

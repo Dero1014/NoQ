@@ -20,5 +20,6 @@ $json->services = $sName;
 $json->uid = $uId;
 echo json_encode($json);
 
-queueUp($conn, $cName, $sName, $uId);
-header("Location: ../sites/user.site.php?queueup=success");
+$queue = new Queue();
+
+$queue->queueUp($cName, $sName, $uId);

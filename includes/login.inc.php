@@ -1,8 +1,8 @@
 <?php
-// OOPed
 header('Content-type: text/plain');
+
 if (!isset($_POST["submitLog"])) {
-    header("Location: ../sites/login.site.php?signin=youLilShit");
+    header("Location: ../sites/login.site.php?signin=invalidAccess");
     exit();
 }
 

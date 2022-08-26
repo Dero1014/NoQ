@@ -57,7 +57,6 @@ if ($user != NULL) {
 }
 
 $uId = $_SESSION["userid"];
-$uName = $_SESSION["username"];
 $uComp = $_SESSION["companyTag"];
 
 $cName; 

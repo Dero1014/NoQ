@@ -7,12 +7,12 @@
 include '../includes/user.inf.php';
 
 if (!isset($_SESSION['User'])) {
-    header("Location: ../index.php?error=youarenotlogedin");
+    header("Location: ../index.php?error=youAreNotLogedIn");
     exit();
 }
 
 
 if ($user->getCompanyTag() != 1) {
-    header("Location: ../index.php?error=notacompany");
+    header("Location: ../index.php?error=notACompany");
     exit();
 }

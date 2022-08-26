@@ -1,16 +1,15 @@
 <?php
-//OOPed
 header('Content-type: text/plain');
 
-//check if the user hit submit otherwise return them back
+// Check if the user hit submit otherwise return them back
 if (!isset($_POST["submitReg"])) {
-    header("Location: ../site/signup.site.php?signup=youlilshitpt2");
+    header("Location: ../site/signup.site.php?signup=invalidAccess");
     exit();
 }
 
-include_once 'reglog.fnc.php';
 include 'common.fnc.php';
 include 'autoloader.inc.php';
+
 $inspector = new Inspector();
 $uName = $_POST['regUserName'];
 $uPass = $_POST['regUserPass'];
