@@ -33,4 +33,6 @@ session_start();
 $wComp = $_GET["cn"];
 $worker;
 
-$worker = $_SESSION['worker'];
+if (isset($_SESSION['worker'])) {
+    $worker = $_SESSION['worker'];
+}

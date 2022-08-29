@@ -22,6 +22,7 @@ if ($queue->inQueue($uId)) {
         echo "<p >Average wait time is: <$avgTime mins</p>";
     } else {
         $avgTime *= $qPosition;
+        $avgTime = (int) $avgTime;
         echo "<p >Average wait time is: $avgTime mins</p>";
     }
 

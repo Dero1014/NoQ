@@ -19,6 +19,7 @@ $wComp = $_POST['wComp'];
 $wPass = $_POST['wPass'];
 $cn = $_SESSION["cn"];
 $p = $_SESSION["p"];
+    
 $inspector->workerLoginReady($wComp, $wPass, $cn, $p);
 
 // Give access

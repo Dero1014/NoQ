@@ -79,13 +79,16 @@ class Register extends SQL
         // Create worker table
         $tableName = "WORKERS_" . $xcName;
         $tableContents = "(
-        wId INT NOT NULL auto_increment,
-        wName VARCHAR(100) NOT NULL,
-        wPass VARCHAR(100) NOT NULL,
-        myUser INT DEFAULT NULL,
-        FOREIGN KEY (myUser) REFERENCES Users(uId),
-        PRIMARY KEY (wId)
-        );";
+            wId INT NOT NULL auto_increment,
+            wName VARCHAR(100) NOT NULL,
+            wPass VARCHAR(100) NOT NULL,
+            myUser INT DEFAULT NULL,
+            avgTime INT DEFAULT 0,
+            timeSum INT DEFAULT 0,
+            numberOfUsers INT DEFAULT 0,
+            FOREIGN KEY (myUser) REFERENCES Users(uId),
+            PRIMARY KEY (wId)
+            );";
         $result = $this->createTable($tableName, $tableContents);
 
         if ($result) {

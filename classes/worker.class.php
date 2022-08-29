@@ -13,16 +13,40 @@ class Worker extends SQL
     private $timeStart;
     private $timeEnd;
     private $time;
+    private $myAvgTime;
+    private $myNumOfUsers;
+
 
     public function __construct($wId, $wName, $wPass, $wComp)
     {
         parent::__construct("Worker");
-        $this->wId = $wId;
-        $this->wName = $wName;
-        $this->wPass = $wPass;
-        $this->wComp = $wComp;
-        $this->cTableName = 'COMPANY_' . str_replace(' ', '', $wComp);
-        $this->wTableName = 'WORKERS_' . str_replace(' ', '', $wComp);
+        if ($wId != 0) {
+            $this->wId = $wId;
+            $this->wName = $wName;
+            $this->wPass = $wPass;
+            $this->wComp = $wComp;
+            $this->cTableName = 'COMPANY_' . str_replace(' ', '', $wComp);
+            $this->wTableName = 'WORKERS_' . str_replace(' ', '', $wComp);
+            $this->myAvgTime = $this->findAverageTime($wName, $this->wTableName);
+            $this->myNumOfUsers = $this->findNumOfUsers($wName, $this->wTableName);
+        }
+    }
+
+    private function findAverageTime($wName, $wTableName)
+    {
+        $this->query = $this->connect();
+
+        $sql = "SELECT * FROM $wTableName WHERE wName = '$wName'";
+        $row = $this->getStmtRow($sql);
+        return (int)$row['avgTime'];
+    }
+
+    private function findNumOfUsers($wName, $wTableName)
+    {
+        $this->query = $this->connect();
+        $sql = "SELECT * FROM $wTableName WHERE wName = '$wName'";
+        $row = $this->getStmtRow($sql);
+        return $row['numberOfUsers'];
     }
 
     public function getWorkerId()
@@ -43,6 +67,16 @@ class Worker extends SQL
     public function getWorkerPass()
     {
         return $this->wPass;
+    }
+
+    public function getWorkerUserNumber()
+    {
+        return $this->myNumOfUsers;
+    }
+
+    public function getWorkerAverageTime()
+    {
+        return $this->myAvgTime;
     }
 
     public function getWorkerCompanyName()
@@ -129,7 +163,7 @@ class Worker extends SQL
 
         // Is a user active
         if ($this->myUser != NULL) {
-            
+
             // Find out if this user is in the current queue
             $uId = $this->myUser->getUId();
             $sql = "SELECT * FROM $qsTableName WHERE userId = $uId;";
@@ -179,6 +213,9 @@ class Worker extends SQL
         $this->query = $this->connect();
         $qsTableName = $this->getQueueName($sName);
         $cTableName = $this->cTableName;
+        $wTableName = $this->wTableName;
+        $wName = $this->wName;
+
         if ($this->myUser == NULL) {
             return false;
         }
@@ -193,6 +230,10 @@ class Worker extends SQL
         $sql = "UPDATE $cTableName SET numberOfUsers = numberOfUsers + 1 WHERE sName = '$sName';";
         $this->updateTable($sql);
 
+        // Update worker
+        $sql = "UPDATE $wTableName SET numberOfUsers = numberOfUsers + 1 WHERE wName = '$wName';";
+        $this->updateTable($sql);
+
         // Will find a way to use Queue class
         // Get queue table length
         $sql = "SELECT * FROM $qsTableName";
@@ -204,7 +245,7 @@ class Worker extends SQL
             $this->dropTable($qsTableName);
         }
 
-        // End timer, get result and update service
+        // End timer, get result, update service and worker
         $this->updateServiceTime($this->timerResult($this->timeStart, $this->timerEnd()), $sName);
 
         return true;
@@ -239,9 +280,13 @@ class Worker extends SQL
     private function updateServiceTime($time, $sName)
     {
         $this->query = $this->connect();
+
         // Company name db
         $cTableName = $this->cTableName;
+        $wTableName = $this->wTableName;
+        $wName = $this->wName;
 
+        // Update service
         $sql = "UPDATE $cTableName SET timeSum = timeSum + $time 
             WHERE sName = '$sName';";
 
@@ -249,6 +294,17 @@ class Worker extends SQL
 
         $sql = "UPDATE $cTableName SET avgTime = timeSum / numberOfUsers 
             WHERE sName = '$sName';";
+
+        $this->updateTable($sql);
+
+        // Update worker
+        $sql = "UPDATE $wTableName SET timeSum = timeSum + $time 
+            WHERE wName = '$wName';";
+
+        $this->updateTable($sql);
+
+        $sql = "UPDATE $wTableName SET avgTime = timeSum / numberOfUsers 
+            WHERE wName = '$wName';";
 
         $this->updateTable($sql);
     }
