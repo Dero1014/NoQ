@@ -51,12 +51,13 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-    public function loginUserReady($uName, $uPass)
+    public function loginUserReady($uName, $uPass, $mobile = false)
     {
         $words = array($uName, $uPass);
-        $result =  $this->error->onLoginError($this->areEmpty($words), 'empty');
-        $result = $this->error->onLoginError($this->areInvalid($words), 'invalid');
-        $result = $this->error->onLoginError(!$this->alreadyExists($uName, 'uName', 'Users'), 'userNotExist');
+
+        $result =  $this->error->onLoginError($this->areEmpty($words), 'empty',  $mobile);
+        $result = $this->error->onLoginError($this->areInvalid($words), 'invalid',  $mobile);
+        $result = $this->error->onLoginError(!$this->alreadyExists($uName, 'uName', 'Users'), 'userNotExist',  $mobile);
 
         return $result;
     }

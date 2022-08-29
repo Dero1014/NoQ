@@ -9,9 +9,24 @@ class User extends SQL
     private $uCompany;
     private $company;
 
-    public function __construct(int $uId, string $uName, string $uEmail, int $uCompany)
+    // Constructor
+    /**
+     * @brief Constructor for user
+     * @param int  $uId Set to -1 if you don't wanna grab the inputs of the code
+     * @param string  $uName
+     * @param string  $uEmail
+     * @param int  $uCompany
+     * @param bool  $fetchByName
+     * 
+     * @return void
+     */
+    public function __construct(int $uId, string $uName, string $uEmail, int $uCompany, bool $fetchByName = false)
     {
         parent::__construct("User with id $uId");
+
+        if ($fetchByName == true) {
+            $this->fetchUserByName($uName);
+        }
 
         if ($uId != -1) {
             $this->uId = $uId;
@@ -24,6 +39,25 @@ class User extends SQL
                 $this->company = new stdClass();
             }
         }
+    }
+
+    // Fetch User info by name
+    /**
+     * @brief Grabs all of the information about the user
+     * @param string  $uName
+     * 
+     * @return void
+     */
+    private function fetchUserByName($uName)
+    {
+        //get company name
+        $this->query = $this->connect();
+        $sql = "SELECT * FROM Users WHERE uName = '$uName';";
+        $row = $this->getStmtRow($sql);
+        $this->uId = $row['uId'];
+        $this->uName = $row['uName'];
+        $this->uEmail = $row['uEmail'];
+        $this->uCompany = $row['uCompany'];
     }
 
     // Fetch company

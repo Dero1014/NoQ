@@ -14,9 +14,9 @@ class Login extends SQL
      * @param string $uName
      * @param string $uPass
      * 
-     * @return void
+     * @return string
      */
-    public function loginUser($uName, $uPass)
+    public function loginUser($uName, $uPass, $boolReturn = false)
     {
         // Find user
         $sql = "SELECT * FROM Users WHERE uName = '$uName';";
@@ -34,9 +34,9 @@ class Login extends SQL
                 // Log to appropriate site
                 if ($this->sessionSet($row)) {
                     if ($row['uCompany'] == 1) {
-                        return "company.site.php?signin=success&page=service";
+                        return ($boolReturn) ? true : "company.site.php?signin=success&page=service";
                     } else {
-                        return "user.site.php?signin=success";
+                        return ($boolReturn) ? true : "user.site.php?signin=success";
                     }
                     echo "Login success \n";
                     exit();
@@ -44,11 +44,11 @@ class Login extends SQL
                     echo "Session didn't start \n";
                 }
             } else {
-                return "login.site.php?signin=wrongpass";
+                return ($boolReturn) ? false :"login.site.php?signin=wrongpass";
                 exit();
             }
         } else {
-            return "login.site.php?signin=fail";
+            return ($boolReturn) ? false : "login.site.php?signin=fail";
             exit();
         }
     }

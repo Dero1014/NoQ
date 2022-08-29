@@ -70,9 +70,11 @@ class ErrorInfo
      * @param string $returnValue
      * @return bool true
      */
-    public function onLoginError($result, $returnValue)
+    public function onLoginError($result, $returnValue, $mobile = false)
     {
         if ($result == TRUE) {
+            if ($mobile)
+                return FALSE;
             header("Location: ../sites/login.site.php?signin=$returnValue");
             exit();
         } else {
