@@ -46,7 +46,8 @@ if (getcwd() === "/var/www/html") {
                     echo "<a href='../sites/company.site.php?page=service'>Service Management</a>";
                     echo "<a href='../sites/company.site.php?page=worker'>Workers</a>";
                 } else {
-                    echo "<a href='https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=Qu=$uId&choe=UTF-8'>Your QR</a>";
+                    $uId = $user->getUId();
+                    echo "<a href='https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=Qu=$uId;&choe=UTF-8'>Your QR</a>";
                     echo "<a href='../sites/user.site.php'>Service Registration</a>";
                 }
             }elseif ($worker != NULL) {

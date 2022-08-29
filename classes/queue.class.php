@@ -63,13 +63,13 @@ class Queue extends SQL
         $this->queueFullnes();
         return true;
     }
-    
+
     public function inQueue($uId)
     {
         // Fetch data from Queues
         $sql = "SELECT * FROM Queues WHERE userId = $uId;";
         $row = $this->getStmtRow($sql);
-        
+
         if (isset($row['userId'])) {
             $this->queueSetup($row['cName'], $row['sName'], $row['userId']);
 
@@ -208,5 +208,4 @@ class Queue extends SQL
 
         return $myTurn;
     }
-
 }
