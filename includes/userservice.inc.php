@@ -9,9 +9,8 @@ if ($queue->inQueue($uId)) {
     // Is user in turn
     if ($queue->getMyTurn()) {
         echo "<p >You are UP!</p>";
+        echo '<script type="text/JavaScript"> location.reload(); </script>';
         exit();
-    } else {
-        echo "<button type='submit' name='drop' form='dropform'>Drop queue</button>";
     }
 
     // Show users position and average wait time
@@ -28,5 +27,6 @@ if ($queue->inQueue($uId)) {
         echo "<p >Average wait time is: $avgTime mins</p>";
     }
 } else if ($queue->getMyTurn() !== 1) {
+    echo "<p> aaaaaaaaaaaa </p>";
     echo '<script type="text/JavaScript"> location.reload(); </script>';
 }
