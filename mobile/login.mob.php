@@ -8,13 +8,14 @@ if (!isset($_POST["mobileLogin"])) {
 include '../includes/autoloader.inc.php';
 
 $inspector = new Inspector();
+$query = new SQL();
 
 $uName =  $_POST['username'];
 $uPass =  $_POST['password'];
 $json = new stdClass();
 
-$json->username = $uName;
-$json->password = $uPass;
+$json->uName = $uName;
+$json->uPass = $uPass;
 $json->login = "failed";
 
 if ($inspector->loginUserReady($uName, $uPass, true)) {
@@ -32,6 +33,9 @@ if ($inspector->loginUserReady($uName, $uPass, true)) {
     $result = $login->loginUser($uName, $uPass, true);
     if ($result === true) {
         $json->login = "success";
+        $sql = "SELECT uId FROM Users WHERE uName = '$uName'";
+        $row = $query->getStmtRow($sql);
+        $json->uId = $row['uId'];
     }
 }
 

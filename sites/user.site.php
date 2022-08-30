@@ -24,9 +24,7 @@ $result = $queue->inQueue($uId);
 if (!$result) {
     include 'uservice.site.php';
 } else {
-    if (!$queue->getMyTurn()) {
-        echo "<button type='submit' name='drop' form='dropform'>Drop queue</button>";
-    }
+    
     echo "<p id='id' style='display:none'>$uId</p>";
 }
 
