@@ -31,11 +31,11 @@ function areEmpty($words)
 {
     for ($i = 0; $i < count($words); $i++) {
         if (empty($words[$i])) {
-            echo "Yes it is empty ".$i."\n" ;
+            print "Yes it is empty ".$i.PHP_EOL ;
             return true;
         }
     }
-    echo "No it isn't empty\n";
+    print "No it isn't empty" . PHP_EOL;
 }
 
 // check if the input is invalid
@@ -43,11 +43,11 @@ function invalidInput($words)
 {
     for ($i = 0; $i < count($words); $i++) {
         if (preg_match('/[\^£$%&*()}{#~?><>|=_+¬-]/', $words[$i])) {
-            echo "it's invalid\n";
+            echo "it's invalid" . PHP_EOL;
             return true;
         }
     }
-    echo "it's not invalid\n";
+    print "it's not invalid" . PHP_EOL;
 }
 
 // check if A STRING already exists
@@ -62,10 +62,10 @@ function alreadyExists($conn, $string, $dbData, $db)
     $resultData = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_assoc($resultData);
     if ($row[$dbData] == $string) {
-        echo "It exists\n";
+        print "It exists" . PHP_EOL;
         return true;
     } else {
-        echo "It doesn't exist\n";
+        print "It doesn't exist" . PHP_EOL;
         return false;
     }
 
@@ -83,10 +83,10 @@ function alreadyExistsInt($conn, $int, $dbData, $db)
     $resultData = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_assoc($resultData);
     if ($row[$dbData] == $int) {
-        echo "It exists\n";
+        print "It exists" . PHP_EOL;
         return true;
     } else {
-        echo "It doesn't exist\n";
+        print "It doesn't exist" . PHP_EOL;
         return false;
     }
 

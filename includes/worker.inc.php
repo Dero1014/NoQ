@@ -2,36 +2,26 @@
 // File worker.inc.php is a file that gets users login data //
 // and checks if the user exists or not by comparing the    //
 // random generated password with the company it's ment for //
-
-include 'connect.inc.php';
-include 'common.fnc.php';
-include 'worker.fnc.php';
+header('Content-type: text/plain');
+include 'autoloader.inc.php';
 include 'worker.inf.php';
 
-if (isset($_POST["login"])) {
-    header("Location: ../sites/worker.site.php?error=wrongpass");
-    // GET VALUES //
-    $wPass = $_POST['wPass'];
-    $wComp = $_POST['wComp'];
-    $words = array($wPass, $wComp);
-
-
-    // ERROR HANDLERS //
-    // check if empty 
-    if (areEmpty($words)) {
-        header("Location: ../sites/index.site.php?error=empty");
-        exit();
-    }
-
-    // check if the inputs are valid
-    if (invalidInput($words)) {
-        header("Location: ../sites/index.site.php?error=invalidname");
-        exit();
-    }
-
-    // give access
-    access($conn, $wPass, $wComp);
+if (!isset($_POST["login"])) {
+    header("Location: ../sites/worker.site.php?login=invalidAccess");
     exit();
 }
 
+$inspector = new Inspector();
+$worker = new Worker(0, 0, 0, 0);
 
+// GET VALUES //
+$wComp = $_POST['wComp'];
+$wPass = $_POST['wPass'];
+$cn = $_SESSION["cn"];
+$p = $_SESSION["p"];
+    
+$inspector->workerLoginReady($wComp, $wPass, $cn, $p);
+
+// Give access
+$worker->logIn($wComp, $wPass, $cn, $p);
+exit();

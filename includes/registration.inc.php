@@ -1,16 +1,16 @@
 <?php
+header('Content-type: text/plain');
 
-//check if the user hit submit otherwise return them back
+// Check if the user hit submit otherwise return them back
 if (!isset($_POST["submitReg"])) {
-    header("Location: ../site/signup.site.php?signup=youlilshitpt2");
+    header("Location: ../site/signup.site.php?signup=invalidAccess");
     exit();
 }
 
-include 'connect.inc.php';
-include 'reglog.fnc.php';
 include 'common.fnc.php';
+include 'autoloader.inc.php';
 
-
+$inspector = new Inspector();
 $uName = $_POST['regUserName'];
 $uPass = $_POST['regUserPass'];
 $uEmail = $_POST['regUserEmail'];
@@ -18,49 +18,17 @@ $uCompany = checkSet($_POST['regUserCompany']);
 
 $cName;
 $cDesc;
-$words;
 
 if ($uCompany === 1) {
     $cName = $_POST['regCompName'];
     $cDesc = $_POST['regCompDesc'];
-    $words = array($uName, $uPass, $uEmail, $cName, $cDesc);
-    echo "he has a comsany\n";
-} else {
-    $words = array($uName, $uPass, $uEmail);
-}
+    echo "He has a company \n";
+} 
 
 // error handlers
-// check if anything is empty
-if (areEmpty($words)) {
-    header("Location: ../sites/signup.site.php?signup=empty");
-    exit();
+if ($inspector->registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)) {
+    // If no errors are found continue
+    $register = new Register();
+    $register->addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc);
+    header("Location: ../sites/signup.site.php?signup=success");
 }
-
-// check if the inputs are valid
-if (invalidInput($words)) {
-    header("Location: ../sites/signup.site.php?signup=invalidinput");
-    exit();
-}
-
-//check if the mail is valid
-if (!filter_var($uEmail, FILTER_VALIDATE_EMAIL)) {
-    echo "invalid email $uEmail\n";
-    header("Location: ../sites/signup.site.php?signup=invalidemail");
-    exit();
-}
-
-//check if the user already exists
-if (alreadyExists($conn, $uName, "uName", "Users") || alreadyExists($conn, $uEmail, "uEmail", "Users")) {
-    header("Location: ../sites/signup.site.php?signup=userexists");
-    exit();
-}
-
-if (companyExists($conn, $cName)) {
-    header("Location: ../sites/signup.site.php?signup=companyexists");
-    exit();
-}
-
-// If no errors are found continue
-
-addUser($conn, $uName, $uPass, $uEmail, $uCompany, $cName, $cDesc);
-header("Location: ../sites/signup.site.php?signup=success");

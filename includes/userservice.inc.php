@@ -1,26 +1,31 @@
 <?php
-
-include 'connect.inc.php';
 include 'user.inf.php';
-include 'user.fnc.php';
 
-$uId = (int)$_POST['userId'];
-checkQueue($conn, $uId);
+$uId = $user->getUId();
 
-$inQueue = $_SESSION["gotInQueue"] ;
-if (isset($_SESSION['queue'])) {
-    echo "<p >My Current queue is $qNumber</p>";
-    $avgTime = getAvgTime($conn, $uId);
+// Is user in queue
+if ($queue->inQueue($uId)) {
+
+    // Is user in turn
+    if ($queue->getMyTurn()) {
+        echo "<p >You are UP!</p>";
+        exit();
+    }
+
+    // Show users position and average wait time
+    $qPosition = $queue->getPositionNumber();
+    echo "<p >My Current queue is $qPosition</p>";
+
+    $avgTime = $queue->getAvgTime();
     if ($avgTime < 1) {
         $avgTime = 1;
         echo "<p >Average wait time is: <$avgTime mins</p>";
-    }else {
-        $avgTime *= $qNumber;
+    } else {
+        $avgTime *= $qPosition;
+        $avgTime = (int) $avgTime;
         echo "<p >Average wait time is: $avgTime mins</p>";
     }
-}else if (isset($_SESSION['inLine'])) {
-    echo "<p >You are UP!</p>";
-}else if($_SESSION["gotInQueue"] == 1){
+
+} else if ($queue->getMyTurn() !== 1) {
     echo '<script type="text/JavaScript"> location.reload(); </script>';
-    $_SESSION["gotInQueue"] = 0;
 }

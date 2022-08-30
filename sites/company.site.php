@@ -2,13 +2,16 @@
 
 <?php
 include '../header/header.php';
-// inaccessible if the user isn't from a company or loged in
+
+// Inaccessible if the user isn't from a company or loged in
+include '../includes/user.inf.php';
 include '../includes/company.chk.php';
 ?>
 
 <!-- COMPANY WELCOME TITLE -->
 <?php
-$info ="Info";
+$cName = $company->getCompanyName();
+$uName = $user->getUsername();
 echo "<h1>Welcome to your company $cName user $uName <h1>";
 
 // SELECT WHICH PAGE IS BEING USED

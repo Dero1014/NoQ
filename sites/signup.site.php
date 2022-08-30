@@ -2,10 +2,11 @@
 
 <?php
 include '../header/header.php';
+include '../includes/user.inf.php';
 
 // can't access if you are already loged in
-if (isset($_SESSION["username"])) {
-    header("Location: ../index.php?error=youarelogedin");
+if (isset($_SESSION["User"])) {
+    header("Location: ../index.php?error=youAreLogedIn");
 }
 ?>
 
@@ -31,21 +32,34 @@ if (isset($_SESSION["username"])) {
 <?php
 // Shows error messages depending on the error submited
 if (isset($_GET['signup'])) {
-    if ($_GET['signup'] == "invalidemail") {
-        echo "<p>Email is invalid</p>";
+
+    switch ($_GET['signup']) {
+        case 'invalidMail':
+            echo "<p>Email is invalid</p>";
+            break;
+        case 'companyExists':
+            echo "<p>Company already exists</p>";
+            break;    
+        case 'userExists':
+            echo "<p>User already exists</p>";
+            break;
+        case 'mailExists':
+            echo "<p>Email already exists</p>";
+            break;
+        case 'invalid':
+            echo "<p>You entered invalid input</p>";
+            break;
+        case 'empty':
+            echo "<p>You didn't fill up the form</p>";
+            break;
+        case 'success':
+            echo "<p>You have signed up!</p>";
+            break;
+        default:
+            # code...
+            break;
     }
-    if ($_GET['signup'] == "userexists") {
-        echo "<p>User already exists</p>";
-    }
-    if ($_GET['signup'] == "invalidinput") {
-        echo "<p>You entered invalid input</p>";
-    }
-    if ($_GET['signup'] == "empty") {
-        echo "<p>You didn't fill up the form</p>";
-    }
-    if ($_GET['signup'] == "success") {
-        echo "<p>You have signed up!</p>";
-    }
+
 }
 ?>
 

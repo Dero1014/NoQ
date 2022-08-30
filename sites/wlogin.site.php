@@ -1,5 +1,6 @@
 <!-- Login page if the worker hasn't loged in -->
 <?php 
+include '../includes/worker.inf.php';
 
 session_start();
 

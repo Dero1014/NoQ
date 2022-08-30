@@ -2,6 +2,7 @@
 
 <!-- WELCOME TITLE -->
 <?php
+$wName = $worker->getWorkerName();
 echo "<h1>Welcome $wName</h1> <br>";
 ?>
 
@@ -10,21 +11,25 @@ echo "<h1>Welcome $wName</h1> <br>";
     <option>-----</option>
 
     <?php
-    include '../includes/connect.inc.php';
 
+    $query = new SQL();
+    $cTableName = 'COMPANY_' . str_replace(' ', '',$worker->getWorkerCompanyName());
+    
     // select service
-    $sql = "SELECT sName FROM $cDbName";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT sName FROM $cTableName";
+    $result = $query->getStmtAll($sql);
 
-    while ($row = mysqli_fetch_array($result)) {
-        $sName = $row['sName'];
-        echo "<option value='$sName'>$sName</option>";
+    for ($i=0; $i < sizeof($result); $i++) { 
+        $sName = $result[$i][0];
+        echo "<option  value='$sName'>$sName</option>";
     }
+
     ?>
 </select>
 <br>
-<button id="servSelect">SELECT SERVICE</button>
 <button id="next">NEXT</button>
+<button id="servSelect" name="none">SELECT SERVICE</button>
+<button id="drop" name="none">DROP</button>
 
 <div id="cont">
 
@@ -42,16 +47,24 @@ echo "<h1>Welcome $wName</h1> <br>";
 
         // refreshes who is in line every 0.1 seconds
         setInterval(function() {
-            $("#cont").load("../includes/workservice.inc.php", {
+            $("#cont").load("../includes/workerservicetable.inc.php", {
                 servName: value
             });
         }, 100)
 
+        
         $("#next").click(function() {
-            $("#cont").load("../includes/workservice.inc.php", {
+            $("#cont").load("../includes/workerservice.inc.php", {
                 servName: value,
-                next:""
             });
         });
+        
+        $("#drop").click(function() {
+            $("#cont").load("../includes/workerservice.inc.php", {
+                servName: value,
+                drop:"drop"
+            });
+        });
+
     });
 </script>

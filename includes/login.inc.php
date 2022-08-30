@@ -1,34 +1,19 @@
 <?php
+header('Content-type: text/plain');
 
 if (!isset($_POST["submitLog"])) {
-    header("Location: ../sites/login.site.php?signin=youLilShit");
+    header("Location: ../sites/login.site.php?signin=invalidAccess");
     exit();
 }
 
-include 'connect.inc.php';
-include 'reglog.fnc.php';
-include 'common.fnc.php';
+include 'autoloader.inc.php';
 
+$inspector = new Inspector();
 $uName =  $_POST['logUserName'];
 $uPass =  $_POST['logUserPass'];
-echo $uName."\n";
-echo $uPass."\n";
-//check if input is empty
-$words = array($uName, $uPass);
-if (areEmpty($words)) {
-    header("Location: ../sites/login.site.php?signin=empty");
-    exit();
-}
 
-//check if the input is alright
-if (invalidInput($words)) {
-    header("Location: ../sites/login.site.php?signin=invalidinput");
-    exit();
+if ($inspector->loginUserReady($uName, $uPass)) {
+    $login = new Login();
+    $result = $login->loginUser($uName, $uPass);
+    header("Location: ../sites/$result");
 }
-
-if (alreadyExists($conn, $uName, "uName", "Users") != true){
-    header("Location: ../sites/user.site.php?signin=fail");
-    exit();
-}
-
-loginUser($conn, $uName, $uPass);

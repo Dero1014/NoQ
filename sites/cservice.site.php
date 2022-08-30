@@ -8,7 +8,7 @@
 </form>
 
 <!-- FORM THAT IS CONNECTED WITH THE DELETE BUTTONS -->
-<!-- the form is used to activate the action to delete the service -->
+<!-- This form is used to activate the action to delete the service -->
 <form id="deleteform" action="../includes/servicedelete.inc.php" method="POST"></form>
 
 <!-- SERVICE TABLE TO MANAGE-->

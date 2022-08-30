@@ -7,33 +7,35 @@ include '../includes/user.chk.php';
 
 <!-- WELCOME TITLE-->
 <?php
-if (isset($_SESSION["username"])) {
-    $name = $_SESSION["username"];
-    echo "<h1>Welcome user $name</h1>";
+if (isset($user)) {
+    $uName = $user->getUsername();
+    echo "<h1>Welcome user $uName</h1>";
 } else {
     echo "<h1>No name exists</h1>";
 }
 ?>
-<!-- QUEUE CHECKING -->
-<?php
-// check if user is already in queue
-include '../includes/user.fnc.php';
-include '../includes/connect.inc.php';
-checkQueue($conn, $uId);
-?>
 
+<!-- QUEUE CHECKING -->
 <!-- SERVICE SELECT FORM IF USER NOT IN A QUEUE -->
 <?php
-if (!isset($_SESSION["queue"]) && !isset($_SESSION["inLine"])) {
+$uId = $user->getUId();
+$result = $queue->inQueue($uId);
+
+if (!$result) {
     include 'uservice.site.php';
+} else {
+    if (!$queue->getMyTurn()) {
+        echo "<button type='submit' name='drop' form='dropform'>Drop queue</button>";
+    }
+    echo "<p id='id' style='display:none'>$uId</p>";
 }
+
 ?>
 
+<form id="dropform" action="../includes/dropqueue.inc.php" method="POST"></form>
+
 <!-- USER IN QUEUE -->
-<?php
-    echo"<p id='id' style='display:none'>$uId</p>";
-?>
-<DIV id ='queueInfo' ></DIV>
+<DIV id='queueInfo'></DIV>
 
 </body>
 
@@ -43,7 +45,7 @@ if (!isset($_SESSION["queue"]) && !isset($_SESSION["inLine"])) {
 <script>
     var selComp = document.getElementById("selCompanies");
     var div = document.getElementById("id");
-    var compValue;
+    var cNameValue;
     var uId;
     $(document).ready(function() {
         setInterval(function() {
@@ -54,9 +56,9 @@ if (!isset($_SESSION["queue"]) && !isset($_SESSION["inLine"])) {
         }, 100)
 
         $("#selCompanies").change(function() {
-            compValue = selComp.value;
+            cNameValue = selComp.value;
             $("#selServices").load("../includes/services.inc.php", {
-                compName: compValue
+                cName: cNameValue
             });
         });
     });

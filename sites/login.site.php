@@ -3,9 +3,9 @@
 <?php
 include '../header/header.php';
 
-// can't access if you are already loged in
-if (isset($_SESSION["username"])) {
-    header("Location: ../index.php?error=youarelogedin");
+// Can't access if you are already loged in
+if (isset($_SESSION["User"])) {
+    header("Location: ../index.php?error=youAreLogedIn");
 }
 ?>
 
@@ -22,17 +22,25 @@ if (isset($_SESSION["username"])) {
 
 <!-- ERROR MESSAGES -->
 <?php
-// Shows error messages depending on the error submited
+
 if (isset($_GET['signin'])) {
-    $signin = $_GET['signin'];
-    if ($signin == "empty") {
-        echo "<p>Fill in the input fields!</p>";
-    } elseif ($signin == "invalidinput") {
-        echo "<p>Invalid character found!</p>";
-    } elseif ($signin == "wrongpass") {
-        echo "<p>Wrong password!</p>";
-    } elseif ($signin == "fail") {
-        echo "<p>Wrong user!</p>";
+
+    switch ($_GET['signin']) {
+        case 'userNotExist':
+            echo "<p>User doesn't exist</p>";
+            break;
+        case 'invalid':
+            echo "<p>You entered invalid input</p>";
+            break;
+        case 'empty':
+            echo "<p>You didn't fill up the form</p>";
+            break;
+        case 'success':
+            echo "<p>You have loged in!</p>";
+            break;
+        default:
+            # code...
+            break;
     }
 }
 ?>

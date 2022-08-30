@@ -1,29 +1,26 @@
 <?php
-
-include 'connect.inc.php';
 include 'user.inf.php';
-$sName = $_POST['delete'];
 
-$xsName = str_replace(' ','',$sName);
+$sId = $_POST['delete'];
+$service = $company->getServiceById($sId);
+$sName = $service->getServiceName();
 
-// queue db name
-$qDbName = "QUEUE_" . $xcName . "_" . $xsName;
+$queue = new Queue();
+$inspector = new Inspector();
 
-// remove users from queues
-$sql = "DELETE FROM Queues WHERE queueName = '$qDbName'";
-$result = mysqli_query($conn, $sql);
+// Company table name
+$cDbName = $company->getCompanyTableName();
 
-// remove queue if queue exists
-$sql = "SELECT * FROM $qDbName;";
+// Queue table name
+$qDbName = $company->getServiceQueueTableName($sId);
 
-if ($conn->query($sql)) {
-    $sql = "DROP TABLE $qDbName;";
-    $result = mysqli_query($conn, $sql);
+// Remove any data about the queue
+if ($inspector->serviceDeletionReady($qDbName)) {
+    $queue->dropQueueTable($qDbName);
 }
 
-// remove service
-$sql = "DELETE FROM $cDbName WHERE sName = '$sName'";
-$result = mysqli_query($conn, $sql);
+// Remove service
+$company->removeService($sId);
 
 $page = "page=service";
 

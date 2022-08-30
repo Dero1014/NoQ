@@ -4,10 +4,9 @@
 // QUEUE_[companyname]_[service] AND IT WILL BE DELETED IF THERE   //
 // IS NO ONE IN THE QUEUE                                          //
 
-include 'connect.inc.php';
-include 'user.fnc.php';
+include 'autoloader.inc.php';
 
-echo("Start \n\r");
+echo ("Start \n\r");
 //_POST
 $cName = $_POST['companies'];
 $sName = $_POST['services'];
@@ -18,7 +17,19 @@ $json = new stdClass();
 $json->companies = $cName;
 $json->services = $sName;
 $json->uid = $uId;
+$json->result = "Did not pass ";
+
+
+$queue = new Queue();
+
+
+if (!$queue->inQueue($uId)) {
+    echo ("\nQueuing... \n\r");
+    $json->result = "Passed";
+    $queue->queueUp($cName, $sName, $uId);
+}
+
 echo json_encode($json);
 
-queueUp($conn, $cName, $sName, $uId);
-header("Location: ../sites/user.site.php?queueup=success");
+
+
