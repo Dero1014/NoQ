@@ -53,6 +53,7 @@ class Inspector extends SQL
 
     /**
      * @brief Checks if the data that is being provided is valid for login of a user
+     * it already checks if the user exists or not in the database
      * @param string $uName - username
      * @param string $uPass - password
      * @param bool $mobile - changes the type of data being returned by the 

@@ -27,7 +27,7 @@ if (isset($_GET['signin'])) {
 
     switch ($_GET['signin']) {
         case 'userNotExist':
-            echo "<p>User doesn't exist</p>";
+            echo "<p>Username or password was wrong</p>";
             break;
         case 'invalid':
             echo "<p>You entered invalid input</p>";
@@ -35,6 +35,9 @@ if (isset($_GET['signin'])) {
         case 'empty':
             echo "<p>You didn't fill up the form</p>";
             break;
+        case 'wrongPass':
+            echo "<p>Username or password was wrong</p>";
+            break;    
         case 'success':
             echo "<p>You have loged in!</p>";
             break;
