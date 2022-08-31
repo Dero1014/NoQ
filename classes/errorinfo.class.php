@@ -1,22 +1,20 @@
 <?php
-
+/**
+ * @brief Handles any errors in a way that it would stop the
+ * code or to display it to the user
+ */
 class ErrorInfo
 {
-    private $errorMsg;
-    private $errorStatus;
 
-    public function setError($errorMessage, $errorStatus)
-    {
-        $this->errorMsg = $errorMessage;
-        $this->errorStatus = $errorStatus;
-    }
+    // Methods:
+    //  Public:
 
-    // SPECIFICLY POINTS OUT STATEMENT SQL COMMANDS ERRORS
     /**
      * @brief Points out if a statement didn't work
-     * @param bool $result
-     * @param mysqli_stmt $stmt
-     * @return bool true
+     * @param bool $result - result of a statement execution
+     * @param mysqli_stmt $stmt - the statement that was used
+     * @return bool true if it succeeds or it stops the code
+     * and displays the error on why the statement failed
      */
     public function tryStmtError($result, $stmt)
     {
@@ -28,29 +26,15 @@ class ErrorInfo
         }
     }
 
-    // SPECIFICLY POINTS OUT IF THERE IS A RETURN VALUE OR NOT
     /**
-     * @brief Points out if a return value is null
-     * @param bool $result
-     * @param mysqli_stmt $stmt
-     * @return bool true
-     */
-    public function tryStmtReturnValue($result, $stmt)
-    {
-        if ($result == NULL) {
-            die("Returned value was null: " + mysqli_stmt_error($stmt));
-        } else {
-            // ERROR HAS PASSED
-            return TRUE;
-        }
-    }
-
-    // Points out any error for registration
-    /**
-     * @brief Catches an error for registration and returns it to the site
-     * @param bool $result
-     * @param string $returnValue
-     * @return bool true
+     * @brief Catches an error for registration and returns 
+     * it to the site for proper display
+     * @param bool $result - result on checking if registration data
+     * is valid
+     * @param string $returnValue - use this value to send back to site
+     * in case of a fail
+     * @return bool true if it passes otherwise it returns back to the
+     * signup page with the error value
      */
     public function onRegisterError($result, $returnValue)
     {
@@ -63,12 +47,16 @@ class ErrorInfo
         }
     }
 
-    // Points out any error for login
     /**
-     * @brief Catches an error for login and returns it to the site
-     * @param bool $result
-     * @param string $returnValue
-     * @return bool true
+     * @brief Catches an error for login and returns 
+     * it to the site for proper display
+     * @param bool $result - result on checking if login data is valid
+     * @param string $returnValue - use this value to send back to site
+     * in case of a fail
+     * @param $mobile in case the login is comming from a mobile device
+     * @return bool true if it passes otherwise it returns back to the
+     * login page with the error value or false if it's being called 
+     * from a mobile device
      */
     public function onLoginError($result, $returnValue, $mobile = false)
     {
@@ -83,12 +71,14 @@ class ErrorInfo
         }
     }
 
-    // Points out any error for service adding
     /**
-     * @brief Catches an error for service adding and returns it to the site
-     * @param bool $result
-     * @param string $returnValue
-     * @return bool true
+     * @brief Catches an error for adding a service to the company and
+     * returns it to the site for proper display
+     * @param bool $result- result on checking if data is valid
+     * @param string $returnValue - use this value to send back to site
+     * in case of a fail
+     * @return bool true if it succeeds otherwise return it to the site
+     * with the error value
      */
     public function onServiceError($result, $returnValue)
     {
@@ -101,12 +91,14 @@ class ErrorInfo
         }
     }
 
-    // Points out any error for worker adding
     /**
-     * @brief Catches an error for worker adding and returns it to the site
-     * @param bool $result
-     * @param string $returnValue
-     * @return bool true
+     * @brief Catches an error for addding a worker to the company and 
+     * returns it to the site for proper display
+     * @param bool $result - result on checking if data is valid
+     * @param string $returnValue - use this value to send back to site
+     * in case of a fail
+     * @return bool true if it succeeds otherwise return it to the site
+     * with the error value
      */
     public function onWorkerError($result, $returnValue)
     {
@@ -119,12 +111,14 @@ class ErrorInfo
         }
     }
 
-    // Points out any error for queue start
     /**
-     * @brief Catches an error for queue start and returns it to the site
-     * @param bool $result
-     * @param string $returnValue
-     * @return bool true
+     * @brief Catches an error for starting a queue and returns it to 
+     * the site for proper display
+     * @param bool $result - result on checking if data is valid
+     * @param string $returnValue - use this value to send back to site
+     * in case of a fail
+     * @return bool true if it succeeds otherwise return it to the site
+     * with the error value
      */
     public function onQueueError($result, $returnValue)
     {
@@ -137,12 +131,14 @@ class ErrorInfo
         }
     }
 
-    // Points out any error for worker login
     /**
-     * @brief Catches an error for worker login and returns it to the site
-     * @param bool $result
-     * @param string $returnValue
-     * @return bool true
+     * @brief Catches an error for login of a worker and returns it to
+     * the site
+     * @param bool $result - result on checking if data is valid
+     * @param string $returnValue - use this value to send back to site
+     * in case of a fail
+     * @return bool true if it succeeds otherwise return it to the site
+     * with the error value
      */
     public function onWorkerLoginError($result, $returnValue, $cn = "none", $p = "none")
     {
