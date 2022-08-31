@@ -38,12 +38,11 @@ class Register extends SQL
         // Add user to table Users
         $this->setStmtValues("sssi", $sql, array($uName, $hashedPwd, $uEmail, $uCompany));
 
-        echo "Registration successfull \n";
+        $this->Log("Registration successfull \n");
 
         // If user has a company add it
-        if ($uCompany === 1) {
+        if ($uCompany === 1)
             $this->addCompany($uName, $cName, $cDesc);
-        }
     }
 
     /**
@@ -101,10 +100,9 @@ class Register extends SQL
             );";
         $result = $this->createTable($tableName, $tableContents);
 
-        if ($result) {
+        if ($result)
             $this->Log("Table has been created \n");
-        } else {
+        else
             die("error creating table");
-        }
     }
 }

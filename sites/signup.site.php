@@ -4,7 +4,7 @@
 include '../header/header.php';
 include '../includes/user.inf.php';
 
-// can't access if you are already loged in
+// Can't access if you are already loged in
 if (isset($_SESSION["User"])) {
     header("Location: ../index.php?error=youAreLogedIn");
 }
@@ -32,7 +32,6 @@ if (isset($_SESSION["User"])) {
 <?php
 // Shows error messages depending on the error submited
 if (isset($_GET['signup'])) {
-
     switch ($_GET['signup']) {
         case 'invalidMail':
             echo "<p>Email is invalid</p>";
@@ -59,7 +58,6 @@ if (isset($_GET['signup'])) {
             # code...
             break;
     }
-
 }
 ?>
 

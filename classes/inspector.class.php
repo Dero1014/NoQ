@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief Inspects incoming values to see if they are applicable
  * for current istuations
@@ -30,11 +31,10 @@ class Inspector extends SQL
      */
     public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
     {
-        if ($uCompany === 1) {
+        if ($uCompany === 1)
             $words = array($uName, $uPass, $uEmail, $cName, $cDesc);
-        } else {
+        else
             $words = array($uName, $uPass, $uEmail);
-        }
 
         // Set table company name
         $xcName = str_replace(' ', '', $cName);
