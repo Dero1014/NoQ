@@ -1,7 +1,7 @@
 <?php
 header('Content-type: text/plain');
 
-// Check if the user hit submit otherwise return them back
+// Restrict access to the file if it's not valid
 if (!isset($_POST["submitReg"])) {
     header("Location: ../site/signup.site.php?signup=invalidAccess");
     exit();

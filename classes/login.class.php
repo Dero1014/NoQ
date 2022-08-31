@@ -41,15 +41,15 @@ class Login extends SQL
 
             // Start session and log to the appropriate site (user or company)
             if ($this->sessionSet($row)) {
-                if ($row['uCompany'] == 1) {
+                if ($row['uCompany'] == 1) 
                     return ($mobile) ? true : "company.site.php?signin=success&page=service";
-                } else {
+                else 
                     return ($mobile) ? true : "user.site.php?signin=success";
-                }
-                echo "Login success \n";
+                
+                $this->Log("Login success \n");
                 exit();
             } else {
-                echo "Session didn't start \n";
+                $this->Log("Session didn't start \n");
             }
         } else {
             return ($mobile) ? false :"login.site.php?signin=wrongPass";

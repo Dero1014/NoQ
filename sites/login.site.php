@@ -24,7 +24,6 @@ if (isset($_SESSION["User"])) {
 <?php
 
 if (isset($_GET['signin'])) {
-
     switch ($_GET['signin']) {
         case 'userNotExist':
             echo "<p>Username or password was wrong</p>";

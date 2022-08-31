@@ -1,6 +1,7 @@
 <?php
 header('Content-type: text/plain');
 
+// Restrict access to the file if it's not valid
 if (!isset($_POST["submitLog"])) {
     header("Location: ../sites/login.site.php?signin=invalidAccess");
     exit();
