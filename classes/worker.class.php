@@ -242,6 +242,29 @@ class Worker extends SQL
         exit();
     }
 
+    /**
+     * @brief Returns User object
+     * 
+     * @return |null|User
+     */
+    public function userExistsInWorker()
+    {
+        $this->query = $this->connect();
+        $wTableName = $this->wTableName;
+        $wName = $this->wName;
+
+        $sql = "SELECT * FROM $wTableName WHERE wName = '$wName';";
+        $row = $this->getStmtRow($sql);
+
+        if (isset($row["myUser"])) {
+            $this->findMyUser($row["myUser"]);
+        }else {
+            $this->myUser = NULL;
+        }
+
+        return $this->myUser;
+    }
+
     //      Worker GETS:
 
     /**

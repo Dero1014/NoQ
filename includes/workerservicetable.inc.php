@@ -1,5 +1,6 @@
 <?php
 header('Content-type: text/plain');
+
 include 'worker.inf.php';
 include 'autoloader.inc.php';
 
@@ -11,7 +12,6 @@ $sName = $_POST['servName']; // remember to change it back to servName
 $queue->queueSetup($worker->getWorkerCompanyName(), $sName, -1);
 
 $xsName = str_replace(' ', '', $sName);
-
 if ($sName != '-----') {
     echo "<p> You are working on $sName service</p>";
 } else {
@@ -19,6 +19,7 @@ if ($sName != '-----') {
 }
 
 if ($inspector->findTable($queue->getQueueName())) {
+
     if ($worker->getMyUser() != NULL) {
         $myUser = $worker->getMyUser();
         $uName = $myUser->getUsername();
@@ -26,9 +27,8 @@ if ($inspector->findTable($queue->getQueueName())) {
         echo "<p> My User : $uName  </p>";
         echo "<p> Time elpased : $time  </p>";
     }
-    
-    $worker->showQueue($sName);
 
+    $worker->showQueue($sName);
 } else {
     if ($worker->getMyUser() != NULL) {
         $myUser = $worker->getMyUser();
