@@ -1,22 +1,30 @@
 <?php
 
-// Class for registering users to the site
+/**
+ * @brief Contains functions for registering a new user
+ */
 class Register extends SQL
 {
+    /**
+     * @brief Calls SQL to get a connection
+     */
     public function __construct()
     {
         parent::__construct();
     }
 
-    // ADDS USER TO THE USERS TABLE
+    // Methods:
+    //  Public:
+
     /**
-     * @brief Adds a user to the table
-     * @param $uName
-     * @param $uPass
-     * @param $uEmail
-     * @param $uCompany
-     * @param $cName
-     * @param $cDesc
+     * @brief Adds a user to the Users table because the inspector processed
+     * the values no inspection is necessary
+     * @param $uName - username
+     * @param $uPass - password
+     * @param $uEmail - email
+     * @param $uCompany - company tag
+     * @param $cName - company name
+     * @param $cDesc -company description
      * 
      * @return void
      */
@@ -38,11 +46,13 @@ class Register extends SQL
         }
     }
 
-    // Adds user company to Companies and creates a table
     /**
-     * @param $uName
-     * @param $cName
-     * @param $cDesc
+     * @brief Adds a company into table Companies and creates two tables
+     * for the workers and for the company itself
+     * 
+     * @param $uName - username 
+     * @param $cName - company name
+     * @param $cDesc - company description
      * 
      * @return void
      */
@@ -92,7 +102,7 @@ class Register extends SQL
         $result = $this->createTable($tableName, $tableContents);
 
         if ($result) {
-            echo "Table has been created \n";
+            $this->Log("Table has been created \n");
         } else {
             die("error creating table");
         }

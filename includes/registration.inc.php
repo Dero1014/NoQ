@@ -16,18 +16,16 @@ $uPass = $_POST['regUserPass'];
 $uEmail = $_POST['regUserEmail'];
 $uCompany = checkSet($_POST['regUserCompany']);
 
+// Undefined until proccessed
 $cName;
 $cDesc;
 
 if ($uCompany === 1) {
     $cName = $_POST['regCompName'];
     $cDesc = $_POST['regCompDesc'];
-    echo "He has a company \n";
 } 
 
-// error handlers
 if ($inspector->registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)) {
-    // If no errors are found continue
     $register = new Register();
     $register->addUser($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc);
     header("Location: ../sites/signup.site.php?signup=success");
