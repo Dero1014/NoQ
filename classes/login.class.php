@@ -60,7 +60,7 @@ class Login extends SQL
     //  Private:
     /**
      * @brief Creates a session where it stores all the important user information
-     * @param array $row
+     * @param array $row - array of data of a sql row
      * @return bool success if a session has been started successfully 
      */
     private function sessionSet($row)
