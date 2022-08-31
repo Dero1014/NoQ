@@ -462,7 +462,7 @@ class Service
      * @brief Constructor for User
      * 
      * @param int  $sId - service id
-     * @param string  $sName - username
+     * @param string  $sName - service name
      * @param int  $numberOfUsers - number of users passed through the service
      * @param int  $avgTime - time spent per user
      * @param int $timeSum - sum of time between each user
