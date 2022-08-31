@@ -48,6 +48,7 @@ class Queue extends SQL
             VALUES (?, ?, ?, ?);";
 
         $this->setStmtValues("isss", $sql, array($uId, $qTableName, $cName, $sName));
+        return true;
     }
 
     public function dropFromQueue()
