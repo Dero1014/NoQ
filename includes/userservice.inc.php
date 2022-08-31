@@ -9,7 +9,6 @@ if ($queue->inQueue($uId)) {
     // Is user in turn
     if ($queue->getMyTurn()) {
         echo "<p >You are UP!</p>";
-        echo '<script type="text/JavaScript"> location.reload(); </script>';
         exit();
     }
 
