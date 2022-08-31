@@ -10,7 +10,7 @@ $inspector = new Inspector();
 $queue = new Queue();
 $queue->queueSetup($worker->getWorkerCompanyName(), $sName, -1);
 
-if (!$inspector->tableExists($queue->getQueueName())) {
+if (!$inspector->findTable($queue->getQueueName())) {
     exit();
 }
 

@@ -137,6 +137,8 @@ class ErrorInfo
      * @param bool $result - result on checking if data is valid
      * @param string $returnValue - use this value to send back to site
      * in case of a fail
+     * @param $cn - the company name that is in the link
+     * @param $p - the workers password that is in the link
      * @return bool true if it succeeds otherwise return it to the site
      * with the error value
      */

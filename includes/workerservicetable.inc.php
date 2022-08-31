@@ -18,7 +18,7 @@ if ($sName != '-----') {
     echo "<p> Pick a service to start working on</p>";
 }
 
-if ($inspector->tableExists($queue->getQueueName())) {
+if ($inspector->findTable($queue->getQueueName())) {
     if ($worker->getMyUser() != NULL) {
         $myUser = $worker->getMyUser();
         $uName = $myUser->getUsername();

@@ -13,7 +13,7 @@
         $cName = $company->getCompanyName();
         $wName = $_POST['workerName'];
 
-        $inspector->workerReady($wName, $company->getWorkerTableName());
+        $inspector->workerInsertReady($wName, $company->getWorkerTableName());
 
         $rngPass = randomString();
         $hashedPwd = password_hash($rngPass, PASSWORD_DEFAULT);
