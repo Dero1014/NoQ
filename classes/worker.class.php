@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @brief Used for storing data about the worker and 
+ * managing queues
+ */
 class Worker extends SQL
 {
     private $wId;
@@ -10,6 +14,7 @@ class Worker extends SQL
     private $cTableName;
     private $myUser = null;
 
+    // Time data
     private $timeStart;
     private $timeEnd;
     private $time;

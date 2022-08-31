@@ -19,6 +19,6 @@ $page = "page=service";
 $sName = $_POST['serviceName'];
 
 if ($inspector->serviceInsertReady($sName, $company->getCompanyTableName())) {
-    $user->getCompany()->setService($sName);
+    $company->setService($sName);
     header("Location: ../sites/company.site.php?$page&service=success");
 }

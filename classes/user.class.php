@@ -11,7 +11,6 @@ class User extends SQL
     private $uCompany;
     private $company;
 
-    // Constructor
     /**
      * @brief Constructor for user
      * 
@@ -151,6 +150,16 @@ class Company extends SQL
     private array $services = [];
     private array $workers = [];
 
+    /**
+     * @brief Constructor for Company
+     * 
+     * @param int  $cId - Company id
+     * @param string  $cName - username
+     * @param string  $xcName - email
+     * @param string  $cDesc - company tag
+     * 
+     * @return void
+     */
     public function __construct($cId, $cName, $xcName, $cDesc)
     {
         parent::__construct("Company");
@@ -163,23 +172,31 @@ class Company extends SQL
         $this->wcName = 'WORKERS_' . $this->xcName;
 
         $this->fetchServices();
+        $this->fetchWorkers();
     }
 
-    // Fetch services
+    // Methods:
+    //  Public:
+
     /**
-     * @brief Grabs the services from the company and stores
-     *        them in an array
+     * @brief Grabs the services from the company creates Service class
+     * for each one and stores them in an array
      * 
      * @return void
      */
     public function fetchServices()
     {
-        $this->services = [];
         $this->query = $this->connect();
+
+        // Set data
+        $this->services = [];
         $cDbName = $this->cTableName;
+        $service = NULL;
+
+        // Grab services
         $sql = "SELECT * FROM $cDbName";
         $result = $this->getStmtAll($sql);
-        $service = NULL;
+
         for ($i = 0; $i < sizeof($result); $i++) {
             $service = new Service(
                 $result[$i][0],
@@ -190,57 +207,70 @@ class Company extends SQL
             );
             array_push($this->services, $service);
         }
-        //var_dump($this->services);
-        //die();
     }
 
-    // Set service
+    //  Public:
+    //      Service side:
     /**
-     * @brief Adds service to the company
+     * @brief Inserts a service to the company
      * 
-     * @return bool
+     * @param string $sName - service name
+     * 
+     * @return bool returns true if it passes
      */
     public function setService($sName)
     {
         $this->query = $this->connect();
+
         $cDbName = $this->cTableName;
+
         $sql = "INSERT INTO $cDbName (sName) VALUES (?);";
         $this->setStmtValues("s", $sql, array($sName));
+
+        // Update services
+        $this->fetchServices();
 
         return true;
     }
 
-    // Remove service
     /**
      * @brief Removes service from company
+     * 
+     * @param int $sId - service id
      * 
      * @return bool
      */
     public function removeService($sId)
     {
         $this->query = $this->connect();
+        
         $cDbName = $this->cTableName;
         $tableData = "sId";
+
         $this->removeStmtValuesFrom($cDbName, $tableData, $sId);
+
+        // Update services
         $this->fetchServices();
 
         return true;
     }
 
-    // Get service length
+    //      Service GETS:
+
     /**
      * @brief Returns the length of service array
      * 
-     * @return int
+     * @return int - length of the service array
      */
     public function getServiceLength()
     {
         return sizeof($this->services);
     }
 
-    // Get service
     /**
-     * @brief Returns a service on index
+     * @brief Returns a service based on arrays index
+     * 
+     * @param int $i - index of array
      * 
      * @return Service
      */
@@ -249,51 +279,59 @@ class Company extends SQL
         return $this->services[$i];
     }
 
-    // Get service by Id
     /**
-     * @brief Returns a service on index
+     * @brief Returns a service based on services id
+     * 
+     * @param int $id - id of the service
      * 
      * @return Service
      */
-    public function getServiceById($id)
+    public function getServiceById($sId)
     {
         foreach ($this->services as $service) {
-            if ($id == $service->getSId()) {
+            if ($sId == $service->getSId()) {
                 return $service;
             }
         }
     }
 
-    // Get service queue name
     /**
      * @brief Returns the queue table name of the associated service
      * 
-     * @return string
+     * @param int $sId - service id
+     * 
+     * @return string - returns queue table name "QUEUE_[company name]_[service name]"
      */
-    public function getServiceQueueTableName($id)
+    public function getServiceQueueTableName($sId)
     {
-        $service = $this->getServiceById($id);
+        $service = $this->getServiceById($sId);
         $xsName = $service->getNoSpaceServiceName();
         $xcName = $this->xcName;
+
         $qsName = "QUEUE_" . $xcName . "_" . $xsName;
         return $qsName;
     }
 
-    // Fetch workers
+    //      Worker side:
+
     /**
      * @brief Fetches workers from the Workers table that
-     *        are part of the company
+     *        are part of the company and makes a Worker 
+     * class for each one and stores it in the array
      * 
      * @return void
      */
     public function fetchWorkers()
     {
-        $this->workers = [];
         $this->query = $this->connect();
+
+        $this->workers = [];
         $wcName = $this->wcName;
+        $worker = NULL;
+
         $sql = "SELECT * FROM $wcName;";
         $result = $this->getStmtAll($sql);
-        $worker = NULL;
+
         for ($i = 0; $i < sizeof($result); $i++) {
             $worker = new Worker(
                 $result[$i][0],
@@ -303,43 +341,45 @@ class Company extends SQL
             );
             array_push($this->workers, $worker);
         }
-        //var_dump($this->services);
-        //die();
     }
 
-    // Set worker
     /**
-     * @brief Adds worker to the Workers table
+     * @brief Inserts worker to the Workers table
      * 
      * @return bool
      */
     public function setWorker($rngPass, $wName)
     {
         $this->query = $this->connect();
+
         $wcName = $this->wcName;
+
         $sql = "INSERT INTO $wcName (wName, wPass) VALUES (?, ?);";
         $this->setStmtValues("ss", $sql, array($wName, $rngPass));
 
         return true;
     }
 
-    // Remove service
     /**
-     * @brief Removes service from company
+     * @brief Removes worker from company
+     * 
+     * @param int $wId - worker id
      * 
      * @return bool
      */
     public function removeWorker($wId)
     {
         $this->query = $this->connect();
+
         $tableData = "wId";
+
         $this->removeStmtValuesFrom($this->wcName, $tableData, $wId);
         $this->fetchServices();
 
         return true;
     }
 
-    // Get worker array length
+    //      Worker GETS:
     /**
      * @brief Returns the length of the workers array
      * 
@@ -354,6 +394,8 @@ class Company extends SQL
     /**
      * @brief Returns a worker on index
      * 
+     * @param int $i - index of array
+     * 
      * @return Worker
      */
     public function getWorker($i)
@@ -361,7 +403,6 @@ class Company extends SQL
         return $this->workers[$i];
     }
 
-    // Get worker table name
     /**
      * @brief Returns worker table name
      * 
@@ -372,7 +413,8 @@ class Company extends SQL
         return $this->wcName;
     }
 
-    // Get company name
+    //      Company GETS:
+
     /**
      * @brief Returns the company name
      * 
@@ -383,7 +425,6 @@ class Company extends SQL
         return $this->cName;
     }
 
-    // Get company name without spaces
     /**
      * @brief Returns the company name without spaces
      * 
@@ -394,7 +435,6 @@ class Company extends SQL
         return $this->xcName;
     }
 
-    // Get company table name
     /**
      * @brief Returns the company table name
      * 
@@ -406,7 +446,9 @@ class Company extends SQL
     }
 }
 
-// Holds info about the service
+/**
+ * @brief Contains info about a service
+ */
 class Service
 {
     private $sId;
@@ -416,6 +458,17 @@ class Service
     private $avgTime;
     private $timeSum;
 
+    /**
+     * @brief Constructor for User
+     * 
+     * @param int  $sId - service id
+     * @param string  $sName - username
+     * @param int  $numberOfUsers - number of users passed through the service
+     * @param int  $avgTime - time spent per user
+     * @param int $timeSum - sum of time between each user
+     * 
+     * @return void
+     */
     public function __construct($sId, $sName, $numberOfUsers, $avgTime, $timeSum)
     {
         $this->sId = $sId;
@@ -426,7 +479,9 @@ class Service
         $this->timeSum = $timeSum;
     }
 
-    // Get service id
+    // Methods: 
+    //  Public:
+
     /**
      * @brief Returns the service id
      * 
@@ -437,7 +492,6 @@ class Service
         return $this->sId;
     }
 
-    // Get service name
     /**
      * @brief Returns the service name
      * 
@@ -448,7 +502,6 @@ class Service
         return $this->sName;
     }
 
-    // Get service name without spaces
     /**
      * @brief Returns the service name without spaces
      * 
@@ -459,7 +512,6 @@ class Service
         return $this->xsName;
     }
 
-    // Get service number of users
     /**
      * @brief Returns the number of users from the service
      * 
@@ -470,7 +522,6 @@ class Service
         return $this->numberOfUsers;
     }
 
-    // Get service average time
     /**
      * @brief Returns the average time of waiting in the service
      * 
