@@ -1,6 +1,8 @@
 <?php
-// Holds general user info
 
+/**
+ * @brief Acts as a storage for User values
+ */
 class User extends SQL
 {
     private $uId;
@@ -12,11 +14,12 @@ class User extends SQL
     // Constructor
     /**
      * @brief Constructor for user
-     * @param int  $uId Set to -1 if you don't wanna grab the inputs of the code
-     * @param string  $uName
-     * @param string  $uEmail
-     * @param int  $uCompany
-     * @param bool  $fetchByName
+     * 
+     * @param int  $uId - Set to -1 if you don't wanna grab the arguments of the constructor
+     * @param string  $uName - username
+     * @param string  $uEmail - email
+     * @param int  $uCompany - company tag
+     * @param bool  $fetchByName - if true will use fetchUserByName method
      * 
      * @return void
      */
@@ -24,10 +27,12 @@ class User extends SQL
     {
         parent::__construct("User with id $uId");
 
+        // Fetch user data by name
         if ($fetchByName == true) {
             $this->fetchUserByName($uName);
         }
 
+        // If ID is -1 it is considered a null call
         if ($uId != -1) {
             $this->uId = $uId;
             $this->uName = $uName;
@@ -38,13 +43,22 @@ class User extends SQL
             } else {
                 $this->company = new stdClass();
             }
+        }else {
+            $this->uId = NULL;
+            $this->uName = NULL;
+            $this->uEmail = NULL;
+            $this->uCompany = NULL;
+            $this->company = new stdClass();
         }
     }
 
-    // Fetch User info by name
+    // Methods:
+    //  Private:
+
     /**
-     * @brief Grabs all of the information about the user
-     * @param string  $uName
+     * @brief Grabs all of the information about the user 
+     * using it's username
+     * @param string  $uName - Username
      * 
      * @return void
      */
@@ -60,23 +74,28 @@ class User extends SQL
         $this->uCompany = $row['uCompany'];
     }
 
-    // Fetch company
     /**
      * @brief Grabs the company associated with the user from table Companies
-     * @param int  $uId
+     * and creates a company class with it's data
+     * @param int  $uId - user id
      * 
      * @return void
      */
     private function fetchCompany($uId)
     {
-        //get company name
         $this->query = $this->connect();
+
+        // Get company name
         $sql = "SELECT * FROM Companies WHERE userId = $uId;";
         $row = $this->getStmtRow($sql);
+
+        // Set company class
         $this->company = new Company($row['cId'], $row['cName'], $row['xcName'], $row['cDesc']);
     }
 
-    // Get username
+    //  Public:
+    //      Get methods:
+
     /**
      * @brief Returns the username of the user
      * 
@@ -87,7 +106,6 @@ class User extends SQL
         return $this->uName;
     }
 
-    // Get company object
     /**
      * @brief Returns the company object, conidered empty if it's 
      *        type of stdClass
@@ -99,7 +117,6 @@ class User extends SQL
         return $this->company;
     }
 
-    // Get company tag
     /**
      * @brief Returns a company tag that tells if the user owns a company 
      *        or not
@@ -111,7 +128,6 @@ class User extends SQL
         return $this->uCompany;
     }
 
-    // Get user id
     /**
      * @brief Returns the user id from table Users
      * 
