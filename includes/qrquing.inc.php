@@ -19,9 +19,7 @@ $json->services = $sName;
 $json->uid = $uId;
 $json->result = "Did not pass ";
 
-
 $queue = new Queue();
-
 
 if (!$queue->inQueue($uId)) {
     echo ("\nQueuing... \n\r");
@@ -30,6 +28,3 @@ if (!$queue->inQueue($uId)) {
 }
 
 echo json_encode($json);
-
-
-

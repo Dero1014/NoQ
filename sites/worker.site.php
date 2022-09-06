@@ -8,11 +8,10 @@ include '../header/header.php';
 include '../includes/worker.chk.php';
 
 // if not loged in show login page otherwise give access
-if ($worker == NULL) {
+if ($worker == NULL)
     include 'wlogin.site.php';
-}else {
+else
     include 'waccess.site.php';
-}
 
 ?>
 

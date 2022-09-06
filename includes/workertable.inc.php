@@ -14,7 +14,7 @@ echo "<th>Average time per user</th>";
 echo "</tr>";
 
 for ($i = 0; $i < $company->getWorkerLength(); $i++) {
-    $worker = $company->getWorker($i);
+    $worker = $company->getWorkerById($i);
     $wId = $worker->getWorkerId();
     $wName = $worker->getWorkerName();
     $numOfUsers = $worker->getWorkerUserNumber();

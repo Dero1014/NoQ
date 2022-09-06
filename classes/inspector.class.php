@@ -29,7 +29,7 @@ class Inspector extends SQL
      * 
      * @return bool
      */
-    public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
+    public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc, $mobile = false)
     {
         if ($uCompany === 1)
             $words = array($uName, $uPass, $uEmail, $cName, $cDesc);
@@ -40,13 +40,13 @@ class Inspector extends SQL
         $xcName = str_replace(' ', '', $cName);
         $cDbName = "COMPANY_" . $xcName;
 
-        $result =  $this->error->onRegisterError($this->areEmpty($words), 'empty');
-        $result = $this->error->onRegisterError($this->areInvalid($words), 'invalid');
-        $result = $this->error->onRegisterError($this->isNotEmail($uEmail), 'invalidMail');
-        $result = $this->error->onRegisterError($this->alreadyExists($uName, 'uName', 'Users'), 'userExists');
-        $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists');
+        $result =  $this->error->onRegisterError($this->areEmpty($words), 'empty', $mobile);
+        $result = $this->error->onRegisterError($this->areInvalid($words), 'invalid', $mobile);
+        $result = $this->error->onRegisterError($this->isNotEmail($uEmail), 'invalidMail', $mobile);
+        $result = $this->error->onRegisterError($this->alreadyExists($uName, 'uName', 'Users'), 'userExists', $mobile);
+        $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists', $mobile);
 
-        if ($uCompany == 1) $result = $this->error->onRegisterError($this->findTable($cDbName), 'companyExists');
+        if ($uCompany == 1) $result = $this->error->onRegisterError($this->findTable($cDbName), 'companyExists', $mobile);
 
         return $result;
     }

@@ -8,7 +8,7 @@ class SQL
     protected mysqli $query;
     protected ErrorInfo $error;
 
-    protected $log = false;
+    protected $log = FALSE;
 
     /**
      * @brief Grabs a connection for mysqli $query

@@ -3,11 +3,10 @@
 // MISCS //
 function checkSet($set)
 {
-    if (isset($set)) {
+    if (isset($set)) 
         $set = 1;
-    } else {
+    else 
         $set = 0;
-    }
     return $set;
 }
 

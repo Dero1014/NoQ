@@ -22,7 +22,7 @@ class User extends SQL
      * 
      * @return void
      */
-    public function __construct(int $uId, string $uName, string $uEmail, int $uCompany, bool $fetchByName = false)
+    public function __construct(int $uId = -1, string $uName = "", string $uEmail = "", int $uCompany = 0, bool $fetchByName = false)
     {
         parent::__construct("User with id $uId");
 
@@ -390,7 +390,16 @@ class Company extends SQL
         return sizeof($this->workers);
     }
 
-    // Get worker
+    /**
+     * @brief Returns  workers 
+     * 
+     * @return array of workers
+     */
+    public function getWorkers()
+    {
+        return $this->workers;
+    }
+    
     /**
      * @brief Returns a worker on index
      * 
@@ -398,7 +407,7 @@ class Company extends SQL
      * 
      * @return Worker
      */
-    public function getWorker($i)
+    public function getWorkerById($i)
     {
         return $this->workers[$i];
     }

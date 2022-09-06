@@ -57,8 +57,8 @@ class Queue extends SQL
         $qTableName = $this->qTableName;
 
         // Check if a queue already exists
-        $qeueuExists = $this->queueExists($qTableName);
-        $currentQueue = ($qeueuExists === true) ? $this->findQueue($qTableName) : 1;
+        $queueExists = $this->queueExists($qTableName);
+        $currentQueue = ($queueExists === true) ? $this->findQueue($qTableName) : 1;
 
         // Insert user in queue table db
         $sql = "INSERT INTO $qTableName (queue, userId) 
@@ -92,7 +92,7 @@ class Queue extends SQL
         // Remove user from queue table
         $this->removeStmtValuesFrom($qTableName, "userId", $uId);
 
-        $this->queueFullnes();
+        $this->queueFulness();
         return true;
     }
 
@@ -235,7 +235,7 @@ class Queue extends SQL
      * 
      * @return bool true if it passes
      */
-    private function queueFullnes()
+    private function queueFulness()
     {
         $qTableName = $this->qTableName;
 

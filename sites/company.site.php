@@ -12,7 +12,7 @@ include '../includes/company.chk.php';
 <?php
 $cName = $company->getCompanyName();
 $uName = $user->getUsername();
-echo "<h1>Welcome to your company $cName user $uName <h1>";
+echo "<h1>Welcome to your company $cName user $uName </h1>";
 
 // SELECT WHICH PAGE IS BEING USED
 if (isset($_GET['page'])) {

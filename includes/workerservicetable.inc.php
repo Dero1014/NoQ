@@ -12,11 +12,11 @@ $sName = $_POST['servName']; // remember to change it back to servName
 $queue->queueSetup($worker->getWorkerCompanyName(), $sName, -1);
 
 $xsName = str_replace(' ', '', $sName);
-if ($sName != '-----') {
+if ($sName != '-----')
     echo "<p> You are working on $sName service</p>";
-} else {
+else
     echo "<p> Pick a service to start working on</p>";
-}
+
 
 if ($inspector->findTable($queue->getQueueName())) {
 

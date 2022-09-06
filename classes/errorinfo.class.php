@@ -36,9 +36,11 @@ class ErrorInfo
      * @return bool true if it passes otherwise it returns back to the
      * signup page with the error value
      */
-    public function onRegisterError($result, $returnValue)
+    public function onRegisterError($result, $returnValue, $mobile)
     {
         if ($result == TRUE) {
+            if($mobile)
+                return false;
             header("Location: ../sites/signup.site.php?signup=$returnValue");
             exit();
         } else {

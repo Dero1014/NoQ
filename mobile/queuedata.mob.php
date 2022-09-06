@@ -21,5 +21,4 @@ if ($queue->inQueue($uId)) {
     $json->inQueue = true;
 }
 
-
 echo json_encode($json);
