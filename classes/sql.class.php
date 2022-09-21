@@ -186,11 +186,11 @@ class SQL
     {
         if ($result = $this->query->query("SHOW TABLES LIKE '$tableName'")) {
             if ($result->num_rows == 1) {
-                echo "Table $tableName exists\n";
+                $this->Log("Table $tableName exists\n");
                 return true;
             }
         } else {
-            echo "Table $tableName does not exist\n";
+            $this->Log("Table $tableName does not exist\n");
             return false;
         }
     }

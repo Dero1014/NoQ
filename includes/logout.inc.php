@@ -1,9 +1,9 @@
 <?php
 
 include_once 'worker.inf.php';
-
 if ($worker != NULL) {
-    $worker->dropOut($worker->getMyUser()->getUId());
+    if ($worker->getMyUser() != NULL) 
+        $worker->dropOut($worker->getMyUser()->getUId());
 }
 
 session_start();
