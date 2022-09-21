@@ -26,6 +26,5 @@ if ($queue->inQueue($uId)) {
         echo "<p >Average wait time is: $avgTime mins</p>";
     }
 } else if ($queue->getMyTurn() !== 1) {
-    echo "<p> aaaaaaaaaaaa </p>";
     echo '<script type="text/JavaScript"> location.reload(); </script>';
 }

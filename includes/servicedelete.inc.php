@@ -15,7 +15,7 @@ $cDbName = $company->getCompanyTableName();
 $qDbName = $company->getServiceQueueTableName($sId);
 
 // Remove any data about the queue
-if ($inspector->serviceDeletionReady($qDbName)) {
+if ($inspector->serviceQueueDeletionReady($qDbName)) {
     $queue->dropQueueTable($qDbName);
 }
 

@@ -15,7 +15,7 @@ $uId = (int)$_POST["uId"];
 $json = new stdClass();
 $json->drop = false;
 
-if ($queue->inQueue($uId)) {
+if ($queue->inQueue($uId)) 
     $json->drop = $queue->dropFromQueue($cName, $sName, $uId);
-}
+
 echo json_encode($json);

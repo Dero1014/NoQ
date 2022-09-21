@@ -1,53 +1,63 @@
 <?php
 
+/**
+ * @brief Inspects incoming values to see if they are applicable
+ * for current istuations
+ */
 class Inspector extends SQL
 {
+    /**
+     * Calls the SQL constructor to get a connection
+     */
     public function __construct()
     {
         parent::__construct("inspector");
     }
 
-    // Class ready functions (Functions that are used if the conditions to use a class are set) : 
+    // Methods:
+    //  Public:
+    //      User handling:
 
-    // Register user inspection
     /**
-     * @brief Checks if the data that is being provided is suficient for registering a user
-     * @param string $uName
-     * @param string $uPass
-     * @param string $uEmail
-     * @param int $uCompany
-     * @param string $cName
-     * @param string $cDesc
+     * @brief Checks if the data that is being provided is valid for registering a user
+     * @param string $uName - username
+     * @param string $uPass - password
+     * @param string $uEmail - email
+     * @param int $uCompany - does user possess a company or not 
+     * @param string $cName - company name
+     * @param string $cDesc - company description
      * 
      * @return bool
      */
-    public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc)
+    public function registerUserReady($uName, $uPass, $uEmail, $uCompany, $cName, $cDesc, $mobile = false)
     {
-        if ($uCompany === 1) {
+        if ($uCompany === 1)
             $words = array($uName, $uPass, $uEmail, $cName, $cDesc);
-        } else {
+        else
             $words = array($uName, $uPass, $uEmail);
-        }
 
         // Set table company name
         $xcName = str_replace(' ', '', $cName);
         $cDbName = "COMPANY_" . $xcName;
 
-        $result =  $this->error->onRegisterError($this->areEmpty($words), 'empty');
-        $result = $this->error->onRegisterError($this->areInvalid($words), 'invalid');
-        $result = $this->error->onRegisterError($this->isNotEmail($uEmail), 'invalidMail');
-        $result = $this->error->onRegisterError($this->alreadyExists($uName, 'uName', 'Users'), 'userExists');
-        $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists');
-        if ($uCompany == 1) $result = $this->error->onRegisterError($this->tableExists($cDbName), 'companyExists');
+        $result =  $this->error->onRegisterError($this->areEmpty($words), 'empty', $mobile);
+        $result = $this->error->onRegisterError($this->areInvalid($words), 'invalid', $mobile);
+        $result = $this->error->onRegisterError($this->isNotEmail($uEmail), 'invalidMail', $mobile);
+        $result = $this->error->onRegisterError($this->alreadyExists($uName, 'uName', 'Users'), 'userExists', $mobile);
+        $result = $this->error->onRegisterError($this->alreadyExists($uEmail, 'uEmail', 'Users'), 'mailExists', $mobile);
+
+        if ($uCompany == 1) $result = $this->error->onRegisterError($this->findTable($cDbName), 'companyExists', $mobile);
 
         return $result;
     }
 
-    // Login user inspection
     /**
-     * @brief Checks if the data that is being provided is suficient for login a user
-     * @param string $uName
-     * @param string $uPass
+     * @brief Checks if the data that is being provided is valid for login of a user
+     * it already checks if the user exists or not in the database
+     * @param string $uName - username
+     * @param string $uPass - password
+     * @param bool $mobile - changes the type of data being returned by the 
+     * errorinfo class
      * 
      * @return bool
      */
@@ -62,15 +72,17 @@ class Inspector extends SQL
         return $result;
     }
 
-    // Service inspection
+    //      Company handling:
+
     /**
-     * @brief Checks if the data that is being provided is suficient for a service to be added in a company
-     * @param string $uName
-     * @param string $uPass
+     * @brief Checks if the data that is being provided is valid for a service to be 
+     * added to the company
+     * @param string $sName - service name that is being added
+     * @param string $cTableName - the company the service is being added to
      * 
      * @return bool
      */
-    public function serviceReady($sName, $cTableName)
+    public function serviceInsertReady($sName, $cTableName)
     {
         $words = array($sName);
         $result =  $this->error->onServiceError($this->areEmpty($words), 'empty');
@@ -80,28 +92,28 @@ class Inspector extends SQL
         return $result;
     }
 
-    // Service DELETE QUEUE inspection
     /**
-     * @brief Checks if the data that is being provided is suficient for a service QUEUE to be deleted from a company
-     * @param string $qTableName
+     * @brief Checks if the data that is being provided is valid for a QUEUE of the service
+     * to be deleted
+     * @param string $qTableName - name of the queue table
      * 
      * @return bool
      */
-    public function serviceDeletionReady($qTableName)
+    public function serviceQueueDeletionReady($qTableName)
     {
-        $result =  $this->tableExists($qTableName);
+        $result =  $this->findTable($qTableName);
 
         return $result;
     }
 
-    // Worker inspection
     /**
-     * @brief Checks if the data that is being provided is suficient for a worker to be added in a company
-     * @param string $wName
+     * @brief Checks if the data that is being provided is valid for a worker to be added 
+     * in a company
+     * @param string $wName - name of the worker
      * 
      * @return bool
      */
-    public function workerReady($wName, $wcName)
+    public function workerInsertReady($wName, $wcName)
     {
         $words = array($wName);
         $result =  $this->error->onWorkerError($this->areEmpty($words), 'empty');
@@ -111,10 +123,12 @@ class Inspector extends SQL
         return $result;
     }
 
-    // Queue inspection
+    //      User queue handling:
     /**
-     * @brief Checks if the data that is being provided is suficient for a queue to be started
-     * @param string $wName
+     * @brief Checks if the data that is being provided is valid for a queue to be started
+     * @param string $sName - name of the service
+     * @param string $cName - name of the company
+     * @param int $uId - user Id
      * 
      * @return bool
      */
@@ -128,10 +142,13 @@ class Inspector extends SQL
         return $result;
     }
 
-    // Worker inspection
+    //      Worker handling:
     /**
-     * @brief Checks if the data that is being provided is suficient for a worker loged in
-     * @param string $wName
+     * @brief Checks if the data that is being provided is valid for a worker loged in
+     * @param string $wComp - company name
+     * @param string $wPass - password for the worker
+     * @param string $cn - company name over link
+     * @param string $p - hashed password over link
      * 
      * @return bool
      */
@@ -141,22 +158,22 @@ class Inspector extends SQL
 
         $this->Log("Company name $wComp \n");
         $wTableName =  'WORKERS_' . str_replace(' ', '', $wComp);
-        $this->Log("Table name" . $wTableName);
+        $this->Log("Table name $wTableName \n");
         $result = $this->error->onWorkerLoginError($this->areEmpty($words), 'empty', $cn, $p);
         $result = $this->error->onWorkerLoginError($this->areInvalid($words), 'invalid', $cn, $p);
-        $result = $this->error->onWorkerLoginError(!$this->tableExists($wTableName), 'companyNonExistent', $cn, $p);
+        $result = $this->error->onWorkerLoginError(!$this->findTable($wTableName), 'companyNonExistent', $cn, $p);
 
         return $result;
     }
 
-    // Inspectors (general inspection checkers)
+    //  Private:
+    //      Inspectors (general inspection checkers): 
 
-    // Empty inspector
     /**
      * @brief Checks if the data is empty
-     * @param array $words
+     * @param array $words - data of strings
      * 
-     * @return bool
+     * @return bool returns true if one of the strings is empty
      */
     private function areEmpty(array $words)
     {
@@ -170,12 +187,11 @@ class Inspector extends SQL
         return false;
     }
 
-    // Invalid input inspector
     /**
      * @brief Checks if the data isn't considered invalid
-     * @param array $words
+     * @param array $words - data of strings
      * 
-     * @return bool
+     * @return bool returns true if one of the string is invalid
      */
     private function areInvalid($words)
     {
@@ -189,12 +205,11 @@ class Inspector extends SQL
         return false;
     }
 
-    // Email inspector
     /**
      * @brief Checks if the data provided is of a type email
-     * @param string $words
+     * @param string $email - email string
      * 
-     * @return bool
+     * @return bool returns true if the email is invalid
      */
     private function isNotEmail($email)
     {
@@ -207,14 +222,13 @@ class Inspector extends SQL
         return false;
     }
 
-    // Existing data inspector
     /**
      * @brief Checks if the data provided already exists in the database
-     * @param $string
-     * @param string $tData
-     * @param string $table
+     * @param string $var - the data we are trying to find 
+     * @param string $tData - where we are trying to find it
+     * @param string $table - in what table should the data be
      * 
-     * @return bool
+     * @return bool returns true if the data has been found
      */
     private function alreadyExists($var, $tData, $table)
     {
@@ -231,27 +245,6 @@ class Inspector extends SQL
             return true;
         } else {
             $this->Log("Data [$tData] for $var doesn't exists!\n");
-            return false;
-        }
-    }
-
-
-    // Existing table inspector
-    /**
-     * @brief Checks if a table already exists
-     * @param string $cName
-     * 
-     * @return bool
-     */
-    public function tableExists($tableName)
-    {
-        if ($result = $this->query->query("SHOW TABLES LIKE '" . $tableName . "'")) {
-            if ($result->num_rows == 1) {
-                $this->Log("Table $tableName exists\n");
-                return true;
-            }
-        } else {
-            $this->Log("Table $tableName does not exist\n");
             return false;
         }
     }

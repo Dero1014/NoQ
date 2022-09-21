@@ -3,11 +3,10 @@
 include '../includes/worker.inf.php';
 
 if ($worker == NULL) {
-    if (!isset($_GET['cn'])) {
+    if (!isset($_GET['cn'])) 
         header("Location: ../index.php?error=wrongInfo");
-    }
     
-    if (!isset($_GET['p'])) {
+    
+    if (!isset($_GET['p'])) 
         header("Location: ../index.php?error=wrongInfo");
-    }
 }
