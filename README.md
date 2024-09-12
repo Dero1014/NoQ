@@ -13,7 +13,7 @@ The point of the system is to **give back time to consumers** by not having them
       -  [User](#user)
    -  [Mobile App](#mobile_app)
    -  [QR scanner](#qr_scanner)
-   -  [Questions](#questions)
+-  [Questions](#questions)
 
 ## Features
 From the main system (website) side as admin:
