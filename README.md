@@ -29,3 +29,22 @@ From the mobile app strictly for users:
 ##How it works
 Originally the system was inteded as a main hub from which all companies/establishments that have queues can register too. But the system can be used for a singular entity that holds one or more establishments.
 
+### Website
+The website is the main hub for the admins and personel of establishments. An admin can register an establishment, when we say establishment we mean a place where services are provided, so in turn you could make several establishments that offer the same service but in different locations such as a bank being provided in different regions of the city.
+
+#### Admin/Owner
+The admin of a perticular establishment can add services and create logins with perticular links that are required for personel to access the needed establishment. After which he can review services such as traffic and average wait time. [IMAGE1 - Show infographic of service]
+
+Adding personel logins is simple as adding services, it mearly requiers that you enter a desired ID for the personel in mind. After which you will be given a randomly generated link with a strong password for the user to login from, this link and password are unique and won't work one without the other. [IMAGE 2 - Show adding worker]
+
+#### Personel
+Personel login through the provided link and password given by the admin. Only through the same generated password and link can a user login. This is to ensure that one can't enter the system without the necessary link and password, both being randomly generated. Once inside they can pick which service for the establishment they want to handle and they get a list of customers to know how long is the line. 
+
+#### User/Customer
+With no ties to an establishment a user can pick an establishment of it's choosing and pick a service from an establishment to queue up to. Once queued up it will see it's possition in the queue as well how long is the wait. [IMAGE 3 - Picking a queue and queue stats]
+
+### Mobile App
+The app is strictly made for the users of the service. It displays the same options and info as on website. With the addition that it can use a QR to show to a scanner to log them into the system.
+
+### QR scanner
+The QR scanner will scan QR from user to log them into the system, this saves on time for looking for an establishment and service is the user is already there.
