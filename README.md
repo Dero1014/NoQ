@@ -7,14 +7,14 @@ The point of the system is to **give back time to consumers** by not having them
 ## Table of contents
 -  [Features](#features)
 -  [How it works](#how-it-works)
--  [Website](#website)
--  [Admin/Owner](#admin)
--  [Personel](#personel)
--  [User](#user)
--  [Mobile App](#mobile_app)
--  [QR scanner](#qr_scanner)
--  [Can I use this for my own projects/establishments?](#can_i_use)
--  [Updates](#will_there)
+   -  [Website](#website)
+      -  [Admin/Owner](#admin/owner)
+      -  [Personel](#personel)
+      -  [User](#user)
+   -  [Mobile App](#mobile_app)
+   -  [QR scanner](#qr_scanner)
+   -  [Can I use this for my own projects/establishments?](#can_i_use)
+   -  [Updates](#will_there)
    
 
 ## Features
