@@ -38,7 +38,7 @@ The admin of a perticular establishment can add services and create logins with 
 Adding personel logins is simple as adding services, it mearly requiers that you enter a desired ID for the personel in mind. After which you will be given a randomly generated link with a strong password for the user to login from, this link and password are unique and won't work one without the other. [IMAGE 2 - Show adding worker]
 
 #### Personel
-Personel login through the provided link and password given by the admin. Only through the same generated password and link can a user login. This is to ensure that one can't enter the system without the necessary link and password, both being randomly generated. Once inside they can pick which service for the establishment they want to handle and they get a list of customers to know how long is the line. 
+Personel login through the provided link and password given by the admin. Only through the same generated password and link can a user login. This is to ensure that one can't enter the system without the necessary link and password, both being randomly generated. Once inside they can pick which service for the establishment they want to handle and they get a list of customers to know how long is the line. [IMAGE 4 - Show working on service]
 
 #### User/Customer
 With no ties to an establishment a user can pick an establishment of it's choosing and pick a service from an establishment to queue up to. Once queued up it will see it's possition in the queue as well how long is the wait. [IMAGE 3 - Picking a queue and queue stats]
@@ -48,3 +48,10 @@ The app is strictly made for the users of the service. It displays the same opti
 
 ### QR scanner
 The QR scanner will scan QR from user to log them into the system, this saves on time for looking for an establishment and service is the user is already there.
+
+## Can I use this for my own projects/establishments?
+Feel free to try, this is a student project with only a month or two in the making so everything is very barebone. You would have to make your own SQL and server to get it up and running, and as the website doesn't contain any unique UI elements you would have to add something to the design of the website.
+
+## Will there be updates?
+At the moment this repo is closed, unless you want to updated it on your own. I plan somewhere in the future making a modular and up to date version so it can be used anywhere with minimal effort of integration.
+
