@@ -8,7 +8,7 @@ The point of the system is to **give back time to consumers** by not having them
 -  [Features](#features)
 -  [How it works](#how-it-works)
    -  [Website](#website)
-      -  [Admin/Owner](#admin/owner)
+      -  [Admin/Owner](#admin_/_owner)
       -  [Personel](#personel)
       -  [User](#user)
    -  [Mobile App](#mobile_app)
