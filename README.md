@@ -4,9 +4,20 @@ NoQ is a barebone system for **managing service queues** in establishments that 
 
 The point of the system is to **give back time to consumers** by not having them wait in lines for hours but apply for a queue and go on with their daily business and only arrive when necessary. Additional features are given to the owners of the system such as reviewing the interests in perticular service, average time per service ect.
 
-##Table of contents
+## Table of contents
+-  [Features](#features)
+-  [How it works](#how-it-works)
+-  [Website](#website)
+-  [Admin/Owner](#admin)
+-  [Personel](#personel)
+-  [User](#user)
+-  [Mobile App](#mobile_app)
+-  [QR scanner](#qr_scanner)
+-  [Can I use this for my own projects/establishments?](#can_i_use)
+-  [Updates](#will_there)
+   
 
-##Features
+## Features
 From the main system (website) side as admin:
   - Register various establishments for service managment
   - Create, manage and overview various services for each establishments
@@ -26,7 +37,7 @@ Adding a QR scanner to the establishment:
 From the mobile app strictly for users:
   - all the benefits as through the website
 
-##How it works
+## How it works
 Originally the system was inteded as a main hub from which all companies/establishments that have queues can register too. But the system can be used for a singular entity that holds one or more establishments.
 
 ### Website
