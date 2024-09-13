@@ -1,6 +1,6 @@
-# Virtual_queues or NoQ
+# Virtual queues or NoQ
 
-NoQ is a barebone system for **managing service queues** in establishments that require a lot of effort and time per customer, have high traffic and require physical presence. The system is partnered with a [mobile app](https://github.com/Dero1014/Virtual_queues_mobile) for customers and a [embedded QR scanner](https://github.com/Dero1014/Virtual_queues_QR) for physical application. 
+NoQ is a barebone system for **managing service queues** in establishments that require a lot of effort and time per customer, have high traffic and require physical presence. The system is partnered with a [mobile app](https://github.com/Dero1014/NoQ_mobile) for customers and a [embedded QR scanner](https://github.com/Dero1014/NoQ_QR) for physical application. 
 
 The point of the system is to **give back time to consumers** by not having them wait in lines for hours but apply for a queue and go on with their daily business and only arrive when necessary. Additional features are given to the owners of the system such as reviewing the interests in perticular service, average time per service ect.
 
